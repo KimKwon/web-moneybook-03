@@ -10,7 +10,7 @@ module.exports = {
   mode: isProductionMode ? 'production' : 'development',
   entry: path.resolve(__dirname, './src', 'index.js'),
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[hash].js',
     clean: true,
   },
