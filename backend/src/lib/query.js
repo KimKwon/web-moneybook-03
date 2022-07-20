@@ -1,6 +1,6 @@
 // prettier-ignore
 const find = (table, condition, order) => {
-  //join 고려해서 맡아서 짜오기
+  //join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
 };
 
 const updateOne = (table, condition, updateMap) => {
