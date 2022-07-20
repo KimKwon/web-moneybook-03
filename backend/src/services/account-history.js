@@ -1,5 +1,3 @@
-const getAccountHistory = () => {
-    
-} 
+const getAccountHistory = () => {};
 
-module.exports = {getAccountHistory} 
+module.exports = { getAccountHistory };
