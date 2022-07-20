@@ -1,10 +1,16 @@
-const { Router } = require("express");
+const { Router } = require('express');
+const {
+  getAccountHistory,
+  createAccountHistory,
+  updateAccountHistory,
+} = require('../controllers/account-history');
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  const { data } = req.body;
-  res.status(200).send("입지출 내역이다. 알겠냐?");
-});
+router.get('/', getAccountHistory);
+
+router.post('/', createAccountHistory);
+
+router.patch('/:id', updateAccountHistory);
 
 module.exports = router;

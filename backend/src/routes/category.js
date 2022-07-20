@@ -1,9 +1,10 @@
-const { Router } = require("express");
+const { Router } = require('express');
+const { getCategory, patchCategory } = require('../controllers/category');
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.status(200).send("카테고리라니까 -_- ");
-});
+router.get('/', getCategory);
+
+router.patch('/:id', patchCategory);
 
 module.exports = router;

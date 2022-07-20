@@ -1,7 +1,16 @@
-const { Router } = require("express");
-const { getAccountHistory } = require("../controllers/account-history");
+const { Router } = require('express');
+const {
+  getPaymentMethod,
+  createPaymentMethod,
+  deletePaymentMethod,
+} = require('../controllers/payment-method');
+
 const router = Router();
 
-router.get("/", getAccountHistory);
+router.get('/', getPaymentMethod);
+
+router.post('/', createPaymentMethod);
+
+router.delete('/:id', deletePaymentMethod);
 
 module.exports = router;

@@ -1,9 +1,8 @@
-const { Router } = require("express");
+const { Router } = require('express');
+const { getStatistic } = require('../controllers/statistic');
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.status(200).send("바바바바바바통계다~");
-});
+router.get('/', getStatistic);
 
 module.exports = router;
