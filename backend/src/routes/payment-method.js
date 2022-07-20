@@ -1,9 +1,7 @@
 const { Router } = require('express');
-
+const { getAccountHistory } = require('../controllers/account-history')
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.status(200).send('결제수단이다~');
-});
+router.get('/', getAccountHistory );
 
 module.exports = router;
