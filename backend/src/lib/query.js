@@ -1,3 +1,11 @@
+const { getDB } = require('./database');
+
+const dbtest = async () => {
+  query = `SELECT * FROM users `;
+  const users = await getDB().execute(query);
+  console.log(users);
+};
+
 // prettier-ignore
 const find = (table, condition, order) => {
   //join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
@@ -24,6 +32,7 @@ const create = (table, createMap) => {
 };
 
 module.exports = {
+  dbtest,
   find,
   updateOne,
   updateAll,
