@@ -11,6 +11,12 @@ class Component {
 
   init() {
     store.subscribe(SELECTOR_MAP.CATEGORY, this.render);
+    app.addEventListener('click', (e) => {
+      const target = e.target.closest('button.something');
+      if (!target) return;
+
+      store.dispatch('ADD', 8, SELECTOR_MAP.CATEGORY);
+    });
   }
 
   render() {
@@ -28,13 +34,6 @@ class Component {
           .join('')}
       </ul>
     `;
-
-    app.addEventListener('click', (e) => {
-      const target = e.target.closest('button.something');
-      if (!target) return;
-
-      store.dispatch('ADD', 8, SELECTOR_MAP.CATEGORY);
-    });
   }
 }
 

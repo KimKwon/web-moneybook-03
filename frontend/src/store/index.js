@@ -9,48 +9,48 @@ const { ACCOUNT_HISTORY, CATEGORY, PAYMENT_METHODS } = SELECTOR_MAP;
  */
 
 const createStore = (initialState, reducer) => {
+  const listeners = {
+    [ACCOUNT_HISTORY]: [],
+    [CATEGORY]: [],
+    [PAYMENT_METHODS]: [],
+  };
+  //initialState ||
+  let state = {
+    [ACCOUNT_HISTORY]: [],
+    [CATEGORY]: [1, 2, 3, 4],
+    [PAYMENT_METHODS]: [],
+  };
+
+  const isValidSelector = (selector) => {
+    return selector && selector in listeners;
+  };
+
+  const notify = (selector) => {
+    if (!isValidSelector(selector)) return;
+
+    listeners[selector].forEach((listener) => {
+      listener();
+    });
+  };
+
   return {
-    reducer,
-    listeners: {
-      [ACCOUNT_HISTORY]: [],
-      [CATEGORY]: [],
-      [PAYMENT_METHODS]: [],
-    },
-    state: {
-      [ACCOUNT_HISTORY]: [],
-      [CATEGORY]: [1, 2, 3, 4],
-      [PAYMENT_METHODS]: [],
-    },
-
-    isValidSelector(selector) {
-      return selector && selector in this.listeners;
-    },
-
     getState(selector) {
-      if (selector && selector in this.state) return Object.freeze(this.state[selector]);
+      if (selector && selector in state) return Object.freeze(state[selector]);
 
-      return Object.freeze(this.state);
-    },
-
-    notify(selector) {
-      if (!this.isValidSelector(selector)) return;
-
-      this.listeners[selector].forEach((listener) => {
-        listener();
-      });
+      return Object.freeze(state);
     },
 
     subscribe(selector, listener) {
-      if (!this.isValidSelector(selector)) return;
+      if (!isValidSelector(selector)) return;
 
-      this.listeners[selector].push(listener);
+      listeners[selector].push(listener);
 
-      return () => this.listeners[selector].filter((l) => l !== listener);
+      return () => listeners[selector].filter((l) => l !== listener);
     },
 
     dispatch(action, payload, selector) {
-      this.state = this.reducer(this.state, action, payload);
-      this.notify(selector);
+      state = reducer(state, action, payload);
+      notify(selector);
     },
   };
 };
