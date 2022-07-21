@@ -1,40 +1,7 @@
-import { SELECTOR_MAP } from './constants/selector-map';
-import store from './store';
+import App from './components/app';
+import defineLinkComponent from './components/Link';
 
 const app = document.querySelector('#app');
 
-class Component {
-  constructor() {
-    this.init();
-    this.render();
-  }
-
-  init() {
-    store.subscribe(SELECTOR_MAP.CATEGORY, this.render);
-    app.addEventListener('click', (e) => {
-      const target = e.target.closest('button.something');
-      if (!target) return;
-
-      store.dispatch('ADD', 8, SELECTOR_MAP.CATEGORY);
-    });
-  }
-
-  render() {
-    const category = store.getState(SELECTOR_MAP.CATEGORY);
-    app.innerHTML = `
-      <button class="something">으아아악!</button>
-      <ul>
-        ${category
-          .map(
-            (c) =>
-              `<li>
-            ${c}
-          </li>`,
-          )
-          .join('')}
-      </ul>
-    `;
-  }
-}
-
-new Component();
+defineLinkComponent();
+new App(app);
