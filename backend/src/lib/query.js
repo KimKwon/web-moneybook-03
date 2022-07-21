@@ -8,53 +8,72 @@ const dbtest = async () => {
 
 // prettier-ignore
 const find = (table, condition, order) => {
-  //join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
+ 
 };
 
 const findOne = async (table, condition) => {
-  const conditionTemplate = createEqualsTemplate(condition);
-  const seleteQuery = `SELECT * FROM ${table} WHERE ${conditionTemplate}`;
-  const [row] = await getDB().query(seleteQuery);
-  return row.length === 0 ? null : row[0];
+  try {
+    const conditionTemplate = createEqualsTemplate(condition);
+    const seleteQuery = `SELECT * FROM ${table} WHERE ${conditionTemplate}`;
+    const [rows] = await getDB().query(seleteQuery);
+    return rows.length === 0 ? null : rows[0];
+  } catch (err) {
+    console.err(err);
+    return null;
+  }
 };
 
-//delete 는 지운놈 , create 만든 놈 , update는 반영전 null 주면 무조건 실패
 const updateOne = async (table, condition, updateMap) => {
-  const beforeUpdateData = await findOne(table, condition);
-  if (!beforeUpdateData) return null;
-  const conditionTemplate = createEqualsTemplate(condition);
-  const updateTemplate = createEqualsTemplate(updateMap);
-  const updateQuery = ` UPDATE ${table} SET ${updateTemplate} WHERE ${conditionTemplate}`;
-  const [rows] = await getDB().query(updateQuery);
-  return rows.affectedRows === 1 ? beforeUpdateData : null;
+  try {
+    const beforeUpdateData = await findOne(table, condition);
+    if (!beforeUpdateData) return null;
+    const conditionTemplate = createEqualsTemplate(condition);
+    const updateTemplate = createEqualsTemplate(updateMap);
+    const updateQuery = ` UPDATE ${table} SET ${updateTemplate} WHERE ${conditionTemplate}`;
+    const [row] = await getDB().query(updateQuery);
+    return row.affectedRows === 1 ? beforeUpdateData : null;
+  } catch (err) {
+    console.err(err);
+    return null;
+  }
 };
 
 const updateAll = (table, condition, updateMap) => {};
 
 const deleteOne = async (table, condition) => {
-  const seleteQuery = `SELECT * FROM ${table}`;
-  const row = await getDB().execute(seleteQuery);
-
-  const conditionTemplate = createEqualsTemplate(condition);
-  const deleteQuery = `DELETE FROM ${table} WHERE ${conditionTemplate};`;
-  const result = await getDB().execute(deleteQuery);
-
-  if (result) console.log(result);
-  return result;
+  try {
+    const beforeDeleteData = await findOne(table, condition);
+    if (!beforeDeleteData) return null;
+    const conditionTemplate = createEqualsTemplate(condition);
+    const deleteQuery = `DELETE FROM ${table} WHERE ${conditionTemplate};`;
+    const [row] = await getDB().query(deleteQuery);
+    return row.affectedRows === 1 ? beforeDeleteData : null;
+  } catch (err) {
+    console.err(err);
+    return null;
+  }
 };
 
 const deleteAll = (table, condition) => {};
 
 const create = async (table, createMap) => {
-  const keys = [],
-    values = [];
-  Object.entries(createMap).forEach((item) => {
-    const [key, value] = item;
-    keys.push(key);
-    values.push(convertType(value));
-  });
-  const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
-  return await getDB().execute(createQuery);
+  try {
+    const keys = [],
+      values = [];
+    Object.entries(createMap).forEach((item) => {
+      const [key, value] = item;
+      keys.push(key);
+      values.push(convertType(value));
+    });
+    const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
+    const [row] = await getDB().execute(createQuery);
+    if (row.affectedRows !== 1) return null;
+    const createData = await findOne(table, { id: row.insertId });
+    return createData;
+  } catch (err) {
+    console.err(err);
+    return null;
+  }
 };
 
 const createEqualsTemplate = (condition) => {
@@ -75,8 +94,6 @@ module.exports = {
   dbtest,
   find,
   updateOne,
-  updateAll,
   deleteOne,
-  deleteAll,
   create,
 };
