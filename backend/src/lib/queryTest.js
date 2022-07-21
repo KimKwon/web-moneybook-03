@@ -2,21 +2,21 @@ const { create, updateOne, deleteOne } = require('./query');
 
 const dbTest = async () => {
   createTest();
-  updateTest();
+  //updateTest();
   //deleteTest();
 };
 
 //완료
 const deleteTest = async () => {
-  const condition = { id: 6 };
+  const condition = { id: 28 };
   const deleteTestResult = await deleteOne('payment_method', condition);
   console.log('deleteTestResult', deleteTestResult);
 };
 
 //완료
 const updateTest = async () => {
-  const condition = { id: 5 };
-  const updateMap = { name: 'update-test', is_delete: true };
+  const condition = { id: 28 };
+  const updateMap = { name: 'update-test2', is_delete: true };
   const updateTestResult = await updateOne('payment_method', condition, updateMap);
   console.log('updateTestResult', updateTestResult);
 };
