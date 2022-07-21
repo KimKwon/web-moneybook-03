@@ -3,11 +3,13 @@ const path = require('path');
 const exp = require('constants');
 const Router = require('./routes');
 const { initDatabase } = require('./lib/database');
-const { dbtest } = require('./lib/query');
+const { dbTest } = require('./lib/queryTest'); //query 개발이 끝나면 삭제
+
 const PORT = process.env.PORT || 3000;
 
 initDatabase();
-dbtest();
+dbTest();
+
 const app = express();
 
 app.use(express.static('public'));

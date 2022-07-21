@@ -11,24 +11,47 @@ const find = (table, condition, order) => {
   //join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
 };
 
-const updateOne = (table, condition, updateMap) => {
-  //
+const updateOne = async (table, condition, updateMap) => {
+  const conditionTemplate = createEqualsTemplate(condition);
+  const updateTemplate = createEqualsTemplate(updateMap);
+  const updateQuery = ` UPDATE ${table} SET ${updateTemplate} WHERE ${conditionTemplate}`;
+  return await getDB().execute(updateQuery);
 };
 
-const updateAll = (table, condition, updateMap) => {
-  //join 고려해서 맡아서 짜오기
+const updateAll = (table, condition, updateMap) => {};
+
+const deleteOne = async (table, condition) => {
+  const conditionTemplate = createEqualsTemplate(condition);
+  const deleteQuery = `DELETE FROM ${table} WHERE ${conditionTemplate};`;
+  return await getDB().execute(deleteQuery);
 };
 
-const deleteOne = (table, condition) => {
-  //join 고려해서 맡아서 짜오기
+const deleteAll = (table, condition) => {};
+
+const create = async (table, createMap) => {
+  const keys = [],
+    values = [];
+  Object.entries(createMap).forEach((item) => {
+    const [key, value] = item;
+    keys.push(key);
+    values.push(convertType(value));
+  });
+  const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
+  return await getDB().execute(createQuery);
 };
 
-const deleteAll = (table, condition) => {
-  //join 고려해서 맡아서 짜오기
+const createEqualsTemplate = (condition) => {
+  const equalsTemplate = Object.entries(condition)
+    .map((item) => {
+      const [key, value] = item;
+      return `${key} = ${convertType(value)}`;
+    })
+    .join(',');
+  return equalsTemplate;
 };
 
-const create = (table, createMap) => {
-  //join 고려해서 맡아서 짜오기
+const convertType = (value) => {
+  return typeof value === 'string' ? `'${value}'` : value;
 };
 
 module.exports = {
