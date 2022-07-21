@@ -3,6 +3,7 @@ const path = require('path');
 const exp = require('constants');
 const Router = require('./routes');
 const { initDatabase } = require('./lib/database');
+
 const { dbTest } = require('./lib/queryTest'); //query 개발이 끝나면 삭제
 
 const PORT = process.env.PORT || 3000;
