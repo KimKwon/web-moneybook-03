@@ -1,7 +1,7 @@
 const { create, updateOne, deleteOne } = require('./query');
 
 const dbTest = async () => {
-  createTest();
+  //createTest();
   updateTest();
   //deleteTest();
 };

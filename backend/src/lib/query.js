@@ -11,19 +11,36 @@ const find = (table, condition, order) => {
   //join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
 };
 
+const findOne = async (table, condition) => {
+  const conditionTemplate = createEqualsTemplate(condition);
+  const seleteQuery = `SELECT * FROM ${table} WHERE ${conditionTemplate}`;
+  const [row] = await getDB().query(seleteQuery);
+  return row.length === 0 ? null : row[0];
+};
+
+//delete 는 지운놈 , create 만든 놈 , update는 반영전 null 주면 무조건 실패
 const updateOne = async (table, condition, updateMap) => {
+  const beforeUpdateData = await findOne(table, condition);
+  if (!beforeUpdateData) return null;
   const conditionTemplate = createEqualsTemplate(condition);
   const updateTemplate = createEqualsTemplate(updateMap);
   const updateQuery = ` UPDATE ${table} SET ${updateTemplate} WHERE ${conditionTemplate}`;
-  return await getDB().execute(updateQuery);
+  const [rows] = await getDB().query(updateQuery);
+  return rows.affectedRows === 1 ? beforeUpdateData : null;
 };
 
 const updateAll = (table, condition, updateMap) => {};
 
 const deleteOne = async (table, condition) => {
+  const seleteQuery = `SELECT * FROM ${table}`;
+  const row = await getDB().execute(seleteQuery);
+
   const conditionTemplate = createEqualsTemplate(condition);
   const deleteQuery = `DELETE FROM ${table} WHERE ${conditionTemplate};`;
-  return await getDB().execute(deleteQuery);
+  const result = await getDB().execute(deleteQuery);
+
+  if (result) console.log(result);
+  return result;
 };
 
 const deleteAll = (table, condition) => {};
