@@ -17,6 +17,7 @@ const initDatabase = () => {
   console.log('Database is Connected.');
   pool = mysql.createPool({
     ...config.mysql,
+    dateStrings: 'date'
   });
 };
 

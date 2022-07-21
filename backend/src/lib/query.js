@@ -3,13 +3,67 @@ const { getDB } = require('./database');
 const dbtest = async () => {
   query = `SELECT * FROM users `;
   const users = await getDB().execute(query);
-  console.log(users);
 };
 
-// prettier-ignore
-const find = (table, condition, order) => {
- 
-};
+const join = (table, joinInfo, fields) => {
+  let selected = fields ? fields.map((field) => `${field}`) : '*';  
+
+  return `
+    SELECT ${selected}
+    FROM ${table} ${
+      joinInfo.map(([joinTable, joinFk]) => (
+        `
+          INNER JOIN ${joinTable} 
+          ON ${table}.${joinFk} = ${joinTable}.id
+        `
+      )).join(' ')
+    }
+  `;
+}
+
+/**
+ * @param  { string } table // 쿼리 연산을 수행할 테이블의 이름을 문자열로 명시함.
+ * @param  {
+ *  joinOptions?: {
+ *    table: [[테이블 이름, 해당 테이블의 FK]],
+ *  },
+  * where?: { 
+  *   string(바꿀 속성의 속성명): [연산자, 피연산자]
+  * } | string,
+  * fields: [SELECT할 속성들]
+ * } options // find 할 때의 옵션을 제공함.
+ */
+
+const findAll = async (table, options = {}) => {
+  // join 고려해서 맡아서 짜오기 시간 조건도 고려해야합니다. ;
+
+  let query = '';
+
+  const { joinOptions, fields, where, order } = options;
+
+  try {
+    if (typeof table !== 'string') throw Error('테이블 형식이 잘못됨.');
+    
+    if (joinOptions) query += join(table, joinOptions.table, fields);
+    else query = `
+      SELECT ${fields ? fields.join(', ') : '*'}
+      FROM ${table}
+    `;
+
+    if (where) {
+      query += `WHERE ${createWhereTemplate(where)}`
+    }
+
+    if (order) {
+      // target: 기준 필드, type: asc or desc
+      const { target, type = 'ASC' } = order;
+      query += `ORDER BY ${target} ${type}`;
+    }
+
+    return await getDB().query(query);
+
+  } catch (error) {
+    console.error(error);
 
 const findOne = async (table, condition) => {
   try {
@@ -86,13 +140,31 @@ const createEqualsTemplate = (condition) => {
   return equalsTemplate;
 };
 
+const createWhereTemplate = (condition) => {
+  const whereTemplate = Object.entries(condition)
+    .map(([field, target]) => {
+      // console.log(field, target);
+      if (typeof target !== 'object') {
+        return `${field} = ${target}`;
+      }
+
+      const [operator, operand] = target;
+      if (typeof operand === 'string') return `${field} ${operator} ${convertType(operand)}`;
+
+      return `${field} ${operator} '${operand[0]}' AND '${operand[1]}' `;
+    })
+    .join(' AND ');
+
+  return whereTemplate;
+};
+
 const convertType = (value) => {
   return typeof value === 'string' ? `'${value}'` : value;
 };
 
 module.exports = {
   dbtest,
-  find,
+  findAll,
   updateOne,
   deleteOne,
   create,
