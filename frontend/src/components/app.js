@@ -11,6 +11,8 @@ class App extends Component {
     new Router();
     new Header(this.$target, { month: 4, year: 2022 });
   }
+
+  render() {}
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import reducer from './reducer';
 
-const { ACCOUNT_HISTORY, CATEGORY, PAYMENT_METHODS } = SELECTOR_MAP;
+const { ACCOUNT_HISTORY, CATEGORY, PAYMENT_METHODS, CURRENT_DATE } = SELECTOR_MAP;
 
 /**
  * @param  { } initialState
@@ -13,12 +13,14 @@ const createStore = (initialState, reducer) => {
     [ACCOUNT_HISTORY]: [],
     [CATEGORY]: [],
     [PAYMENT_METHODS]: [],
+    [CURRENT_DATE]: [],
   };
   //initialState ||
   let state = {
     [ACCOUNT_HISTORY]: [],
     [CATEGORY]: [1, 2, 3, 4],
     [PAYMENT_METHODS]: [],
+    [CURRENT_DATE]: { year: 2022, month: 5 },
   };
 
   const isValidSelector = (selector) => {
