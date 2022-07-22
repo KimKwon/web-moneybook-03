@@ -1,0 +1,44 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 8em;
+  background-color: $color-beamin;
+  color: $color-white;
+
+  .header-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .nav {
+    cursor: pointer;
+    img {
+      pointer-events: none;
+    }
+
+    a {
+      display: inline-block;
+    }
+  }
+}
+
+.month-controller {
+  display: flex;
+  font-size: 1.3rem;
+  text-align: center;
+  & button {
+    margin: 0 1.2rem;
+  }
+  .month-controller-year {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .month-controller-month {
+    margin-top: 0.3rem;
+    font-size: 1.2rem;
+  }
+}
+
+.nav-main {
+}
