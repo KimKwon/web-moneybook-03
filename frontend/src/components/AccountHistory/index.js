@@ -27,7 +27,7 @@ class AccountHitory extends Component {
                         <span>태그 샘플</span>
                     </div>
                     </div>
-                    <div class="account-history-content">순대국 먹었으 </div>
+                    <div class="account-history-content">서브웨이 먹었다</div>
                     <div class="account-history-method">결제 방법</div>
                     <div class="account-history-amount">결제 금액</div>
                 </div>
@@ -37,7 +37,7 @@ class AccountHitory extends Component {
                     <span>태그 샘플</span>
                 </div>
                 </div>
-                <div class="account-history-content">순대국 먹었으 </div>
+                <div class="account-history-content">치킨먹었다</div>
                 <div class="account-history-method">결제 방법</div>
                 <div class="account-history-amount">결제 금액</div>
             </div>
