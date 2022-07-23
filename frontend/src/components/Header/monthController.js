@@ -15,16 +15,16 @@ export default class MonthController extends Component {
   didMount() {
     this.$year = this.$target.querySelector('.month-controller-year');
     this.$month = this.$target.querySelector('.month-controller-month');
-
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.refetchDate.bind(this));
+    this.$target.addEventListener('click', (e) => this.changeMonth);
+  }
 
-    this.$target.addEventListener('click', (e) => {
-      const { month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
-      const $prev = e.target.closest('button');
-      if (!$prev) return;
-      const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
-      store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
-    });
+  changeMonth() {
+    const { month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
+    const $prev = e.target.closest('button');
+    if (!$prev) return;
+    const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
+    store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
   }
 
   refetchDate() {
