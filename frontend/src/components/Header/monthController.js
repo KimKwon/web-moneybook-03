@@ -9,17 +9,17 @@ import Component from '@/lib/component';
 export default class MonthController extends Component {
   constructor($target) {
     super($target);
-    this.$target = $target;
   }
 
   didMount() {
     this.$year = this.$target.querySelector('.month-controller-year');
     this.$month = this.$target.querySelector('.month-controller-month');
+    this.refetchDate();
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.refetchDate.bind(this));
-    this.$target.addEventListener('click', (e) => this.changeMonth);
+    this.$target.addEventListener('click', this.changeMonth);
   }
 
-  changeMonth() {
+  changeMonth(e) {
     const { month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
     const $prev = e.target.closest('button');
     if (!$prev) return;
@@ -34,14 +34,13 @@ export default class MonthController extends Component {
   }
 
   template() {
-    const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
     return `
         <button class="month-controller__prev">
             <img src="${leftArrowIcon}">
         </button>
         <div>
-            <div class="month-controller-month">${month} 월</div>
-            <div class="month-controller-year">${year}</div>
+            <div class="month-controller-month"></div>
+            <div class="month-controller-year"></div>
         </div> 
         <button class="month-controller__next">
             <img src="${rightArrowIcon}">
