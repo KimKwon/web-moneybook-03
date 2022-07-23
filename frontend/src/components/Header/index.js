@@ -21,13 +21,23 @@ export default class Header extends Component {
   }
 
   didMount() {
+    this.$year = this.$element.querySelector('.month-controller-year');
+    this.$month = this.$element.querySelector('.month-controller-month');
+
+    store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.refetchDate.bind(this));
+
     this.$element.addEventListener('click', (e) => {
       const { month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
       const $prev = e.target.closest('button');
       const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
       store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
     });
-    store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.render.bind(this));
+  }
+
+  refetchDate() {
+    const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
+    this.$year.innerText = year;
+    this.$month.innerText = `${month} 월`;
   }
 
   template() {
@@ -39,8 +49,8 @@ export default class Header extends Component {
             <img src="${leftArrowIcon}">
           </button>
           <div>
-            <div class="month-controller-year">${month} 월</div>
-            <div class="month-controller-month">${year}</div>
+            <div class="month-controller-month">${month} 월</div>
+            <div class="month-controller-year">${year}</div>
           </div> 
           <button class="month-controller__next">
             <img src="${rightArrowIcon}">
