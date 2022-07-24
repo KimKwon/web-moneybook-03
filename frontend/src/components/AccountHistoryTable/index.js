@@ -14,15 +14,14 @@ class AccountHistoryTable extends Component {
             <div class="account-history-bydate">
               <div class="account-history-bydate-header">
                 <span class="account-history-date">${month}월 ${date}일 ${day}</span>
-              <div>
-            ${this.incomeTemplate(income)}
-            ${this.expenditureTemplate(expenditure)} 
+                <div>
+                  ${this.incomeTemplate(income)}
+                  ${this.expenditureTemplate(expenditure)} 
+                </div>
+              </div>
+              ${data.map((historyItem) => this.historyItemTemplate(historyItem)).join('')}
           </div>
-        </div>
-        ${data.map((historyItem) => this.historyItemTemplate(historyItem)).join('')}
-      </div>
-    </div>
-    `;
+        `;
       })
       .join('')}
     `;
