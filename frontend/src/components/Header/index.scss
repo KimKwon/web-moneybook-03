@@ -14,12 +14,18 @@
     cursor: pointer;
 
     svg {
-      width:40px;
+      width: 40px;
       pointer-events: none;
     }
 
     a {
       display: inline-block;
+
+      &.active {
+        path {
+          stroke: white;
+        }
+      }
     }
   }
 }
