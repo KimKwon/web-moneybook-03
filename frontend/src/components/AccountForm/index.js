@@ -20,7 +20,7 @@ class AccountForm extends Component {
         method: '',
         amount: 1800000,
       },
-      currentCategory: INCOME,
+      currentCategoryType: INCOME,
       isEditMode: false,
     });
   }
@@ -32,9 +32,9 @@ class AccountForm extends Component {
         category: '',
         content: '',
         method: '',
-        amount: 13133113,
+        amount: '',
       },
-      currentCategory: EXPENDITURE,
+      currentCategoryType: EXPENDITURE,
       isEditMode: false,
     });
   }
@@ -44,7 +44,7 @@ class AccountForm extends Component {
     return methods
       .map(
         ({ name }) => `
-        <option value=${name}>
+        <option>
           ${name}
         </option>
       `,
@@ -53,23 +53,40 @@ class AccountForm extends Component {
   }
 
   showCategoryOptions() {
-    const { currentCategory } = this.state;
-    const category = store.getState(SELECTOR_MAP.CATEGORY);
+    const { currentCategoryType, accountInfo } = this.state;
+    const { category } = accountInfo;
+    const originCategory = store.getState(SELECTOR_MAP.CATEGORY);
 
     const categories =
-      currentCategory === INCOME
-        ? category.incomeCategoryDummyData
-        : category.expenditureCategoryDummyData;
+      currentCategoryType === INCOME
+        ? originCategory.incomeCategoryDummyData
+        : originCategory.expenditureCategoryDummyData;
 
     return categories
       .map(
         ({ name }) => `
-        <option value=${name}>
+        <option ${category === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
       )
       .join('');
+  }
+
+  selectSpecificItem(targetType, targetValue) {
+    const selection =
+      targetType === 'category'
+        ? this.$form.querySelector('.account-form-dropdown.category')
+        : this.$form.querySelector('.account-form-dropdown.method');
+
+    selection.selectedOptions[0].selected = false;
+    const targetOption = Array.from(selection.children).find(
+      (option) => option.value === targetValue,
+    );
+
+    console.log(targetOption);
+
+    if (targetOption) targetOption.selected = true;
   }
 
   handleFormSubmit(e) {
@@ -99,7 +116,7 @@ class AccountForm extends Component {
   }
 
   template() {
-    const { currentCategory, accountInfo } = this.state;
+    const { currentCategoryType, accountInfo } = this.state;
     const { date, amount, content } = accountInfo;
     const initialDate = date.getParsedDatestring('YYYY-MM-DD');
     return /*html*/ `
@@ -130,10 +147,10 @@ class AccountForm extends Component {
                 <span class="account-form-label">금액</span>
                 <div class="account-form-amount">
                   <button type="button" class="account-form-amount__toggleButton">
-                    ${currentCategory === INCOME ? plusIcon : lineIcon}
+                    ${currentCategoryType === INCOME ? plusIcon : lineIcon}
                   </button>
                   <input
-                    value=${amount === '' ? amount : Number(amount).toLocaleString()}
+                    value="${amount === '' ? amount : Number(amount).toLocaleString()}"
                     class="account-form-input amount" placeholder="입력하세요"
                   />
                   <span>원</span>
@@ -149,19 +166,24 @@ class AccountForm extends Component {
 
     const toggleButton = this.$form.querySelector('.account-form-amount__toggleButton');
     toggleButton.addEventListener('click', () => {
-      const { currentCategory } = this.state;
-      const nextCategory = currentCategory === INCOME ? EXPENDITURE : INCOME;
-      this.setState({ currentCategory: nextCategory });
+      const { currentCategoryType } = this.state;
+      const nextCategory = currentCategoryType === INCOME ? EXPENDITURE : INCOME;
+      this.setState({ currentCategoryType: nextCategory });
     });
   }
 
   reFatchFormData(newFormData) {
-    const { content, amount, date } = newFormData;
+    const { content, amount, date, categoryName } = newFormData;
 
     this.setState({
-      content,
-      amount,
-      date,
+      accountInfo: {
+        ...this.state.accountInfo,
+        category: categoryName,
+        content,
+        amount,
+        date: date.toString(),
+      },
+      isEditMode: true,
     });
   }
 

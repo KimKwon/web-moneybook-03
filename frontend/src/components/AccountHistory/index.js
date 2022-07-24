@@ -107,12 +107,12 @@ class AccountHitory extends Component {
         </div>
         ${accountByDate.data
           .map((account) => {
-            const { content, methodName, amount, categoryId, isProfit, idx } = account;
+            const { content, methodName, amount, categoryName, isProfit, idx } = account;
             return `
             <div data-idx='${idx}' class="account-wrapper">
               <div class="account-category">
                 <div class="category-tag">
-                    <span>태그 샘플 ${categoryId}</span>
+                    <span>${categoryName}</span>
                 </div>
               </div>
               <div class="account-history-content">${content}</div>
