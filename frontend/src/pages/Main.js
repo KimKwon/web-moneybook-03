@@ -5,6 +5,7 @@ import Header from '@/components/Header/index';
 function Main($root) {
   const $header = $root.querySelector('header');
   const $main = $root.querySelector('main');
+  $main.innerHTML = '';
 
   new Header($header);
   const $accountForm = new AccountForm($main);
