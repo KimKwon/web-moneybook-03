@@ -13,6 +13,7 @@ module.exports = {
     'no-unused-vars': ['error', { varsIgnorePattern: '_', argsIgnorePattern: '_' }],
     'no-console': 'warn',
     'import/no-duplicates': ['error'],
+    'no-case-declarations': 'off',
   },
   settings: {
     'import/extensions': ['.js', '.jsx'],
