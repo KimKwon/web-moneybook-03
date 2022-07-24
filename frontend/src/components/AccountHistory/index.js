@@ -2,17 +2,22 @@ import './index.scss';
 import Component from '@/lib/component';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
-class AccountHitory extends Component {
+import AccountHistoryTable from '../AccountHistoryTable/index';
+import { dayToString } from '@/utils/date';
+
+class AccountHitoryTable extends Component {
   constructor($target, initialState, onChangeFormData) {
     super($target);
     this.onChangeFormData = onChangeFormData;
   }
+
   init() {
     this.filterInfo = { income: true, expenditure: true };
     this.originAccountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
     this.setIndex(this.originAccountHistory);
-    this.accountHistoryList = [...this.originAccountHistory];
+    this.accountHistoryByDate = this.groupByDate(this.originAccountHistory);
   }
+
   didMount() {
     this.$target.addEventListener('click', this.changeFormData.bind(this));
     this.$target
@@ -24,6 +29,7 @@ class AccountHitory extends Component {
       this.filterAccountHistory();
     });
   }
+
   handelFilterClickEvent(e) {
     const $filterCheckbox = e.target.closest('.filter-checkbox');
     if (!$filterCheckbox) return;
@@ -31,16 +37,19 @@ class AccountHitory extends Component {
     this.filterInfo[filterType] = !this.filterInfo[filterType];
     this.filterAccountHistory();
   }
-  filterAccountHistory(e) {
-    this.accountHistoryList = this.originAccountHistory.filter((account) => {
+
+  filterAccountHistory() {
+    const accountHistory = this.originAccountHistory.filter((historyItem) => {
       return (
-        (this.filterInfo.income && account.isProfit) ||
-        (this.filterInfo.expenditure && !account.isProfit)
+        (this.filterInfo.income && historyItem.isProfit) ||
+        (this.filterInfo.expenditure && !historyItem.isProfit)
       );
     });
-    this.reFatchList();
-    // this.render();
+
+    this.accountHistoryByDate = this.groupByDate(accountHistory);
+    this.reFatchAccountHistoryTable();
   }
+
   changeFormData(e) {
     const $account = e.target.closest('.account-wrapper');
     if (!$account) return;
@@ -48,6 +57,7 @@ class AccountHitory extends Component {
     const account = this.originAccountHistory[idx];
     this.onChangeFormData(account);
   }
+
   groupByDate(targetData) {
     const groupData = targetData.reduce((acc, cur, idx) => {
       let len = acc.length;
@@ -56,12 +66,14 @@ class AccountHitory extends Component {
         len = acc.length;
       }
       if (!acc[len - 1].date) {
-        acc[len - 1].date = cur.date.getDate();
-        acc[len - 1].month = cur.date.getMonth();
-        acc[len - 1].day = this.dayToString(cur.date.getDay()); //
-        acc[len - 1].data = [];
-        acc[len - 1].income = 0;
-        acc[len - 1].expenditure = 0;
+        acc[len - 1] = {
+          date: cur.date.getDate(),
+          month: cur.date.getMonth(),
+          day: dayToString(cur.date.getDay()),
+          data: [],
+          income: 0,
+          expenditure: 0,
+        };
       }
       acc[len - 1].income += cur.isProfit ? cur.amount : 0;
       acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
@@ -70,65 +82,15 @@ class AccountHitory extends Component {
     }, []);
     return groupData;
   }
-  dayToString(day) {
-    const dayMap = {
-      0: '월',
-      1: '화',
-      2: '수',
-      3: '목',
-      4: '금',
-      5: '토',
-      6: '일',
-    };
-    return dayMap[day];
-  }
+
   setIndex(targetData) {
     targetData.map((item, index) => (item['idx'] = index));
   }
-  listTemplate() {
-    const groupByAccountHistory = this.groupByDate(this.accountHistoryList);
-    return ` ${groupByAccountHistory
-      .map(
-        (accountByDate) =>
-          `
-            <div class="account-history-bydate">
-              <div class="account-history-bydate-header">
-                <span class="account-history-date">${accountByDate.month}월 ${
-            accountByDate.date
-          }일 ${accountByDate.day}</span>
-              <div>
-            ${accountByDate.income !== 0 ? `<span>수입 ${accountByDate.income}</span>` : ''}
-            ${
-              accountByDate.expenditure !== 0
-                ? `<span>지출 ${accountByDate.expenditure}</span>`
-                : ''
-            } 
-          </div>
-        </div>
-        ${accountByDate.data
-          .map((account) => {
-            const { content, methodName, amount, categoryName, isProfit, idx } = account;
-            return `
-            <div data-idx='${idx}' class="account-wrapper">
-              <div class="account-category">
-                <div class="category-tag">
-                    <span>${categoryName}</span>
-                </div>
-              </div>
-              <div class="account-history-content">${content}</div>
-              <div class="account-history-method">${methodName}</div>
-              <div class="account-history-amount">${isProfit ? '' : '-'}${amount.toLocaleString(
-              'ko-KR',
-            )} 원</div>
-            </div>
-            `;
-          })
-          .join('')}
-    `,
-      )
-      .join('')}
-    `;
+
+  reFatchAccountHistoryTable() {
+    this.$accountTable.setState({ accountHistoryByDate: this.accountHistoryByDate });
   }
+
   template() {
     return /* html */ `
         <div class="account-history">
@@ -139,19 +101,18 @@ class AccountHitory extends Component {
                 <div class="filter-checkbox" data-type="expenditure" >[ ] 지출</div>
             </div>
           </div>  
-          <div class="account-history-list">${this.listTemplate()}</div>
+          <div class="account-history-table"></div>
         </div>
     `;
-  }
-  reFatchList() {
-    const listTemplate = this.listTemplate();
-    const $accountHistoryList = this.$target.querySelector('.account-history-list');
-    $accountHistoryList.innerHTML = listTemplate;
   }
 
   render() {
     this.$target.insertAdjacentHTML('beforeend', this.template());
+    const $historyTable = this.$target.querySelector('.account-history-table');
+    this.$accountTable = new AccountHistoryTable($historyTable, {
+      accountHistoryByDate: this.accountHistoryByDate,
+    });
   }
 }
 
-export default AccountHitory;
+export default AccountHitoryTable;
