@@ -92,7 +92,7 @@ class AccountHitory extends Component {
                 <span class="account-history-date">${accountByDate.month}월 ${
             accountByDate.date
           }일 ${accountByDate.day}</span>
-              div>
+              <div>
             ${accountByDate.income !== 0 ? `<span>수입 ${accountByDate.income}</span>` : ''}
             ${
               accountByDate.expenditure !== 0
@@ -138,6 +138,7 @@ class AccountHitory extends Component {
             </div>
           </div>  
           <div class="account-history-list">${this.listTemplate()}</div>
+        </div>
     `;
   }
   reFatchList() {
@@ -146,7 +147,7 @@ class AccountHitory extends Component {
   }
 
   render() {
-    this.$target.innerHTML = this.template();
+    this.$target.insertAdjacentHTML('beforeend', this.template());
   }
 }
 
