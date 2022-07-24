@@ -14,12 +14,59 @@ class App extends Component {
   init() {
     this.setCategorydummyData();
     this.setPaymentMethodDummyData();
+    this.setAccountHistory();
     new Router();
     const $header = this.$target.querySelector('header');
     new Header($header);
     const $main = this.$target.querySelector('main');
     this.$target.$accountForm = new AccountForm($main);
     new AccountHitory($main, {}, this.onChangeFormData.bind(this));
+  }
+  setAccountHistory() {
+    const accountHistory = [
+      {
+        id: 1,
+        date: new Date(),
+        content: '국밥',
+        amount: 8000,
+        methodName: '현대카드',
+        categoryName: '',
+        categoryId: 2,
+        isProfit: true,
+      },
+      {
+        id: 2,
+        date: new Date(),
+        content: '서브웨이',
+        amount: 8000,
+        methodName: '농협카드',
+        categoryName: '',
+        categoryId: 4,
+        isProfit: false,
+      },
+      {
+        id: 3,
+        date: new Date(),
+        content: '국밥',
+        amount: 8000,
+        methodName: '현대카드',
+        categoryName: '',
+        categoryId: 1,
+        isProfit: false,
+      },
+      {
+        id: 4,
+        date: new Date(),
+        content: '월급',
+        amount: 28000,
+        methodName: '현대카드',
+        categoryName: '',
+        categoryId: 11,
+        isProfit: false,
+      },
+    ];
+    store.dispatch('addAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
+    console.log(store.getState(SELECTOR_MAP.ACCOUNT_HISTORY));
   }
   setPaymentMethodDummyData() {
     const paymentMethod = [
@@ -87,17 +134,17 @@ class App extends Component {
     ];
     const incomeCategoryDummyData = [
       {
-        id: 1,
+        id: 11,
         name: '발급',
         color: '#B9D58C',
       },
       {
-        id: 2,
+        id: 12,
         name: '용돈',
         color: '#E6D267',
       },
       {
-        id: 3,
+        id: 13,
         name: '기타수입',
         color: '#E2B765',
       },

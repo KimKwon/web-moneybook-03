@@ -10,6 +10,8 @@ function reducer(state, action, payload) {
       return { ...state, category: [...state.category, payload] };
     case 'addPaymentMethod':
       return { ...state, paymentMethods: [...state.paymentMethods, payload] };
+    case 'addAccountHistory':
+      return { ...state, accountHistory: [...state.accountHistory, payload] };
     default:
       return { ...state };
   }
