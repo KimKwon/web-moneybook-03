@@ -20,7 +20,30 @@ class App extends Component {
     this.$target.$accountForm = new AccountForm($main);
     new AccountHitory($main, {}, this.onChangeFormData.bind(this));
   }
-
+  setPaymentMethodDummyData() {
+    const paymentMethod = [
+      {
+        id: 1,
+        name: '현대카드',
+        isDelete: false,
+      },
+      {
+        id: 2,
+        name: '카카오카드',
+        isDelete: false,
+      },
+      {
+        id: 3,
+        name: '농협카드',
+        isDelete: true,
+      },
+      {
+        id: 4,
+        name: '현금',
+        isDelete: false,
+      },
+    ];
+  }
   setCategorydummyData() {
     const expenditureCategoryDummyData = [
       {
