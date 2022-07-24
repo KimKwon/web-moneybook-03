@@ -9,13 +9,13 @@ class App extends Component {
   }
 
   init() {
-    this.setCategorydummyData();
-    this.setPaymentMethodDummyData();
-    this.setAccountHistory();
+    this.initCategorydummyData();
+    this.initPaymentMethodDummyData();
+    this.initAccountHistory();
     new Router(this.$target);
   }
 
-  setAccountHistory() {
+  initAccountHistory() {
     const accountHistory = [
       {
         id: 1,
@@ -60,7 +60,7 @@ class App extends Component {
     ];
     store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
   }
-  setPaymentMethodDummyData() {
+  initPaymentMethodDummyData() {
     const paymentMethod = [
       {
         id: 1,
@@ -85,7 +85,7 @@ class App extends Component {
     ];
     store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
   }
-  setCategorydummyData() {
+  initCategorydummyData() {
     const expenditureCategoryDummyData = [
       {
         id: 1,
