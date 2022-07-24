@@ -14,13 +14,7 @@ class AccountHitory extends Component {
     const $account = e.target.closest('.account-wrapper');
     if (!$account) return;
     const idx = $account.dataset['idx'];
-    const account = {
-      categoryId: 1,
-      methodId: 3,
-      content: '서브웨어 계란샌드위치',
-      amount: '4000원',
-      date: '2020-2-2',
-    };
+    const account = this.originAccountHistory[idx];
     this.onChangeFormData(account);
   }
   groupByDate(targetData) {
@@ -59,9 +53,14 @@ class AccountHitory extends Component {
     };
     return dayMap[day];
   }
+  setIndex(targetData) {
+    targetData.map((item, index) => (item['idx'] = index));
+  }
   template() {
-    const accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
-    const groupByAccountHistory = this.groupByDate(accountHistory);
+    this.originAccountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
+    this.setIndex(this.originAccountHistory);
+    const groupByAccountHistory = this.groupByDate(this.originAccountHistory);
+
     console.log(groupByAccountHistory);
     return /* html */ `
         <div class="account-history">
@@ -93,9 +92,9 @@ class AccountHitory extends Component {
                 </div>
                 ${accountByDate.data
                   .map((account) => {
-                    const { content, methodName, amount, categoryId, isProfit } = account;
+                    const { content, methodName, amount, categoryId, isProfit, idx } = account;
                     return `
-                    <div data-idx='0' class="account-wrapper">
+                    <div data-idx='${idx}' class="account-wrapper">
                       <div class="account-category">
                         <div class="category-tag">
                             <span>태그 샘플 ${categoryId}</span>
