@@ -38,7 +38,6 @@ class AccountForm extends Component {
     `;
   }
   reFatchFormData(newFormData) {
-    console.log(newFormData);
     const { categoryId, methodId, content, amount, date } = newFormData;
     this.$formContent.value = content;
     this.$formAmount.value = amount;
