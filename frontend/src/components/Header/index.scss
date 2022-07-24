@@ -6,7 +6,6 @@
   padding: 2rem 8em;
   background-color: $color-primary;
   color: $color-white;
-
   .header-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -31,14 +30,11 @@
     margin: 0 1.2rem;
   }
   .month-controller-year {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-  .month-controller-month {
     margin-top: 0.3rem;
     font-size: 1.2rem;
   }
-}
-
-.nav-main {
+  .month-controller-month {
+    font-size: 2rem;
+    font-weight: 600;
+  }
 }

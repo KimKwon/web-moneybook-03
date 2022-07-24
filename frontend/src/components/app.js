@@ -12,9 +12,9 @@ class App extends Component {
     this.setCategorydummyData();
     this.setPaymentMethodDummyData();
     this.setAccountHistory();
-
     new Router(this.$target);
   }
+
   setAccountHistory() {
     const accountHistory = [
       {
@@ -59,7 +59,6 @@ class App extends Component {
       },
     ];
     store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
-    console.log(store.getState(SELECTOR_MAP.ACCOUNT_HISTORY));
   }
   setPaymentMethodDummyData() {
     const paymentMethod = [
@@ -85,7 +84,6 @@ class App extends Component {
       },
     ];
     store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
-    //console.log(store.getState(SELECTOR_MAP.PAYMENT_METHODS));
   }
   setCategorydummyData() {
     const expenditureCategoryDummyData = [
@@ -125,6 +123,7 @@ class App extends Component {
         color: '#817DCE',
       },
     ];
+
     const incomeCategoryDummyData = [
       {
         id: 11,
@@ -142,12 +141,12 @@ class App extends Component {
         color: '#E2B765',
       },
     ];
+
     store.dispatch(
       'setCategory',
       { expenditureCategoryDummyData, incomeCategoryDummyData },
       SELECTOR_MAP.CATEGORY,
     );
-    //console.log(store.getState(SELECTOR_MAP.CATEGORY));
   }
   render() {}
 }

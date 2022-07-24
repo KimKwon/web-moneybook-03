@@ -82,7 +82,7 @@ class AccountHitory extends Component {
     targetData.map((item, index) => (item['idx'] = index));
   }
   listTemplate() {
-    const groupByAccountHistory = this.groupByDate(this.accountHistoryList); /* html */
+    const groupByAccountHistory = this.groupByDate(this.accountHistoryList);
     return ` ${groupByAccountHistory
       .map(
         (accountByDate) =>
@@ -135,9 +135,9 @@ class AccountHitory extends Component {
             <div class="account-history-filter">
                 <div class="filter-checkbox" data-type="income" >[ ] 수입</div>
                 <div class="filter-checkbox" data-type="expenditure" >[ ] 지출</div>
-             </div>
+            </div>
           </div>  
-          <div class="account-history-list" ></div>
+          <div class="account-history-list">${this.listTemplate()}</div>
     `;
   }
   reFatchList() {
