@@ -5,7 +5,22 @@ class AccountHitory extends Component {
     super($target);
     this.onChangeFormData = onChangeFormData;
   }
-
+  didMount() {
+    this.$target.addEventListener('click', this.changeFormData.bind(this));
+  }
+  changeFormData(e) {
+    const $account = e.target.closest('.account-wrapper');
+    if (!$account) return;
+    const idx = $account.dataset['idx'];
+    const account = {
+      categoryId: 1,
+      methodId: 3,
+      content: '서브웨어 계란샌드위치',
+      amount: '4000원',
+      date: '2020-2-2',
+    };
+    this.onChangeFormData(account);
+  }
   template() {
     return /* html */ `
         <div class="account-history">
@@ -22,7 +37,7 @@ class AccountHitory extends Component {
                   <span class="account-history-date">2022-05-33</span>
                   <span class="account-history-expenditure">지출 30000</span>
                 </div>
-                <div data-idx='1' class="account-wrapper">
+                <div data-idx='0' class="account-wrapper">
                     <div class="account-category">
                     <div class="category-tag">
                         <span>태그 샘플</span>
@@ -32,7 +47,7 @@ class AccountHitory extends Component {
                     <div class="account-history-method">결제 방법</div>
                     <div class="account-history-amount">결제 금액</div>
                 </div>
-                <div  data-idx='2' class="account-wrapper">
+                <div  data-idx='1' class="account-wrapper">
                 <div class="account-category">
                 <div class="category-tag">
                     <span>태그 샘플</span>

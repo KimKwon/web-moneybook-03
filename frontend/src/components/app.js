@@ -12,12 +12,15 @@ class App extends Component {
   init() {
     new Router();
     const $header = this.$target.querySelector('header');
-    new Header($header, { month: 4, year: 2022 });
+    new Header($header);
     const $main = this.$target.querySelector('main');
-    new AccountForm($main);
-    new AccountHitory($main);
+    this.$target.$accountForm = new AccountForm($main);
+    new AccountHitory($main, {}, this.onChangeFormData.bind(this));
   }
 
+  onChangeFormData(nextState) {
+    this.$target.$accountForm.reFatchFormData(nextState);
+  }
   render() {}
 }
 
