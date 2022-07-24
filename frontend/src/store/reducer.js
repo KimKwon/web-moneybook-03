@@ -17,13 +17,14 @@ function reducer(state, action, payload) {
     case 'addAccountHistory':
       return { ...state, accountHistory: [...state.accountHistory, payload] };
     case 'updateAccountHistory':
-      const { id, history } = payload;
-      const targetIndex = state.accountHistory.find((history) => history.id === id);
+      const { id } = payload;
+      const targetIndex = state.accountHistory.findIndex((history) => history.id === id);
 
       if (targetIndex < 0) return state;
 
       const nextHistory = [...state.accountHistory];
-      nextHistory[targetIndex] = history;
+      nextHistory[targetIndex] = payload;
+
       return { ...state, accountHistory: nextHistory };
     default:
       return { ...state };

@@ -14,6 +14,7 @@ class AccountForm extends Component {
   constructor($target) {
     super($target, {
       accountInfo: {
+        id: '',
         date: new Date().toString(),
         category: '',
         content: '',
@@ -28,6 +29,7 @@ class AccountForm extends Component {
   initForm() {
     this.setState({
       accountInfo: {
+        id: '',
         date: new Date().toString(),
         category: '',
         content: '',
@@ -41,10 +43,11 @@ class AccountForm extends Component {
 
   showMethods() {
     const methods = store.getState(SELECTOR_MAP.PAYMENT_METHODS);
+    const { method } = this.state.accountInfo;
     return methods
       .map(
         ({ name }) => `
-        <option>
+        <option ${method === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
@@ -73,22 +76,6 @@ class AccountForm extends Component {
       .join('');
   }
 
-  selectSpecificItem(targetType, targetValue) {
-    const selection =
-      targetType === 'category'
-        ? this.$form.querySelector('.account-form-dropdown.category')
-        : this.$form.querySelector('.account-form-dropdown.method');
-
-    selection.selectedOptions[0].selected = false;
-    const targetOption = Array.from(selection.children).find(
-      (option) => option.value === targetValue,
-    );
-
-    console.log(targetOption);
-
-    if (targetOption) targetOption.selected = true;
-  }
-
   handleFormSubmit(e) {
     e.preventDefault();
     const $date = this.$form.querySelector('.account-form-input.date');
@@ -97,10 +84,13 @@ class AccountForm extends Component {
     const $method = this.$form.querySelector('.account-form-dropdown.method');
     const $amount = this.$form.querySelector('.account-form-input.amount');
 
+    const { isEditMode, accountInfo } = this.state;
+    const { id } = accountInfo;
+
     store.dispatch(
-      'addAccountHistory',
+      isEditMode ? 'updateAccountHistory' : 'addAccountHistory',
       {
-        id: shortid(),
+        id: id || shortid(),
         date: new Date($date.value),
         content: $content.value,
         amount: Number($amount.value.toString().replaceAll(',', '')),
@@ -173,12 +163,14 @@ class AccountForm extends Component {
   }
 
   reFatchFormData(newFormData) {
-    const { content, amount, date, categoryName } = newFormData;
+    const { id, content, amount, date, categoryName, methodName } = newFormData;
 
     this.setState({
       accountInfo: {
         ...this.state.accountInfo,
+        id,
         category: categoryName,
+        method: methodName,
         content,
         amount,
         date: date.toString(),
@@ -191,6 +183,7 @@ class AccountForm extends Component {
     this.$form = this.$target.querySelector('.account-form');
     this.attachEvent();
   }
+
   render() {
     const template = this.template();
     if (this.$form) {
