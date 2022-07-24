@@ -27,6 +27,7 @@ class AccountList extends Component {
       .join('')}
     `;
   }
+
   incomeTemplate(income) {
     return `
       ${income !== 0 ? `<span>수입 ${income}</span>` : ''}
@@ -56,6 +57,7 @@ class AccountList extends Component {
       </div>
     `;
   }
+
   render() {
     this.$target.innerHTML = this.template();
   }

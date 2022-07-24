@@ -10,18 +10,21 @@ class AccountHitory extends Component {
     super($target);
     this.onChangeFormData = onChangeFormData;
   }
+
   init() {
     this.filterInfo = { income: true, expenditure: true };
     this.originAccountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
     this.setIndex(this.originAccountHistory);
     this.accountHistoryByDate = this.groupByDate(this.originAccountHistory);
   }
+
   didMount() {
     this.$target.addEventListener('click', this.changeFormData.bind(this));
     this.$target
       .querySelector('.account-history-filter')
       .addEventListener('click', this.handelFilterClickEvent.bind(this));
   }
+
   handelFilterClickEvent(e) {
     const $filterCheckbox = e.target.closest('.filter-checkbox');
     if (!$filterCheckbox) return;
@@ -29,6 +32,7 @@ class AccountHitory extends Component {
     this.filterInfo[filterType] = !this.filterInfo[filterType];
     this.filterAccountHistory();
   }
+
   filterAccountHistory(e) {
     const accountHistoryList = this.originAccountHistory.filter((account) => {
       return (
@@ -39,6 +43,7 @@ class AccountHitory extends Component {
     this.accountHistoryByDate = this.groupByDate(accountHistoryList);
     this.reFatchAccountHistoryList();
   }
+
   changeFormData(e) {
     const $account = e.target.closest('.account-wrapper');
     if (!$account) return;
@@ -46,6 +51,7 @@ class AccountHitory extends Component {
     const account = this.originAccountHistory[idx];
     this.onChangeFormData(account);
   }
+
   groupByDate(targetData) {
     const groupData = targetData.reduce((acc, cur, idx) => {
       let len = acc.length;
@@ -72,10 +78,12 @@ class AccountHitory extends Component {
   setIndex(targetData) {
     targetData.map((item, index) => (item['idx'] = index));
   }
+
   reFatchAccountHistoryList() {
     this.$accountList.setState({ accountHistoryByDate: this.accountHistoryByDate });
     this.$accountList.render();
   }
+
   template() {
     return /* html */ `
         <div class="account-history">
@@ -90,6 +98,7 @@ class AccountHitory extends Component {
         </div>
     `;
   }
+
   render() {
     this.$target.insertAdjacentHTML('beforeend', this.template());
     const $historyList = this.$target.querySelector('.account-history-list');
