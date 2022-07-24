@@ -42,7 +42,15 @@
   &-amount {
     display: flex;
     align-items: center;
-    display: row;
+    & > span > svg {
+      width: 9.3px;
+    }
+  }
+
+  &-button {
+    & > svg {
+      width: 40px;
+    }
   }
   input {
     border: none;

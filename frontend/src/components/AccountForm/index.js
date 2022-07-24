@@ -2,17 +2,25 @@ import Component from '@/lib/component';
 import './index.scss';
 import saveButtonIcon from '@/assets/icon/save-button.svg';
 import lineIcon from '@/assets/icon/line.svg';
-
 class AccountForm extends Component {
-  constructor($target, initialState) {
-    super($target, initialState);
+  constructor($target) {
+    super($target, {
+      accountInfo: {
+        date: new Date().toString(),
+        category: '',
+        content: '',
+        method: '',
+        amount: '',
+      },
+    });
   }
   template() {
+    const initialDate = this.state.accountInfo.date.getParsedDatestring('YYYY-MM-DD');
     return /*html*/ `
         <form class="account-form">
             <div class="account-form-wrapper">
                 <span class="account-form-label">날짜</span>
-                <input type="date" class="account-form-input" placeholder="입력해주세요" />
+                <input type="date" value=${initialDate} class="account-form-input" placeholder="입력해주세요" />
             </div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">분류</span>
@@ -29,23 +37,29 @@ class AccountForm extends Component {
             <div class="account-form-wrapper">
                 <span class="account-form-label">금액</span>
                 <div class="account-form-amount">
-                  <span><img src="${lineIcon}"/></span>
-                  <input  class="account-form-input amount" placeholder="입력해주세요"/>
+                  <span>${lineIcon}</span>
+                  <input class="account-form-input amount" placeholder="입력해주세요"/>
                 </div>
             </div>
-            <button class="account-form-button"><img src="${saveButtonIcon}"/></button>
+            <button type="submit" class="account-form-button">${saveButtonIcon}</button>
         </form>
     `;
   }
+
+  attachEvent() {
+    this.$form.addEventListener('submit', (e) => {
+      e.preventDefault();
+    });
+  }
+
   reFatchFormData(newFormData) {
     const { categoryId, methodId, content, amount, date } = newFormData;
-    this.$formContent.value = content;
-    this.$formAmount.value = amount;
   }
+
   didMount() {
     /* 테스트 */
-    this.$formContent = document.querySelector('.content');
-    this.$formAmount = document.querySelector('.amount');
+    this.$form = this.$target.querySelector('.account-form');
+    this.attachEvent();
   }
   render() {
     const template = this.template();

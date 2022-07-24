@@ -26,8 +26,8 @@ function getParsedDatestring(dateType) {
   try {
     const date = new Date(this);
     switch (dateType) {
-      case 'YYYYMMDD':
-        return `${date.getFullYear()}${formatStringTo(date.getMonth(), 2)}${formatStringTo(
+      case 'YYYY-MM-DD':
+        return `${date.getFullYear()}-${formatStringTo(date.getMonth() + 1, 2)}-${formatStringTo(
           date.getDate(),
           2,
         )}`;
