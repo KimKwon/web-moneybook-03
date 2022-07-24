@@ -81,7 +81,6 @@ class AccountHitoryTable extends Component {
 
   reFatchAccountHistoryTable() {
     this.$accountTable.setState({ accountHistoryByDate: this.accountHistoryByDate });
-    this.$accountTable.render();
   }
 
   template() {
