@@ -1,9 +1,6 @@
 import Component from '@/lib/component';
 import Router from '@/lib/router';
-import AccountForm from './AccountForm/index';
-import Header from './Header/index';
 import './app.scss';
-import AccountHitory from './AccountHistory/index';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 class App extends Component {
@@ -15,12 +12,8 @@ class App extends Component {
     this.setCategorydummyData();
     this.setPaymentMethodDummyData();
     this.setAccountHistory();
-    new Router();
-    const $header = this.$target.querySelector('header');
-    new Header($header);
-    const $main = this.$target.querySelector('main');
-    this.$target.$accountForm = new AccountForm($main);
-    new AccountHitory($main, {}, this.onChangeFormData.bind(this));
+
+    new Router(this.$target);
   }
   setAccountHistory() {
     const accountHistory = [
@@ -46,7 +39,7 @@ class App extends Component {
       },
       {
         id: 3,
-        date: new Date(),
+        date: new Date('2022-07-22'),
         content: '국밥',
         amount: 8000,
         methodName: '현대카드',
@@ -56,7 +49,7 @@ class App extends Component {
       },
       {
         id: 4,
-        date: new Date(),
+        date: new Date('2022-07-25'),
         content: '월급',
         amount: 28000,
         methodName: '현대카드',
@@ -155,9 +148,6 @@ class App extends Component {
       SELECTOR_MAP.CATEGORY,
     );
     //console.log(store.getState(SELECTOR_MAP.CATEGORY));
-  }
-  onChangeFormData(nextState) {
-    this.$target.$accountForm.reFatchFormData(nextState);
   }
   render() {}
 }

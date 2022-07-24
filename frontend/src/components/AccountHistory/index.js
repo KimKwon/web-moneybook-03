@@ -146,12 +146,7 @@ class AccountHitory extends Component {
   }
 
   render() {
-    const template = this.template();
-    this.$target.insertAdjacentHTML('beforeend', template);
-    this.$accountHistoryList = this.$target.querySelector('.account-history-list');
-    console.log(this.$accountHistoryList);
-    const listTeplate = this.listTemplate();
-    this.$accountHistoryList.innerHTML = listTeplate;
+    this.$target.innerHTML = this.template();
   }
 }
 

@@ -11,19 +11,18 @@ import leftArrowIcon from '@/assets/icon/left-arrow.svg';
 import rightArrowIcon from '@/assets/icon/right-arrow.svg';
 
 export default class Header extends Component {
-  constructor($target, initialState) {
+  constructor($target) {
     super($target);
-  }
-  //store.subscribe('month', this.render.bind(this));
-  init() {
-    this.$element = document.createElement('div');
-    this.$element.className = 'header';
   }
 
   didMount() {
+    this.$element = this.$target.querySelector('.header');
     this.$element.addEventListener('click', (e) => {
       const { month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
       const $prev = e.target.closest('button');
+
+      if (!$prev) return;
+
       const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
       store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
     });
@@ -32,7 +31,8 @@ export default class Header extends Component {
 
   template() {
     const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
-    return `
+    return /*html*/ `
+      <div class="header">
         <a is="my-anchor" href="/" class="header-title" >우아한 가계부</a> 
         <div class="month-controller">
           <button class="month-controller__prev">
@@ -51,10 +51,10 @@ export default class Header extends Component {
           <a class="nav-calendar" is="my-anchor" href="/calendar"><img src="${calendarIcon}"></a>
           <a class="nav-statistic" is="my-anchor" href="/statistic"><img src="${chartIcon}"></a>
         </div>
+      </div>
     `;
   }
   render() {
-    this.$element.innerHTML = this.template();
-    this.$target.appendChild(this.$element);
+    this.$target.innerHTML = this.template();
   }
 }
