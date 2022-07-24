@@ -11,3 +11,33 @@ export const updateDate = (currentDate, nextMonth) => {
   }
   return nextDate;
 };
+
+const formatStringTo = (_originString, limit) => {
+  if (typeof _originString !== 'string' && typeof _originString !== 'number') return;
+
+  let originString = _originString;
+  if (typeof originString === 'number') originString = _originString.toString();
+
+  return originString.padStart(limit, '0');
+};
+
+function getParsedDatestring(dateType) {
+  if (typeof this !== 'string') throw Error('target is not string');
+  try {
+    const date = new Date(this);
+    switch (dateType) {
+      case 'YYYYMMDD':
+        return `${date.getFullYear()}${formatStringTo(date.getMonth(), 2)}${formatStringTo(
+          date.getDate(),
+          2,
+        )}`;
+    }
+  } catch (error) {
+    console.log(error);
+    return this;
+  }
+}
+
+export const definePrototypeMethod = () => {
+  String.prototype.getParsedDatestring = getParsedDatestring;
+};
