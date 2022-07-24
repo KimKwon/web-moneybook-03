@@ -60,12 +60,14 @@ class AccountHitoryTable extends Component {
         len = acc.length;
       }
       if (!acc[len - 1].date) {
-        acc[len - 1].date = cur.date.getDate();
-        acc[len - 1].month = cur.date.getMonth();
-        acc[len - 1].day = dayToString(cur.date.getDay()); //
-        acc[len - 1].data = [];
-        acc[len - 1].income = 0;
-        acc[len - 1].expenditure = 0;
+        acc[len - 1] = {
+          date: cur.date.getDate(),
+          month: cur.date.getMonth(),
+          day: dayToString(cur.date.getDay()),
+          data: [],
+          income: 0,
+          expenditure: 0,
+        };
       }
       acc[len - 1].income += cur.isProfit ? cur.amount : 0;
       acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
