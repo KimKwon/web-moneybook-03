@@ -5,6 +5,7 @@ import calendarIcon from '@/assets/icon/calendar.svg';
 import chartIcon from '@/assets/icon/chart.svg';
 import MonthController from './monthController';
 import Component from '@/lib/component';
+
 export default class Header extends Component {
   constructor($target) {
     super($target);
@@ -15,10 +16,10 @@ export default class Header extends Component {
       <div class="header">
         <a is="my-anchor" href="/" class="header-title" >우아한 가계부</a>
         <div class="month-controller" ></div>
-        <div class='nav'>
-          <a class="nav-main" is="my-anchor" href="/"><img src="${fileTextIcon}"></a> 
-          <a class="nav-calendar" is="my-anchor" href="/calendar"><img src="${calendarIcon}"></a>
-          <a class="nav-statistic" is="my-anchor" href="/statistic"><img src="${chartIcon}"></a>
+        <div class="nav">
+          <a class="nav-main" is="my-anchor" href="/">${fileTextIcon}</a> 
+          <a class="nav-calendar" is="my-anchor" href="/calendar">${calendarIcon}</a>
+          <a class="nav-statistic" is="my-anchor" href="/statistic">${chartIcon}</a>
         </div>
       </div>
     `;

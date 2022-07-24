@@ -36,14 +36,14 @@ export default class MonthController extends Component {
   template() {
     return `
         <button class="month-controller__prev">
-            <img src="${leftArrowIcon}">
+          ${leftArrowIcon}
         </button>
         <div>
             <div class="month-controller-month"></div>
             <div class="month-controller-year"></div>
         </div> 
         <button class="month-controller__next">
-            <img src="${rightArrowIcon}">
+          ${rightArrowIcon}
         </button>
     `;
   }

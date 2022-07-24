@@ -12,7 +12,9 @@
   }
   .nav {
     cursor: pointer;
-    img {
+
+    svg {
+      width:40px;
       pointer-events: none;
     }
 
@@ -26,8 +28,12 @@
   display: flex;
   font-size: 1.3rem;
   text-align: center;
-  & button {
+  & > button {
     margin: 0 1.2rem;
+
+    & > svg {
+      width: 24px;
+    }
   }
   .month-controller-year {
     margin-top: 0.3rem;
