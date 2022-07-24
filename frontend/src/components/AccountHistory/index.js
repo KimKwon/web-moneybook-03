@@ -2,10 +2,10 @@ import './index.scss';
 import Component from '@/lib/component';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
-import AccountList from '../AccountList/index';
+import AccountHistoryTable from '../AccountHistoryTable/index';
 import { dayToString } from '@/utils/date';
 
-class AccountHitory extends Component {
+class AccountHitoryTable extends Component {
   constructor($target, initialState, onChangeFormData) {
     super($target);
     this.onChangeFormData = onChangeFormData;
@@ -34,14 +34,14 @@ class AccountHitory extends Component {
   }
 
   filterAccountHistory(e) {
-    const accountHistoryList = this.originAccountHistory.filter((account) => {
+    const accountHistory = this.originAccountHistory.filter((historyItem) => {
       return (
-        (this.filterInfo.income && account.isProfit) ||
-        (this.filterInfo.expenditure && !account.isProfit)
+        (this.filterInfo.income && historyItem.isProfit) ||
+        (this.filterInfo.expenditure && !historyItem.isProfit)
       );
     });
-    this.accountHistoryByDate = this.groupByDate(accountHistoryList);
-    this.reFatchAccountHistoryList();
+    this.accountHistoryByDate = this.groupByDate(accountHistory);
+    this.reFatchAccountHistoryTable();
   }
 
   changeFormData(e) {
@@ -79,9 +79,9 @@ class AccountHitory extends Component {
     targetData.map((item, index) => (item['idx'] = index));
   }
 
-  reFatchAccountHistoryList() {
-    this.$accountList.setState({ accountHistoryByDate: this.accountHistoryByDate });
-    this.$accountList.render();
+  reFatchAccountHistoryTable() {
+    this.$accountTable.setState({ accountHistoryByDate: this.accountHistoryByDate });
+    this.$accountTable.render();
   }
 
   template() {
@@ -94,18 +94,18 @@ class AccountHitory extends Component {
                 <div class="filter-checkbox" data-type="expenditure" >[ ] 지출</div>
             </div>
           </div>  
-          <div class="account-history-list"></div>
+          <div class="account-history-table"></div>
         </div>
     `;
   }
 
   render() {
     this.$target.insertAdjacentHTML('beforeend', this.template());
-    const $historyList = this.$target.querySelector('.account-history-list');
-    this.$accountList = new AccountList($historyList, {
+    const $historyTable = this.$target.querySelector('.account-history-table');
+    this.$accountTable = new AccountHistoryTable($historyTable, {
       accountHistoryByDate: this.accountHistoryByDate,
     });
   }
 }
 
-export default AccountHitory;
+export default AccountHitoryTable;

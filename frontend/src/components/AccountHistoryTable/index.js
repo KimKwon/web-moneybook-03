@@ -1,14 +1,14 @@
 import './index.scss';
 import Component from '@/lib/component';
-class AccountList extends Component {
+class AccountHistoryTable extends Component {
   constructor($target, initialState) {
     super($target, initialState);
   }
   template() {
     const { accountHistoryByDate } = this.state;
     return ` ${accountHistoryByDate
-      .map((accountByDate) => {
-        const { month, date, day, income, expenditure, data } = accountByDate;
+      .map((historyGroup) => {
+        const { month, date, day, income, expenditure, data } = historyGroup;
         /* html */
         return `
             <div class="account-history-bydate">
@@ -19,7 +19,7 @@ class AccountList extends Component {
             ${this.expenditureTemplate(expenditure)} 
           </div>
         </div>
-        ${data.map((account) => this.accountTemplate(account)).join('')}
+        ${data.map((historyItem) => this.historyItemTemplate(historyItem)).join('')}
       </div>
     </div>
     `;
@@ -42,8 +42,8 @@ class AccountList extends Component {
     `;
   }
 
-  accountTemplate(account) {
-    const { content, methodName, amount, categoryId, isProfit, idx } = account;
+  historyItemTemplate(historyItem) {
+    const { content, methodName, amount, categoryId, isProfit, idx } = historyItem;
     return /* html */ `
         <div data-idx='${idx}' class="account-wrapper">
         <div class="account-category">
@@ -65,4 +65,4 @@ class AccountList extends Component {
   }
 }
 
-export default AccountList;
+export default AccountHistoryTable;
