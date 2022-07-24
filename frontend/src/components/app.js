@@ -13,6 +13,7 @@ class App extends Component {
 
   init() {
     this.setCategorydummyData();
+    this.setPaymentMethodDummyData();
     new Router();
     const $header = this.$target.querySelector('header');
     new Header($header);
@@ -43,6 +44,8 @@ class App extends Component {
         isDelete: false,
       },
     ];
+    store.dispatch('addPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
+    //console.log(store.getState(SELECTOR_MAP.PAYMENT_METHODS));
   }
   setCategorydummyData() {
     const expenditureCategoryDummyData = [
@@ -104,6 +107,7 @@ class App extends Component {
       { expenditureCategoryDummyData, incomeCategoryDummyData },
       SELECTOR_MAP.CATEGORY,
     );
+    //console.log(store.getState(SELECTOR_MAP.CATEGORY));
   }
   onChangeFormData(nextState) {
     this.$target.$accountForm.reFatchFormData(nextState);

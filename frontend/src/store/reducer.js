@@ -8,6 +8,8 @@ function reducer(state, action, payload) {
       return { ...state, currentDate: nextDate };
     case 'addCategory':
       return { ...state, category: [...state.category, payload] };
+    case 'addPaymentMethod':
+      return { ...state, paymentMethods: [...state.paymentMethods, payload] };
     default:
       return { ...state };
   }
