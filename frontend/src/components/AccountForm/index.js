@@ -2,6 +2,7 @@ import Component from '@/lib/component';
 import './index.scss';
 import saveButtonIcon from '@/assets/icon/save-button.svg';
 import lineIcon from '@/assets/icon/line.svg';
+import plusIcon from '@/assets/icon/plus.svg';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 
@@ -16,9 +17,9 @@ class AccountForm extends Component {
         category: '',
         content: '',
         method: '',
-        amount: -13133113,
+        amount: 13133113,
       },
-      currentCategory: EXPENDITURE,
+      currentCategory: INCOME,
     });
   }
 
@@ -56,7 +57,8 @@ class AccountForm extends Component {
   }
 
   template() {
-    const { date, category, method, amount, content } = this.state.accountInfo;
+    const { currentCategory, accountInfo } = this.state;
+    const { date, category, method, amount, content } = accountInfo;
     const initialDate = date.getParsedDatestring('YYYY-MM-DD');
     return /*html*/ `
         <form class="account-form">
@@ -85,10 +87,13 @@ class AccountForm extends Component {
             <div class="account-form-wrapper">
                 <span class="account-form-label">금액</span>
                 <div class="account-form-amount">
-                  <span>${lineIcon}</span>
-                  <input value=${
-                    amount === '' || Number(amount).toLocaleString()
-                  } class="account-form-input amount" placeholder="입력하세요"/>
+                  <button type="button" class="account-form-amount__toggleButton">
+                    ${currentCategory === INCOME ? plusIcon : lineIcon}
+                  </button>
+                  <input
+                    value=${amount === '' || Number(amount).toLocaleString()}
+                    class="account-form-input amount" placeholder="입력하세요"
+                  />
                   <span>원</span>
                 </div>
             </div>
@@ -101,20 +106,33 @@ class AccountForm extends Component {
     this.$form.addEventListener('submit', (e) => {
       e.preventDefault();
     });
+
+    const toggleButton = this.$form.querySelector('.account-form-amount__toggleButton');
+    toggleButton.addEventListener('click', () => {
+      const { currentCategory } = this.state;
+      console.log(currentCategory);
+      const nextCategory = currentCategory === INCOME ? EXPENDITURE : INCOME;
+      this.setState({ currentCategory: nextCategory });
+    });
   }
 
   reFatchFormData(newFormData) {
     const { categoryId, methodId, content, amount, date } = newFormData;
   }
 
-  didMount() {
-    /* 테스트 */
+  afterRender() {
     this.$form = this.$target.querySelector('.account-form');
     this.attachEvent();
   }
   render() {
     const template = this.template();
-    this.$target.insertAdjacentHTML('beforeend', template);
+    if (this.$form) {
+      this.$form.remove();
+      this.$form = null;
+    }
+    this.$target.insertAdjacentHTML('afterBegin', template);
+
+    this.afterRender();
   }
 }
 export default AccountForm;

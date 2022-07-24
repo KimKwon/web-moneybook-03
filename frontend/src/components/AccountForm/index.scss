@@ -34,15 +34,17 @@
     margin-bottom: 0.3rem;
   }
   &-input {
-    color: $color-gray-dark;
     font-size: 1.2rem;
     width: 100%;
     padding-left: 0rem;
+    &::placeholder {
+      color: $color-gray-dark;
+    }
   }
   &-amount {
     display: flex;
     align-items: center;
-    & > span > svg {
+    & svg {
       width: 9.3px;
     }
   }
