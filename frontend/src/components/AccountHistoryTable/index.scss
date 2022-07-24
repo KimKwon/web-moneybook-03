@@ -1,0 +1,22 @@
+.account-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  border-bottom: 1px solid $color-gray;
+}
+.account-wrapper > div {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+.category-tag {
+  width: 5rem;
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  background-color: $color-primary;
+  color: $color-white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
