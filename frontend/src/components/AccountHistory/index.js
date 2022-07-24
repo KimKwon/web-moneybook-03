@@ -34,15 +34,30 @@ class AccountHitory extends Component {
       if (!acc[len - 1].date) {
         acc[len - 1].date = cur.date.getDate();
         acc[len - 1].month = cur.date.getMonth();
+        acc[len - 1].day = this.dayToString(cur.date.getDay()); //
         acc[len - 1].data = [];
         acc[len - 1].income = 0;
         acc[len - 1].expenditure = 0;
       }
+
       acc[len - 1].income += cur.isProfit ? cur.amount : 0;
       acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
+      acc[len - 1].data.push(cur);
       return [...acc];
     }, []);
     return groupData;
+  }
+  dayToString(day) {
+    const dayMap = {
+      0: '월',
+      1: '화',
+      2: '수',
+      3: '목',
+      4: '금',
+      5: '토',
+      6: '일',
+    };
+    return dayMap[day];
   }
   template() {
     const accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
@@ -63,29 +78,38 @@ class AccountHitory extends Component {
                 (accountByDate) =>
                   `
               <div class="account-history-bydate">
-              <div class="account-history-bydate-header">
-                <span class="account-history-date">2022-05-33</span>
-                <span class="account-history-expenditure">지출 30000</span>
-              </div>
-              <div data-idx='0' class="account-wrapper">
-                  <div class="account-category">
-                    <div class="category-tag">
-                        <span>태그 샘플</span>
-                    </div>
-                  </div>
-                  <div class="account-history-content">서브웨이 먹었다</div>
-                  <div class="account-history-method">결제 방법</div>
-                  <div class="account-history-amount">결제 금액</div>
-              </div>
-              <div  data-idx='1' class="account-wrapper">
-                <div class="account-category">
-                  <div class="category-tag">
-                      <span>태그 샘플</span>
+                <div class="account-history-bydate-header">
+                  <span class="account-history-date">${accountByDate.month}월 ${
+                    accountByDate.date
+                  }일 ${accountByDate.day}</span>
+                  <div>
+                    ${accountByDate.income !== 0 ? `<span>수입 ${accountByDate.income}</span>` : ''}
+                    ${
+                      accountByDate.expenditure !== 0
+                        ? `<span>지출 ${accountByDate.expenditure}</span>`
+                        : ''
+                    } 
                   </div>
                 </div>
-                <div class="account-history-content">치킨먹었다</div>
-                <div class="account-history-method">결제 방법</div>
-                <div class="account-history-amount">결제 금액</div>
+                ${accountByDate.data
+                  .map((account) => {
+                    const { content, methodName, amount, categoryId, isProfit } = account;
+                    return `
+                    <div data-idx='0' class="account-wrapper">
+                      <div class="account-category">
+                        <div class="category-tag">
+                            <span>태그 샘플 ${categoryId}</span>
+                        </div>
+                      </div>
+                      <div class="account-history-content">${content}</div>
+                      <div class="account-history-method">${methodName}</div>
+                      <div class="account-history-amount">${
+                        isProfit ? '' : '-'
+                      }${amount.toLocaleString('ko-KR')} 원</div>
+                    </div>
+                    `;
+                  })
+                  .join('')}
               </div>
             </div>
             `,

@@ -42,7 +42,7 @@ class App extends Component {
         methodName: '농협카드',
         categoryName: '',
         categoryId: 4,
-        isProfit: false,
+        isProfit: true,
       },
       {
         id: 3,
