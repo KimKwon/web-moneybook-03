@@ -29,12 +29,14 @@ class AccountList extends Component {
   }
 
   incomeTemplate(income) {
+    if (!income) return '';
     return `
       ${income !== 0 ? `<span>수입 ${income}</span>` : ''}
     `;
   }
 
   expenditureTemplate(expenditure) {
+    if (!expenditure) return '';
     return `
     ${expenditure !== 0 ? `<span>지출 ${expenditure}</span>` : ''}
     `;
