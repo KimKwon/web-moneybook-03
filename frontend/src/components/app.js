@@ -26,7 +26,7 @@ class App extends Component {
     const accountHistory = [
       {
         id: 1,
-        date: new Date(),
+        date: new Date('2022-07-22'),
         content: '국밥',
         amount: 8000,
         methodName: '현대카드',

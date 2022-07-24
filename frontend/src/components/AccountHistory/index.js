@@ -33,9 +33,13 @@ class AccountHitory extends Component {
       }
       if (!acc[len - 1].date) {
         acc[len - 1].date = cur.date.getDate();
+        acc[len - 1].month = cur.date.getMonth();
         acc[len - 1].data = [];
+        acc[len - 1].income = 0;
+        acc[len - 1].expenditure = 0;
       }
-      acc[len - 1].data.push(cur);
+      acc[len - 1].income += cur.isProfit ? cur.amount : 0;
+      acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
       return [...acc];
     }, []);
     return groupData;
@@ -54,32 +58,40 @@ class AccountHitory extends Component {
              </div>
            </div>  
           <div class="account-history-list" >
-            <div class="account-history-bydate">
-                <div class="account-history-bydate-header">
-                  <span class="account-history-date">2022-05-33</span>
-                  <span class="account-history-expenditure">지출 30000</span>
-                </div>
-                <div data-idx='0' class="account-wrapper">
-                    <div class="account-category">
+            ${groupByAccountHistory
+              .map(
+                (accountByDate) =>
+                  `
+              <div class="account-history-bydate">
+              <div class="account-history-bydate-header">
+                <span class="account-history-date">2022-05-33</span>
+                <span class="account-history-expenditure">지출 30000</span>
+              </div>
+              <div data-idx='0' class="account-wrapper">
+                  <div class="account-category">
                     <div class="category-tag">
                         <span>태그 샘플</span>
                     </div>
-                    </div>
-                    <div class="account-history-content">서브웨이 먹었다</div>
-                    <div class="account-history-method">결제 방법</div>
-                    <div class="account-history-amount">결제 금액</div>
-                </div>
-                <div  data-idx='1' class="account-wrapper">
+                  </div>
+                  <div class="account-history-content">서브웨이 먹었다</div>
+                  <div class="account-history-method">결제 방법</div>
+                  <div class="account-history-amount">결제 금액</div>
+              </div>
+              <div  data-idx='1' class="account-wrapper">
                 <div class="account-category">
-                <div class="category-tag">
-                    <span>태그 샘플</span>
-                </div>
+                  <div class="category-tag">
+                      <span>태그 샘플</span>
+                  </div>
                 </div>
                 <div class="account-history-content">치킨먹었다</div>
                 <div class="account-history-method">결제 방법</div>
                 <div class="account-history-amount">결제 금액</div>
+              </div>
             </div>
-                <div>
+            `,
+              )
+              .join('')}
+
             </div>
           </div>
         </div>
