@@ -1,5 +1,7 @@
 import './index.scss';
 import Component from '@/lib/component';
+import store from '@/store/index';
+import { SELECTOR_MAP } from '@/constants/selector-map';
 class AccountHitory extends Component {
   constructor($target, initialState, onChangeFormData) {
     super($target);
@@ -22,6 +24,8 @@ class AccountHitory extends Component {
     this.onChangeFormData(account);
   }
   template() {
+    const accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
+    console.log(accountHistory);
     return /* html */ `
         <div class="account-history">
           <div class="account-history-header">

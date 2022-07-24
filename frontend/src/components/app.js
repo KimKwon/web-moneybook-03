@@ -65,7 +65,7 @@ class App extends Component {
         isProfit: false,
       },
     ];
-    store.dispatch('addAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
+    store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
     console.log(store.getState(SELECTOR_MAP.ACCOUNT_HISTORY));
   }
   setPaymentMethodDummyData() {
@@ -91,7 +91,7 @@ class App extends Component {
         isDelete: false,
       },
     ];
-    store.dispatch('addPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
+    store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
     //console.log(store.getState(SELECTOR_MAP.PAYMENT_METHODS));
   }
   setCategorydummyData() {
@@ -150,7 +150,7 @@ class App extends Component {
       },
     ];
     store.dispatch(
-      'addCategory',
+      'setCategory',
       { expenditureCategoryDummyData, incomeCategoryDummyData },
       SELECTOR_MAP.CATEGORY,
     );
