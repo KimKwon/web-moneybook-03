@@ -10,17 +10,19 @@ import shortid from 'shortid';
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
 
+const INITIAL_FORM_DATA = {
+  id: '',
+  date: new Date().toString(),
+  category: '',
+  content: '',
+  method: '',
+  amount: '',
+};
+
 class AccountForm extends Component {
   constructor($target) {
     super($target, {
-      accountInfo: {
-        id: '',
-        date: new Date().toString(),
-        category: '',
-        content: '',
-        method: '',
-        amount: 1800000,
-      },
+      accountInfo: INITIAL_FORM_DATA,
       currentCategoryType: INCOME,
       isEditMode: false,
     });
@@ -28,14 +30,7 @@ class AccountForm extends Component {
 
   initForm() {
     this.setState({
-      accountInfo: {
-        id: '',
-        date: new Date().toString(),
-        category: '',
-        content: '',
-        method: '',
-        amount: '',
-      },
+      accountInfo: INITIAL_FORM_DATA,
       currentCategoryType: EXPENDITURE,
       isEditMode: false,
     });
