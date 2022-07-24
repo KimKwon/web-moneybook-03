@@ -1,0 +1,53 @@
+.account-form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: $color-white;
+  border-radius: 0.7rem;
+  border: 1px solid $color-gray;
+  margin-top: -2.5rem;
+  padding: 0.5rem;
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    display: inline-block;
+    padding: 0.2rem 2.5rem;
+    border-left: 1px solid $color-gray;
+    flex: 1 1 0;
+  }
+  &-wrapper:nth-child(2) {
+    flex-grow: 1.5;
+  }
+  &-wrapper:nth-child(4) {
+    flex-grow: 1.5;
+  }
+  &-wrapper:first-child {
+    border: none;
+  }
+  &-label {
+    font-size: 0.9rem;
+    color: $color-primary;
+    width: 100%;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+  }
+  &-input {
+    color: $color-gray-dark;
+    font-size: 1.2rem;
+    width: 100%;
+    padding-left: 0rem;
+  }
+  &-amount {
+    display: flex;
+    align-items: center;
+    display: row;
+  }
+  input {
+    border: none;
+  }
+  input::placeholder {
+    color: $color-gray-dark;
+  }
+}

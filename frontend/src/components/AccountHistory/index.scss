@@ -1,0 +1,44 @@
+.account-history {
+  display: flex;
+  flex-direction: column;
+  &-header {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 1.2rem;
+    margin-top: 1rem;
+    color: $color-primary;
+  }
+  &-bydate-header {
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid $color-gray;
+    padding: 1.2rem;
+    color: $color-gray-dark;
+  }
+  &-wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    border-bottom: 1px solid $color-gray;
+  }
+  &-wrapper > div {
+    display: flex;
+    padding: 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.category-tag {
+  width: 5rem;
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  background-color: $color-primary;
+  color: $color-white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
