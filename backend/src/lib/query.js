@@ -6,20 +6,21 @@ const dbtest = async () => {
 };
 
 const join = (table, joinInfo, fields) => {
-  let selected = fields ? fields.map((field) => `${field}`) : '*';  
+  let selected = fields ? fields.map((field) => `${field}`) : '*';
 
   return `
     SELECT ${selected}
-    FROM ${table} ${
-      joinInfo.map(([joinTable, joinFk]) => (
+    FROM ${table} ${joinInfo
+    .map(
+      ([joinTable, joinFk]) =>
         `
           INNER JOIN ${joinTable} 
           ON ${table}.${joinFk} = ${joinTable}.id
-        `
-      )).join(' ')
-    }
+        `,
+    )
+    .join(' ')}
   `;
-}
+};
 
 /**
  * @param  { string } table // 쿼리 연산을 수행할 테이블의 이름을 문자열로 명시함.
@@ -27,10 +28,10 @@ const join = (table, joinInfo, fields) => {
  *  joinOptions?: {
  *    table: [[테이블 이름, 해당 테이블의 FK]],
  *  },
-  * where?: { 
-  *   string(바꿀 속성의 속성명): [연산자, 피연산자]
-  * } | string,
-  * fields: [SELECT할 속성들]
+ * where?: {
+ *   string(바꿀 속성의 속성명): [연산자, 피연산자]
+ * } | string,
+ * fields: [SELECT할 속성들]
  * } options // find 할 때의 옵션을 제공함.
  */
 
@@ -43,15 +44,16 @@ const findAll = async (table, options = {}) => {
 
   try {
     if (typeof table !== 'string') throw Error('테이블 형식이 잘못됨.');
-    
+
     if (joinOptions) query += join(table, joinOptions.table, fields);
-    else query = `
+    else
+      query = `
       SELECT ${fields ? fields.join(', ') : '*'}
       FROM ${table}
     `;
 
     if (where) {
-      query += `WHERE ${createWhereTemplate(where)}`
+      query += `WHERE ${createWhereTemplate(where)}`;
     }
 
     if (order) {
@@ -61,14 +63,15 @@ const findAll = async (table, options = {}) => {
     }
 
     return await getDB().query(query);
-
   } catch (error) {
     console.error(error);
+  }
+};
 
 const findOne = async (table, condition) => {
   try {
-    const conditionTemplate = createEqualsTemplate(condition);
-    const seleteQuery = `SELECT * FROM ${table} WHERE ${conditionTemplate}`;
+    const whereTemplate = createWhereTemplate(condition);
+    const seleteQuery = `SELECT * FROM ${table} WHERE ${whereTemplate}`;
     const [rows] = await getDB().query(seleteQuery);
     return rows.length === 0 ? null : rows[0];
   } catch (err) {
@@ -81,9 +84,9 @@ const updateOne = async (table, condition, updateMap) => {
   try {
     const beforeUpdateData = await findOne(table, condition);
     if (!beforeUpdateData) return null;
-    const conditionTemplate = createEqualsTemplate(condition);
-    const updateTemplate = createEqualsTemplate(updateMap);
-    const updateQuery = ` UPDATE ${table} SET ${updateTemplate} WHERE ${conditionTemplate}`;
+    const whereTemplate = createWhereTemplate(condition);
+    const setTemplate = createSetTemplate(updateMap);
+    const updateQuery = ` UPDATE ${table} SET ${setTemplate} WHERE ${whereTemplate}`;
     const [row] = await getDB().query(updateQuery);
     return row.affectedRows === 1 ? beforeUpdateData : null;
   } catch (err) {
@@ -98,8 +101,8 @@ const deleteOne = async (table, condition) => {
   try {
     const beforeDeleteData = await findOne(table, condition);
     if (!beforeDeleteData) return null;
-    const conditionTemplate = createEqualsTemplate(condition);
-    const deleteQuery = `DELETE FROM ${table} WHERE ${conditionTemplate};`;
+    const whereTemplate = createWhereTemplate(condition);
+    const deleteQuery = `DELETE FROM ${table} WHERE ${whereTemplate};`;
     const [row] = await getDB().query(deleteQuery);
     return row.affectedRows === 1 ? beforeDeleteData : null;
   } catch (err) {
@@ -130,14 +133,14 @@ const create = async (table, createMap) => {
   }
 };
 
-const createEqualsTemplate = (condition) => {
-  const equalsTemplate = Object.entries(condition)
+const createSetTemplate = (condition) => {
+  const setTemplate = Object.entries(condition)
     .map((item) => {
       const [key, value] = item;
       return `${key} = ${convertType(value)}`;
     })
     .join(',');
-  return equalsTemplate;
+  return setTemplate;
 };
 
 const createWhereTemplate = (condition) => {
