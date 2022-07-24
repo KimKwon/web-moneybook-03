@@ -1,10 +1,15 @@
+import Calendar from '@/pages/Calendar';
+import Main from '@/pages/Main';
+import Statistic from '@/pages/Statistic';
+
 class Router {
-  constructor() {
+  constructor($rootTarget) {
+    this.$rootTarget = $rootTarget;
     this.currentActivePage = null;
     this.routes = [
-      { path: /^\/$/, element: () => console.log('메인페이지 렌더!') },
-      { path: /^\/calendar$/, element: () => console.log('달력페이지 렌더!') },
-      { path: /^\/statistic$/, element: () => console.log('통계페이지 렌더!') },
+      { path: /^\/$/, element: () => Main(this.$rootTarget) },
+      { path: /^\/calendar$/, element: () => Calendar(this.$rootTarget) },
+      { path: /^\/statistic$/, element: () => Statistic(this.$rootTarget) },
     ];
 
     this.#init();

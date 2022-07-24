@@ -1,0 +1,19 @@
+import AccountForm from '@/components/AccountForm/index';
+import AccountHistory from '@/components/AccountHistory/index';
+import Header from '@/components/Header/index';
+
+function Main($root) {
+  const $header = $root.querySelector('header');
+  const $main = $root.querySelector('main');
+
+  new Header($header);
+  const $accountForm = new AccountForm($main);
+
+  const onChangeFormData = (nextState) => {
+    $accountForm.reFatchFormData(nextState);
+  };
+
+  new AccountHistory($main, {}, onChangeFormData);
+}
+
+export default Main;

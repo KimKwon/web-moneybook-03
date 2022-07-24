@@ -3,13 +3,11 @@ import './index.scss';
 import fileTextIcon from '@/assets/icon/file-text.svg';
 import calendarIcon from '@/assets/icon/calendar.svg';
 import chartIcon from '@/assets/icon/chart.svg';
-
 import MonthController from './monthController';
-
-export default class Header {
+import Component from '@/lib/component';
+export default class Header extends Component {
   constructor($target) {
-    this.$target = $target;
-    this.render();
+    super($target);
   }
 
   template() {
@@ -23,7 +21,7 @@ export default class Header {
           <a class="nav-statistic" is="my-anchor" href="/statistic"><img src="${chartIcon}"></a>
         </div>
       </div>
-  `;
+    `;
   }
 
   render() {

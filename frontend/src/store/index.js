@@ -18,7 +18,7 @@ const createStore = (initialState, reducer) => {
   //initialState ||
   let state = {
     [ACCOUNT_HISTORY]: [],
-    [CATEGORY]: [1, 2, 3, 4],
+    [CATEGORY]: [],
     [PAYMENT_METHODS]: [],
     [CURRENT_DATE]: { year: 2022, month: 5 },
   };

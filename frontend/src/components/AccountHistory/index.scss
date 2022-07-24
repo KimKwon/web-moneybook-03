@@ -19,18 +19,18 @@
     padding: 1.2rem;
     color: $color-gray-dark;
   }
-  &-wrapper {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
-    border-bottom: 1px solid $color-gray;
-  }
-  &-wrapper > div {
-    display: flex;
-    padding: 0.5rem;
-    justify-content: center;
-    align-items: center;
-  }
+}
+.account-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  border-bottom: 1px solid $color-gray;
+}
+.account-wrapper > div {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
 .category-tag {
   width: 5rem;
