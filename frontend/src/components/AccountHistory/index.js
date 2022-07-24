@@ -33,7 +33,7 @@ class AccountHitoryTable extends Component {
     this.filterAccountHistory();
   }
 
-  filterAccountHistory(e) {
+  filterAccountHistory() {
     const accountHistory = this.originAccountHistory.filter((historyItem) => {
       return (
         (this.filterInfo.income && historyItem.isProfit) ||
