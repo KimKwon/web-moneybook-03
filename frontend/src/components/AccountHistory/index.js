@@ -23,9 +23,27 @@ class AccountHitory extends Component {
     };
     this.onChangeFormData(account);
   }
+  groupByDate(targetData) {
+    const groupData = targetData.reduce((acc, cur, idx) => {
+      console.log(acc);
+      let len = acc.length;
+      if (len === 0 || acc[len - 1].date != cur.date.getDate()) {
+        acc.push({});
+        len = acc.length;
+      }
+      if (!acc[len - 1].date) {
+        acc[len - 1].date = cur.date.getDate();
+        acc[len - 1].data = [];
+      }
+      acc[len - 1].data.push(cur);
+      return [...acc];
+    }, []);
+    return groupData;
+  }
   template() {
     const accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
-    console.log(accountHistory);
+    const groupByAccountHistory = this.groupByDate(accountHistory);
+    console.log(groupByAccountHistory);
     return /* html */ `
         <div class="account-history">
           <div class="account-history-header">
