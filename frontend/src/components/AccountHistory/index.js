@@ -18,6 +18,11 @@ class AccountHitory extends Component {
     this.$target
       .querySelector('.account-history-filter')
       .addEventListener('click', this.handelFilterClickEvent.bind(this));
+
+    store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, () => {
+      this.init();
+      this.filterAccountHistory();
+    });
   }
   handelFilterClickEvent(e) {
     const $filterCheckbox = e.target.closest('.filter-checkbox');
@@ -33,7 +38,6 @@ class AccountHitory extends Component {
         (this.filterInfo.expenditure && !account.isProfit)
       );
     });
-    console.log(this.accountHistoryList);
     this.reFatchList();
     // this.render();
   }
@@ -120,8 +124,6 @@ class AccountHitory extends Component {
             `;
           })
           .join('')}
-      </div>
-    </div>
     `,
       )
       .join('')}
@@ -142,8 +144,9 @@ class AccountHitory extends Component {
     `;
   }
   reFatchList() {
-    const listTeplate = this.listTemplate();
-    this.$accountHistoryList.innerHTML = listTeplate;
+    const listTemplate = this.listTemplate();
+    const $accountHistoryList = this.$target.querySelector('.account-history-list');
+    $accountHistoryList.innerHTML = listTemplate;
   }
 
   render() {
