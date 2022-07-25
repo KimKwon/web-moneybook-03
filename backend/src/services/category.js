@@ -1,5 +1,7 @@
-const { find, findAll } = require('../lib/query');
-
+const { updateOne, findAll } = require('../lib/query');
+const CATEGORY_DBMODEL = {
+  color: 'color',
+};
 const CategoryService = {
   getCategory: async (type) => {
     try {
@@ -19,8 +21,15 @@ const CategoryService = {
     }
   },
 
-  updateCategory: (id, categoryMap) => {
-    const category = updateOne('category', id, categoryMap);
+  updateCategory: async (id, requestData) => {
+    const categoryMap = Object.entries(requestData).reduce((acc, [key, value]) => {
+      if (!key in CATEGORY_DBMODEL) return acc;
+      const dbKey = CATEGORY_DBMODEL[key];
+      acc[dbKey] = value;
+      return acc;
+    }, new Object());
+
+    const category = await updateOne('category', { id }, categoryMap);
     return category;
   },
 };
