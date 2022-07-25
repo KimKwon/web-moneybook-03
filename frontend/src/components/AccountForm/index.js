@@ -3,10 +3,11 @@ import './index.scss';
 import saveButtonIcon from '@/assets/icon/save-button.svg';
 import lineIcon from '@/assets/icon/line.svg';
 import plusIcon from '@/assets/icon/plus.svg';
+import dropArrow from '@/assets/icon/drop-arrow.svg';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
-import shortid from 'shortid';
 import { createAccountHistory } from '@/lib/api/accountHistory';
+import DropDown from '../Dropdown/index';
 
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
@@ -14,10 +15,10 @@ const EXPENDITURE = 'expenditure';
 const INITIAL_FORM_DATA = {
   id: '',
   date: new Date().toString(),
-  category: '',
+  categoryName: '',
   categoryId: '',
   content: '',
-  method: '',
+  methodName: '',
   paymentMethodId: '',
   amount: '',
 };
@@ -34,62 +35,45 @@ class AccountForm extends Component {
   initForm() {
     this.setState({
       accountInfo: INITIAL_FORM_DATA,
-      currentCategoryType: EXPENDITURE,
+      currentCategoryType: INCOME,
       isEditMode: false,
     });
   }
 
-  showMethods() {
-    const methods = store.getState(SELECTOR_MAP.PAYMENT_METHODS);
-    const { method } = this.state.accountInfo;
-    return methods
-      .map(
-        ({ name, id }) => `
-        <option value=${id} ${method === name ? 'selected' : ''}>
-          ${name}
-        </option>
-      `,
-      )
-      .join('');
+  getCurrentAccountInput() {
+    const $date = this.$form.querySelector('.account-form-input.date');
+    const $content = this.$form.querySelector('.account-form-input.content');
+    const $amount = this.$form.querySelector('.account-form-input.amount');
+    return { $date, $content, $amount };
   }
 
-  showCategoryOptions() {
-    const { currentCategoryType, accountInfo } = this.state;
-    const { category } = accountInfo;
-    const originCategory = store.getState(SELECTOR_MAP.CATEGORY);
+  getSelectedCategory() {
+    const $category = this.$form.querySelector('.account-form-dropdown-category__selected');
+    return { categoryId: $category.dataset.id, categoryName: $category.innerText };
+  }
 
-    const categories =
-      currentCategoryType === INCOME ? originCategory.income : originCategory.expenditure;
-
-    return categories
-      .map(
-        ({ name, id }) => `
-        <option value=${id} ${category === name ? 'selected' : ''}>
-          ${name}
-        </option>
-      `,
-      )
-      .join('');
+  getSelectedMethod() {
+    const $method = this.$form.querySelector('.account-form-dropdown-method__selected');
+    return { paymentMethodId: $method.dataset.id, methodName: $method.innerText };
   }
 
   async handleFormSubmit(e) {
     e.preventDefault();
-    const $date = this.$form.querySelector('.account-form-input.date');
-    const $category = this.$form.querySelector('.account-form-dropdown.category');
-    const $content = this.$form.querySelector('.account-form-input.content');
-    const $method = this.$form.querySelector('.account-form-dropdown.method');
-    const $amount = this.$form.querySelector('.account-form-input.amount');
 
     const { isEditMode, accountInfo } = this.state;
     const { id } = accountInfo;
+
+    const { $date, $content, $amount } = this.getCurrentAccountInput();
+    const { categoryId, categoryName } = this.getSelectedCategory();
+    const { paymentMethodId, methodName } = this.getSelectedMethod();
 
     if (!isEditMode) {
       createAccountHistory({
         date: new Date($date.value),
         content: $content.value,
         amount: Number($amount.value.toString().replaceAll(',', '')),
-        paymentMethodId: $method.selectedOptions[0]?.value,
-        categoryId: $category.selectedOptions[0]?.value,
+        paymentMethodId,
+        categoryId,
         isProfit: true,
       });
     }
@@ -101,8 +85,8 @@ class AccountForm extends Component {
         date: new Date($date.value),
         content: $content.value,
         amount: Number($amount.value.toString().replaceAll(',', '')),
-        methodName: $method.selectedOptions[0]?.innerText,
-        categoryName: $category.selectedOptions[0]?.innerText,
+        methodName,
+        categoryName,
         isProfit: true,
       },
       SELECTOR_MAP.ACCOUNT_HISTORY,
@@ -113,7 +97,7 @@ class AccountForm extends Component {
 
   template() {
     const { currentCategoryType, accountInfo } = this.state;
-    const { date, amount, content } = accountInfo;
+    const { date, amount, content, categoryId, categoryName, methodId, methodName } = accountInfo;
     const initialDate = date.getParsedDatestring('YYYY-MM-DD');
     return /*html*/ `
         <form class="account-form">
@@ -123,10 +107,12 @@ class AccountForm extends Component {
             </div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">분류</span>
-                <select class="account-form-dropdown category">
-                  <option selected disabled>선택하세요</option>
-                  ${this.showCategoryOptions()}
-                </select>
+                <button type="button" class="account-form-dropdown-category">
+                  <span class="account-form-dropdown-category__selected" data-id="${categoryId}">
+                    ${categoryName || '선택하세요'}
+                  </span>
+                  ${dropArrow}
+                </button>
             </div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">내용</span>
@@ -134,10 +120,12 @@ class AccountForm extends Component {
             </div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">결제수단</span>
-                <select class="account-form-dropdown method"> 
-                  <option selected disabled >선택하세요</option>
-                  ${this.showMethods()}
-                </select>
+                <button type="button" class="account-form-dropdown-method">
+                  <span class="account-form-dropdown-method__selected" data-id="${methodId}">
+                    ${methodName || '선택하세요'}
+                  </span>
+                  ${dropArrow}
+                </button>
             </div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">금액</span>
@@ -166,6 +154,42 @@ class AccountForm extends Component {
       const nextCategory = currentCategoryType === INCOME ? EXPENDITURE : INCOME;
       this.setState({ currentCategoryType: nextCategory });
     });
+
+    this.attachCategoryDropdown();
+    this.attachMethodDropdown();
+  }
+
+  attachMethodDropdown() {
+    const methods = store.getState(SELECTOR_MAP.PAYMENT_METHODS);
+    const $methodDropdown = this.$form.querySelector('.account-form-dropdown-method');
+    const methodDropdown = new DropDown(
+      $methodDropdown,
+      methods,
+      (selectedMethod, selectedId) => {
+        $methodDropdown.children[0].innerText = selectedMethod;
+        $methodDropdown.children[0].dataset.id = selectedId;
+      },
+      true,
+    );
+
+    $methodDropdown.addEventListener('click', () => {
+      methodDropdown.toggle();
+    });
+  }
+
+  attachCategoryDropdown() {
+    const $categoryDropdown = this.$form.querySelector('.account-form-dropdown-category');
+    const categoryDropDown = new DropDown(
+      $categoryDropdown,
+      store.getState(SELECTOR_MAP.CATEGORY)[this.state.currentCategoryType],
+      (selectedCategory, selectedId) => {
+        $categoryDropdown.children[0].innerText = selectedCategory;
+        $categoryDropdown.children[0].dataset.id = selectedId;
+      },
+    );
+    $categoryDropdown.addEventListener('click', () => {
+      categoryDropDown.toggle();
+    });
   }
 
   reFatchFormData(newFormData) {
@@ -175,9 +199,9 @@ class AccountForm extends Component {
       accountInfo: {
         ...this.state.accountInfo,
         id,
-        category: categoryName,
+        categoryName,
         categoryId,
-        method: methodName,
+        methodName,
         content,
         amount,
         date: date.toString(),
