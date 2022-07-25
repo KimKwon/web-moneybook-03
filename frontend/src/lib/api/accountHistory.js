@@ -26,3 +26,20 @@ export const getAccountHistory = async (query) => {
     return null;
   }
 };
+
+export const createAccountHistory = async (historyMap) => {
+  try {
+    const response = await fetch(`${baseUrl}/account-history`, {
+      method: 'POST',
+      body: JSON.stringify(historyMap),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    return null;
+  }
+};

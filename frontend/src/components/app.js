@@ -15,7 +15,7 @@ class App extends Component {
   async init() {
     await this.initCategorydummyData();
     await this.initAccountHistory();
-    this.initPaymentMethodDummyData();
+    await this.initPaymentMethodDummyData();
     new Router(this.$target);
   }
 
