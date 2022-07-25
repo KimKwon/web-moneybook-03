@@ -23,6 +23,11 @@ class AccountHitoryTable extends Component {
     this.$target
       .querySelector('.account-history-filter')
       .addEventListener('click', this.handelFilterClickEvent.bind(this));
+
+    store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, () => {
+      this.init();
+      this.filterAccountHistory();
+    });
   }
 
   handelFilterClickEvent(e) {
@@ -40,6 +45,7 @@ class AccountHitoryTable extends Component {
         (this.filterInfo.expenditure && !historyItem.isProfit)
       );
     });
+
     this.accountHistoryByDate = this.groupByDate(accountHistory);
     this.reFatchAccountHistoryTable();
   }
