@@ -122,13 +122,23 @@ const create = async (table, createMap) => {
       keys.push(key);
       values.push(convertType(value));
     });
-    const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
-    const [row] = await getDB().execute(createQuery);
+    const createQuery = `INSERT INTO ${table} (${keys.join(',')}) VALUES (${values.join(',')})`;
+    const [row] = await getDB().query(createQuery);
+
     if (row.affectedRows !== 1) return null;
     const createData = await findOne(table, { id: row.insertId });
-    return createData;
+    if (!createData) return null;
+
+    const { user_id, category_id, payment_method_id, is_profit, ...rest } = createData;
+    return {
+      ...rest,
+      userId: user_id,
+      categoryId: category_id,
+      paymentMethodId: payment_method_id,
+      isProfit: is_profit,
+    };
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
