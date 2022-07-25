@@ -1,13 +1,21 @@
 .history-item-wrapper {
+  padding: 0.4rem 0.5rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr;
   border-bottom: 1px solid $color-gray;
+  font-size: 1.2rem;
 }
 
 .history-item-wrapper > div {
   display: flex;
   padding: 0.5rem;
-  justify-content: center;
   align-items: center;
+  &.right {
+    justify-content: end;
+  }
+}
+
+.category {
+  margin-right: 0.7rem;
 }

@@ -9,7 +9,7 @@ class Category extends Component {
   }
   init() {
     this.$element = document.createElement('div');
-    this.$element.className = 'category-tag';
+    this.$element.className = 'category';
   }
   didMount() {
     store.subscribe(SELECTOR_MAP.CATEGORY, this.paintCategory.bind(this));
@@ -22,10 +22,10 @@ class Category extends Component {
       ...categories.expenditureCategoryDummyData,
       ...categories.incomeCategoryDummyData,
     ];
-    const category = categories.filter((category) => {
+    const category = categories.find((category) => {
       return category.id == this.state.id;
     });
-    this.$element.style.backgroundColor = category[0].color;
+    this.$element.style.backgroundColor = category.color;
   }
 
   render() {

@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   &-header {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem 0rem;
     margin-top: 1rem;
     color: $color-primary;
   }
@@ -16,7 +16,11 @@
     flex-direction: row;
     justify-content: space-between;
     border-bottom: 1px solid $color-gray;
-    padding: 1.2rem;
+    padding: 1.2rem 0rem;
     color: $color-gray-dark;
+  }
+  &-filter {
+    font-size: 1.2rem;
+    display: flex;
   }
 }

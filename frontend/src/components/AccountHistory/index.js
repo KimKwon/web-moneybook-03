@@ -99,7 +99,7 @@ class AccountHitoryTable extends Component {
     return /* html */ `
         <div class="account-history">
           <div class="account-history-header">
-            <h2>전체내역</h2>
+            <h1 >전체내역</h1>
             <div class="account-history-filter">
                 <div class="filter-checkbox" data-type="income" >[ ] 수입</div>
                 <div class="filter-checkbox" data-type="expenditure" >[ ] 지출</div>

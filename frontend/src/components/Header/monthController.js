@@ -30,7 +30,7 @@ export default class MonthController extends Component {
   refetchDate() {
     const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
     this.$year.innerText = year;
-    this.$month.innerText = `${month} 월`;
+    this.$month.innerText = `${month}월`;
   }
 
   template() {
