@@ -26,7 +26,18 @@ export const getAccountHistory = async (query) => {
     return null;
   }
 };
-
+/**
+ * @interface HistoryItem {
+ *  categoryId
+ *  paymentMethodId
+ *  date
+ *  content
+ *  amount
+ *  isProfit
+ * }
+ * @param { HistoryItem } historyItem
+ * @returns { Promise<HistoryItem}> }
+ */
 export const putAccountHistory = async (historyItem) => {
   const option = {
     method: 'POST',
@@ -43,7 +54,19 @@ export const putAccountHistory = async (historyItem) => {
     return null;
   }
 };
-
+/**
+ * @interface HistoryItem {
+ *  categoryId
+ *  paymentMethodId
+ *  date
+ *  content
+ *  amount
+ *  isProfit
+ * }
+ * @param { Number} id
+ * @param { HistoryItem } historyItem
+ * @returns { Promise<HistoryItem> }
+ */
 export const patchAccountHistory = async (id, historyItem) => {
   const option = {
     method: 'PATCH',
