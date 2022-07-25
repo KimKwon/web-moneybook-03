@@ -68,7 +68,9 @@ const findAll = async (table, options = {}) => {
   }
 };
 
-const findOne = async (table, condition, fields) => {
+const findOne = async (table, options = {}) => {
+  const { condition, fields } = options;
+
   try {
     const whereTemplate = createWhereTemplate(condition);
     const seleteQuery = `SELECT ${
@@ -82,9 +84,11 @@ const findOne = async (table, condition, fields) => {
   }
 };
 
-const updateOne = async (table, condition, updateMap) => {
+const updateOne = async (table, options = {}) => {
+  const { condition, updateMap, fields } = options;
+
   try {
-    const beforeUpdateData = await findOne(table, condition);
+    const beforeUpdateData = await findOne(table, condition, fields);
     if (!beforeUpdateData) return null;
     const whereTemplate = createWhereTemplate(condition);
     const setTemplate = createSetTemplate(updateMap);
@@ -99,9 +103,10 @@ const updateOne = async (table, condition, updateMap) => {
 
 const updateAll = (table, condition, updateMap) => {};
 
-const deleteOne = async (table, condition) => {
+const deleteOne = async (table, options = {}) => {
+  const { condition, field } = options;
   try {
-    const beforeDeleteData = await findOne(table, condition);
+    const beforeDeleteData = await findOne(table, condition, fields);
     if (!beforeDeleteData) return null;
     const whereTemplate = createWhereTemplate(condition);
     const deleteQuery = `DELETE FROM ${table} WHERE ${whereTemplate};`;
@@ -115,7 +120,8 @@ const deleteOne = async (table, condition) => {
 
 const deleteAll = (table, condition) => {};
 
-const create = async (table, createMap, fields) => {
+const create = async (table, options = {}) => {
+  const { createMap, fields } = options;
   try {
     const keys = [],
       values = [];
