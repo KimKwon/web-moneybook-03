@@ -21,6 +21,27 @@ const formatStringTo = (_originString, limit) => {
   return originString.padStart(limit, '0');
 };
 
+/**
+ *
+ * @date 2022-07-25
+ * @param { Date } _date
+ * @returns { startDate: string, endDate: string }
+ */
+export const getStartAndEndDate = (_date) => {
+  const date = new Date(_date);
+  const startDate = new Date(date.getFullYear(), date.getMonth(), 1)
+    .toString()
+    .getParsedDatestring('YYYY-MM-DD');
+  const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    .toString()
+    .getParsedDatestring('YYYY-MM-DD');
+
+  return {
+    startDate,
+    endDate,
+  };
+};
+
 function getParsedDatestring(dateType) {
   if (typeof this !== 'string') throw Error('target is not string');
   try {

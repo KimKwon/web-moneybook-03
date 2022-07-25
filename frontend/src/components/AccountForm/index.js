@@ -6,6 +6,7 @@ import plusIcon from '@/assets/icon/plus.svg';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import shortid from 'shortid';
+import { createAccountHistory } from '@/lib/api/accountHistory';
 
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
@@ -14,8 +15,10 @@ const INITIAL_FORM_DATA = {
   id: '',
   date: new Date().toString(),
   category: '',
+  categoryId: '',
   content: '',
   method: '',
+  paymentMethodId: '',
   amount: '',
 };
 
@@ -41,8 +44,8 @@ class AccountForm extends Component {
     const { method } = this.state.accountInfo;
     return methods
       .map(
-        ({ name }) => `
-        <option ${method === name ? 'selected' : ''}>
+        ({ name, id }) => `
+        <option value=${id} ${method === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
@@ -56,14 +59,12 @@ class AccountForm extends Component {
     const originCategory = store.getState(SELECTOR_MAP.CATEGORY);
 
     const categories =
-      currentCategoryType === INCOME
-        ? originCategory.incomeCategoryDummyData
-        : originCategory.expenditureCategoryDummyData;
+      currentCategoryType === INCOME ? originCategory.income : originCategory.expenditure;
 
     return categories
       .map(
-        ({ name }) => `
-        <option ${category === name ? 'selected' : ''}>
+        ({ name, id }) => `
+        <option value=${id} ${category === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
@@ -71,7 +72,7 @@ class AccountForm extends Component {
       .join('');
   }
 
-  handleFormSubmit(e) {
+  async handleFormSubmit(e) {
     e.preventDefault();
     const $date = this.$form.querySelector('.account-form-input.date');
     const $category = this.$form.querySelector('.account-form-dropdown.category');
@@ -82,16 +83,26 @@ class AccountForm extends Component {
     const { isEditMode, accountInfo } = this.state;
     const { id } = accountInfo;
 
-    store.dispatch(
-      isEditMode ? 'updateAccountHistory' : 'addAccountHistory',
-      {
-        id: id || shortid(),
+    if (!isEditMode) {
+      createAccountHistory({
         date: new Date($date.value),
         content: $content.value,
         amount: Number($amount.value.toString().replaceAll(',', '')),
-        methodName: $method.selectedOptions[0]?.value,
-        categoryName: $category.selectedOptions[0]?.value,
-        categoryId: shortid(),
+        paymentMethodId: $method.selectedOptions[0]?.value,
+        categoryId: $category.selectedOptions[0]?.value,
+        isProfit: true,
+      });
+    }
+
+    store.dispatch(
+      isEditMode ? 'updateAccountHistory' : 'addAccountHistory',
+      {
+        id,
+        date: new Date($date.value),
+        content: $content.value,
+        amount: Number($amount.value.toString().replaceAll(',', '')),
+        methodName: $method.selectedOptions[0]?.innerText,
+        categoryName: $category.selectedOptions[0]?.innerText,
         isProfit: true,
       },
       SELECTOR_MAP.ACCOUNT_HISTORY,
@@ -158,13 +169,14 @@ class AccountForm extends Component {
   }
 
   reFatchFormData(newFormData) {
-    const { id, content, amount, date, categoryName, methodName } = newFormData;
+    const { id, content, amount, date, categoryName, categoryId, methodName } = newFormData;
 
     this.setState({
       accountInfo: {
         ...this.state.accountInfo,
         id,
         category: categoryName,
+        categoryId,
         method: methodName,
         content,
         amount,

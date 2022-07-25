@@ -1,19 +1,28 @@
-const { find } = require("../lib/query");
+const { find, findAll } = require('../lib/query');
 
-const CategoryService = { 
+const CategoryService = {
+  getCategory: async (type) => {
+    try {
+      const isProfit = type === 'income';
+      const category = await findAll('category', {
+        where: {
+          is_profit: isProfit,
+        },
+        fields: ['id', 'name', 'color', 'is_profit as isProfit'],
+      });
 
-   getCategory : (params, order) => {
-        //있는 필드인지 검사하고 매핑
-        // const order = { } // 두개를 받는다. 기준 점, 오름차순 여부  
-        const category = find('category', params, order )
-        return category;
-    },
+      if (!category) return null;
 
-
-    updateCategory : (id, categoryMap) => {
-        const category = updateOne('category',id,categoryMap )
-        return category;
+      return category[0];
+    } catch (error) {
+      return null;
     }
-}
+  },
+
+  updateCategory: (id, categoryMap) => {
+    const category = updateOne('category', id, categoryMap);
+    return category;
+  },
+};
 
 module.exports = CategoryService;
