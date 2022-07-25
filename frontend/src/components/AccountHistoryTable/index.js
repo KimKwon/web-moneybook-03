@@ -12,7 +12,7 @@ class AccountHistoryTable extends Component {
         const { month, date, day, income, expenditure, data } = historyGroup;
         /* html */
         return `
-            <div class="account-history-bydate">
+            <div class="account-history-table">
               <div class="account-history-bydate-header">
                 <span class="account-history-date">${month}월 ${date}일 ${day}</span>
                 <div>
@@ -51,7 +51,7 @@ class AccountHistoryTable extends Component {
           <div class="history-item-content">${content}</div>
         </div>
         <div class="history-item-method">${methodName}</div>
-        <div class="history-item-amount">${isProfit ? '' : '-'} ${amount.toLocaleString(
+        <div class="history-item-amount right">${isProfit ? '' : '-'} ${amount.toLocaleString(
       'ko-KR',
     )}원</div>
       </div>
