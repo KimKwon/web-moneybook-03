@@ -1,4 +1,4 @@
-const { create, findAll } = require('../lib/query');
+const { create, findAll, updateOne } = require('../lib/query');
 const ACCOUNT_HISTORY_DBMODEL = {
   userId: 'user_id',
   categoryId: 'category_id',
@@ -75,7 +75,7 @@ const AccountHistoryService = {
       return acc;
     }, new Object());
 
-    const accountHistory = updateOne('account_history', id, accountHistoryMap);
+    const accountHistory = updateOne('account_history', { id }, accountHistoryMap);
     return accountHistory;
   },
 };
