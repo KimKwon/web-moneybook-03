@@ -3,9 +3,9 @@ import xIcon from '@/assets/icon/x.svg';
 import './index.scss';
 
 class DropDown {
-  constructor($target, list, handleClick, isRemovable) {
+  constructor($target, dropdownData, handleClick, isRemovable) {
     this.$target = $target;
-    this.list = list;
+    this.dropdownData = dropdownData;
     this.handleClick = handleClick;
     this.isRemovable = isRemovable;
 
@@ -41,8 +41,7 @@ class DropDown {
   }
 
   template() {
-    console.log(this.list);
-    return this.list
+    return this.dropdownData
       .map(
         ({ name, id }, index) => /* html */ `
       <li class="dropdown__item" data-id="${id}" data-category-name="${name}">
@@ -54,7 +53,7 @@ class DropDown {
         }
       </li>
       ${
-        index < this.list.length - 1
+        index < this.dropdownData.length - 1
           ? /*html */
             ` 
               <div class="dropdown__delimiter"></div>

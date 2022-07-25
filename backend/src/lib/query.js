@@ -156,7 +156,6 @@ const createSetTemplate = (condition) => {
 const createWhereTemplate = (condition) => {
   const whereTemplate = Object.entries(condition)
     .map(([field, target]) => {
-      // console.log(field, target);
       if (typeof target !== 'object') {
         return `${field} = ${target}`;
       }

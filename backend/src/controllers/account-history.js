@@ -23,8 +23,6 @@ const createAccountHistory = async (req, res) => {
     is_profit: isProfit,
   });
 
-  console.log(result);
-
   res.status(200).json(result);
 };
 
