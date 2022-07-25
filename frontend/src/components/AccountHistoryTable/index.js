@@ -1,5 +1,6 @@
 import './index.scss';
 import Component from '@/lib/component';
+import Category from '../Category/index';
 class AccountHistoryTable extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -14,15 +15,14 @@ class AccountHistoryTable extends Component {
             <div class="account-history-bydate">
               <div class="account-history-bydate-header">
                 <span class="account-history-date">${month}월 ${date}일 ${day}</span>
-              <div>
-            ${this.incomeTemplate(income)}
-            ${this.expenditureTemplate(expenditure)} 
+                <div>
+                  ${this.incomeTemplate(income)}
+                  ${this.expenditureTemplate(expenditure)} 
+                </div>
+              </div>
+              ${data.map((historyItem) => this.historyItemTemplate(historyItem)).join('')}
           </div>
-        </div>
-        ${data.map((historyItem) => this.historyItemTemplate(historyItem)).join('')}
-      </div>
-    </div>
-    `;
+        `;
       })
       .join('')}
     `;
@@ -43,25 +43,32 @@ class AccountHistoryTable extends Component {
   }
 
   historyItemTemplate(historyItem) {
-    const { content, methodName, amount, categoryId, isProfit, idx } = historyItem;
+    const { content, methodName, amount, categoryId, isProfit, idx, categoryName } = historyItem;
     return /* html */ `
-        <div data-idx='${idx}' class="account-wrapper">
-        <div class="account-category">
-          <div class="category-tag">
-              <span>태그 샘플 ${categoryId}</span>
-          </div>
-        </div>
-        <div class="account-history-content">${content}</div>
-        <div class="account-history-method">${methodName}</div>
-        <div class="account-history-amount">${isProfit ? '' : '-'}${amount.toLocaleString(
+        <div data-idx='${idx}' class="history-itme-wrapper">
+        <div class="history-item-category" data-id='${categoryId}' data-name='${categoryName}'></div>
+        <div class="history-item-content">${content}</div>
+        <div class="history-item-method">${methodName}</div>
+        <div class="history-item-amount">${isProfit ? '' : '-'} ${amount.toLocaleString(
       'ko-KR',
-    )} 원</div>
+    )}원</div>
       </div>
     `;
   }
 
+  /* 위에가 템플릿으로 만들어져서 아래부분을 끼워 넣을 수가 없네요 */
+  renderCategory() {
+    const $categories = this.$target.querySelectorAll('.history-item-category');
+    $categories.forEach(($category) => {
+      const id = $category.dataset['id'];
+      const name = $category.dataset['name'];
+      new Category($category, { id, name });
+    });
+  }
+
   render() {
     this.$target.innerHTML = this.template();
+    this.renderCategory();
   }
 }
 
