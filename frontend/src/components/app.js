@@ -27,7 +27,6 @@ class App extends Component {
   }
   async initPaymentMethodDummyData() {
     const paymentMethod = await getPaymentMethod();
-    console.log(paymentMethod);
     store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
   }
   async initCategorydummyData() {
