@@ -1,6 +1,6 @@
 const { updateOne, findAll } = require('../lib/query');
 const { CATEGORY_DBMODEL } = require('../constants/model');
-const { getValidDbMap } = require('../utils/db');
+const { getValidDbMap, getDbFields } = require('../utils/db');
 
 const CategoryService = {
   getCategory: async (type) => {
@@ -23,7 +23,8 @@ const CategoryService = {
 
   updateCategory: async (id, requestData) => {
     const validMap = getValidDbMap(CATEGORY_DBMODEL, requestData);
-    const options = { condition: { id }, updateMap: validMap };
+    const fields = getDbFields(CATEGORY_DBMODEL);
+    const options = { condition: { id }, updateMap: validMap, fields };
     const category = await updateOne('category', options);
     return category;
   },

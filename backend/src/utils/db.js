@@ -8,4 +8,11 @@ const getValidDbMap = (model, requestData) => {
   return validMap;
 };
 
-module.exports = { getValidDbMap };
+const getDbFields = (model) => {
+  const fields = Object.entries(model).reduce((acc, [key, dbKey]) => {
+    acc.fields.push(`${dbKey} as ${key}`);
+    return acc;
+  }, []);
+  return fields;
+};
+module.exports = { getValidDbMap, getDbFields };

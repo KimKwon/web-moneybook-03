@@ -1,6 +1,6 @@
 const { create, findAll, updateOne } = require('../lib/query');
 const { ACCOUNT_HISTORY_DBMODEL } = require('../constants/model');
-const { getValidDbMap } = require('../utils/db');
+const { getValidDbMap, getDbFields } = require('../utils/db');
 
 const AccountHistoryService = {
   getAccountHistory: async (options) => {
@@ -51,14 +51,16 @@ const AccountHistoryService = {
 
   createAccountHistory: (requestData) => {
     const validMap = getValidDbMap(ACCOUNT_HISTORY_DBMODEL, requestData);
-    const options = { createMap: validMap };
+    const fields = getDbFields(ACCOUNT_HISTORY_DBMODEL);
+    const options = { createMap: validMap, fields };
     const accountHistory = create('account_history', options);
     return accountHistory;
   },
 
   updateAccountHistory: (id, requestData) => {
     const validMap = getValidDbMap(ACCOUNT_HISTORY_DBMODEL, requestData);
-    const options = { condition: { id }, updateMap: validMap };
+    const fields = getDbFields(ACCOUNT_HISTORY_DBMODEL);
+    const options = { condition: { id }, updateMap: validMap, fields };
     const accountHistory = updateOne('account_history', options);
     return accountHistory;
   },
