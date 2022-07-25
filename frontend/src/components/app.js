@@ -48,6 +48,16 @@ class App extends Component {
         isProfit: false,
       },
       {
+        id: 2,
+        date: new Date(),
+        content: '서브웨이',
+        amount: 8000,
+        methodName: '농협카드',
+        categoryName: '식비',
+        categoryId: 4,
+        isProfit: true,
+      },
+      {
         id: 4,
         date: new Date('2022-07-25'),
         content: '월급',
