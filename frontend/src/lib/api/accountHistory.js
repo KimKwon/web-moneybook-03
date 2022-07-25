@@ -43,3 +43,20 @@ export const putAccountHistory = async (historyItem) => {
     return null;
   }
 };
+
+export const patchAccountHistory = async (id, historyItem) => {
+  const option = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(historyItem),
+  };
+  try {
+    const response = await fetch(`${baseUrl}/account-history/${id}`, option);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return null;
+  }
+};
