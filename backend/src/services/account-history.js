@@ -1,13 +1,6 @@
 const { create, findAll, updateOne } = require('../lib/query');
-const ACCOUNT_HISTORY_DBMODEL = {
-  userId: 'user_id',
-  categoryId: 'category_id',
-  paymentMethodId: 'payment_method_id',
-  date: 'date',
-  content: 'content',
-  amount: 'amount',
-  isProfit: 'is_profit',
-};
+const { ACCOUNT_HISTORY_DBMODEL } = require('../constants/model');
+
 const AccountHistoryService = {
   getAccountHistory: async (options) => {
     try {

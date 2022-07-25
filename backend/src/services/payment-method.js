@@ -1,9 +1,6 @@
 const { create, deleteOne, findAll } = require('../lib/query');
-const PAYMENT_METHOD_DBMODEL = {
-  userId: 'user_id',
-  name: 'name',
-  isDelete: 'is_delete',
-};
+const { PAYMENT_METHOD_DBMODEL } = require('../constants/model');
+
 const PaymentMethodService = {
   getPaymentMethod: async () => {
     try {

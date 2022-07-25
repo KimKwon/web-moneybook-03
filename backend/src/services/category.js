@@ -1,7 +1,6 @@
 const { updateOne, findAll } = require('../lib/query');
-const CATEGORY_DBMODEL = {
-  color: 'color',
-};
+const { CATEGORY_DBMODEL } = require('../constants/model');
+
 const CategoryService = {
   getCategory: async (type) => {
     try {
