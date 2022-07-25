@@ -29,7 +29,7 @@ class Category extends Component {
   }
 
   render() {
-    this.$element.innerHTML = `<span>${this.state.name}</span>`;
+    this.$element.innerHTML = this.state.name;
     this.paintCategory();
     this.$target.appendChild(this.$element);
   }
