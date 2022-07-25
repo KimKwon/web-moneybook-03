@@ -10,7 +10,7 @@ const getValidDbMap = (model, requestData) => {
 
 const getDbFields = (model) => {
   const fields = Object.entries(model).reduce((acc, [key, dbKey]) => {
-    acc.fields.push(`${dbKey} as ${key}`);
+    acc.push(`${dbKey} as ${key}`);
     return acc;
   }, []);
   return fields;

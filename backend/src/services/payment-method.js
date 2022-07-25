@@ -26,7 +26,7 @@ const PaymentMethodService = {
 
   deletePaymentMethod: async (id) => {
     const fields = getDbFields(PAYMENT_METHOD_DBMODEL);
-    const options = { id, fields };
+    const options = { condition: { id }, fields };
     const paymentMethod = await deleteOne('payment_method', options);
     return paymentMethod;
   },
