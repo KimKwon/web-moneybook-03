@@ -31,6 +31,8 @@ function getParsedDatestring(dateType) {
           date.getDate(),
           2,
         )}`;
+      default:
+        return this;
     }
   } catch (error) {
     console.log(error);
