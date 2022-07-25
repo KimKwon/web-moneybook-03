@@ -8,7 +8,7 @@ import { baseUrl } from '@/constants/base-url';
  * }
  * @returns { Promise<PaymentMethod[]> }
  */
-export const getPaymentMethod = async (type) => {
+export const getPaymentMethod = async () => {
   try {
     const response = await fetch(`${baseUrl}/payment-method`);
     const result = await response.json();
