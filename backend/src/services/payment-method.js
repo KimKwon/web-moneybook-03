@@ -20,14 +20,21 @@ const PaymentMethodService = {
   },
 
   createPaymentMethod: async (requestData) => {
-    const paymentMethodMap = Object.entries(requestData).reduce((acc, [key, value]) => {
-      if (!key in PAYMENT_METHOD_DBMODEL) return acc;
-      const dbKey = PAYMENT_METHOD_DBMODEL[key];
-      acc[dbKey] = value;
-      return acc;
-    }, new Object());
-
-    const paymentMethod = await create('payment_method', paymentMethodMap);
+    const paymentMethodMap = Object.entries(requestData).reduce(
+      (acc, [key, value]) => {
+        if (!key in PAYMENT_METHOD_DBMODEL) return acc;
+        const dbKey = PAYMENT_METHOD_DBMODEL[key];
+        acc.map[dbKey] = value;
+        acc.fields.push(`${dbKey} as ${key}`);
+        return acc;
+      },
+      { map: {}, fields: [] },
+    );
+    const paymentMethod = await create(
+      'payment_method',
+      paymentMethodMap.map,
+      paymentMethodMap.fields,
+    );
     return paymentMethod;
   },
 

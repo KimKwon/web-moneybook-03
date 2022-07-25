@@ -68,10 +68,12 @@ const findAll = async (table, options = {}) => {
   }
 };
 
-const findOne = async (table, condition) => {
+const findOne = async (table, condition, fields) => {
   try {
     const whereTemplate = createWhereTemplate(condition);
-    const seleteQuery = `SELECT * FROM ${table} WHERE ${whereTemplate}`;
+    const seleteQuery = `SELECT ${
+      fields ? fields.join(', ') : '*'
+    } FROM ${table} WHERE ${whereTemplate}`;
     const [rows] = await getDB().query(seleteQuery);
     return rows.length === 0 ? null : rows[0];
   } catch (err) {
@@ -113,7 +115,7 @@ const deleteOne = async (table, condition) => {
 
 const deleteAll = (table, condition) => {};
 
-const create = async (table, createMap) => {
+const create = async (table, createMap, fields) => {
   try {
     const keys = [],
       values = [];
@@ -125,7 +127,7 @@ const create = async (table, createMap) => {
     const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
     const [row] = await getDB().execute(createQuery);
     if (row.affectedRows !== 1) return null;
-    const createData = await findOne(table, { id: row.insertId });
+    const createData = await findOne(table, { id: row.insertId }, fields);
     return createData;
   } catch (err) {
     console.log(err);
