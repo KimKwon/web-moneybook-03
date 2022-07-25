@@ -2,7 +2,6 @@ const PaymentMethodService = require('../services/payment-method');
 
 const getPaymentMethod = async (req, res) => {
   const result = await PaymentMethodService.getPaymentMethod();
-
   if (!result) {
     return res.status(500).send('server error');
   }
@@ -11,7 +10,10 @@ const getPaymentMethod = async (req, res) => {
 };
 
 const createPaymentMethod = async (req, res) => {
-  const result = await PaymentMethodService.createPaymentMethod(req.body);
+  const userId = req.get('X-USER-ID') || 'star';
+  const requestData = req.body;
+  requestData.userId = userId;
+  const result = await PaymentMethodService.createPaymentMethod(requestData);
   if (!result) {
     return res.status(500).send('server error');
   }
