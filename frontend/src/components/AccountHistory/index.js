@@ -51,7 +51,7 @@ class AccountHitoryTable extends Component {
   }
 
   changeFormData(e) {
-    const $account = e.target.closest('.account-wrapper');
+    const $account = e.target.closest('.history-item-wrapper');
     if (!$account) return;
     const idx = $account.dataset['idx'];
     const account = this.originAccountHistory[idx];
