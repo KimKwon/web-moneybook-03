@@ -14,6 +14,18 @@ function reducer(state, action, payload) {
       return { ...state, paymentMethods: payload };
     case 'setAccountHistory':
       return { ...state, accountHistory: payload };
+    case 'addAccountHistory':
+      return { ...state, accountHistory: [...state.accountHistory, payload] };
+    case 'updateAccountHistory':
+      const { id } = payload;
+      const targetIndex = state.accountHistory.findIndex((history) => history.id === id);
+
+      if (targetIndex < 0) return state;
+
+      const nextHistory = [...state.accountHistory];
+      nextHistory[targetIndex] = payload;
+
+      return { ...state, accountHistory: nextHistory };
     default:
       return { ...state };
   }

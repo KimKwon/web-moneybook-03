@@ -1,4 +1,4 @@
-.history-itme-wrapper {
+.history-item-wrapper {
   padding: 0.4rem 0.5rem;
   width: 100%;
   display: grid;
@@ -6,7 +6,8 @@
   border-bottom: 1px solid $color-gray;
   font-size: 1.2rem;
 }
-.history-itme-wrapper > div {
+
+.history-item-wrapper > div {
   display: flex;
   padding: 0.5rem;
   align-items: center;
@@ -14,6 +15,7 @@
     justify-content: end;
   }
 }
+
 .category {
   margin-right: 0.7rem;
 }
