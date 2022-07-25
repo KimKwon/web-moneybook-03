@@ -9,7 +9,7 @@ class Category extends Component {
   }
   init() {
     this.$element = document.createElement('div');
-    this.$element.className = 'category-tag';
+    this.$element.className = 'category';
   }
   didMount() {
     store.subscribe(SELECTOR_MAP.CATEGORY, this.paintCategory.bind(this));
@@ -29,7 +29,7 @@ class Category extends Component {
   }
 
   render() {
-    this.$element.innerHTML = this.state.name;
+    this.$element.innerHTML = `<span>${this.state.name}</span>`;
     this.paintCategory();
     this.$target.appendChild(this.$element);
   }

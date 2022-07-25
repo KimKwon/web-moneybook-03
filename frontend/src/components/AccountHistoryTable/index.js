@@ -46,8 +46,10 @@ class AccountHistoryTable extends Component {
     const { content, methodName, amount, categoryId, isProfit, idx, categoryName } = historyItem;
     return /* html */ `
         <div data-idx='${idx}' class="history-itme-wrapper">
-        <div class="history-item-category" data-id='${categoryId}' data-name='${categoryName}'></div>
-        <div class="history-item-content">${content}</div>
+        <div>
+          <div class="history-item-category" data-id='${categoryId}' data-name='${categoryName}'></div>
+          <div class="history-item-content">${content}</div>
+        </div>
         <div class="history-item-method">${methodName}</div>
         <div class="history-item-amount">${isProfit ? '' : '-'} ${amount.toLocaleString(
       'ko-KR',

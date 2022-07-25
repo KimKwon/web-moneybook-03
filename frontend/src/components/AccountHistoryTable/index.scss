@@ -1,12 +1,16 @@
 .history-itme-wrapper {
+  padding: 0.4rem 0rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr;
   border-bottom: 1px solid $color-gray;
 }
 .history-itme-wrapper > div {
   display: flex;
   padding: 0.5rem;
-  justify-content: center;
+
   align-items: center;
+}
+.category {
+  margin-right: 0.7rem;
 }
