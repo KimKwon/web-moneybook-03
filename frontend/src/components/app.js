@@ -6,6 +6,7 @@ import { SELECTOR_MAP } from '@/constants/selector-map';
 import { getAccountHistory } from '@/lib/api/accountHistory';
 import { getStartAndEndDate } from '@/utils/date';
 import { getCategories } from '@/lib/api/category';
+import { getPaymentMethod } from '@/lib/api/paymentMethod';
 class App extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -24,29 +25,9 @@ class App extends Component {
     });
     store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
   }
-  initPaymentMethodDummyData() {
-    const paymentMethod = [
-      {
-        id: 1,
-        name: '현대카드',
-        isDelete: false,
-      },
-      {
-        id: 2,
-        name: '카카오카드',
-        isDelete: false,
-      },
-      {
-        id: 3,
-        name: '농협카드',
-        isDelete: true,
-      },
-      {
-        id: 4,
-        name: '현금',
-        isDelete: false,
-      },
-    ];
+  async initPaymentMethodDummyData() {
+    const paymentMethod = await getPaymentMethod();
+    console.log(paymentMethod);
     store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
   }
   async initCategorydummyData() {
