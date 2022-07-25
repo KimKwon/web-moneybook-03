@@ -85,10 +85,10 @@ const findOne = async (table, options = {}) => {
 };
 
 const updateOne = async (table, options = {}) => {
-  const { condition, updateMap, fields } = options;
+  const { condition, updateMap } = options;
 
   try {
-    const beforeUpdateData = await findOne(table, condition, fields);
+    const beforeUpdateData = await findOne(table, { condition });
     if (!beforeUpdateData) return null;
     const whereTemplate = createWhereTemplate(condition);
     const setTemplate = createSetTemplate(updateMap);
@@ -96,7 +96,7 @@ const updateOne = async (table, options = {}) => {
     const [row] = await getDB().query(updateQuery);
     return row.affectedRows === 1 ? beforeUpdateData : null;
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };

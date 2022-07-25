@@ -1,11 +1,11 @@
-const CATEGORY_DBMODEL = {
+export const CATEGORY_DBMODEL = {
   id: 'id',
   userId: 'user_id',
   color: 'color',
   name: 'name',
   isProfit: 'is_profit',
 };
-const ACCOUNT_HISTORY_DBMODEL = {
+export const ACCOUNT_HISTORY_DBMODEL = {
   id: 'id',
   userId: 'user_id',
   categoryId: 'category_id',
@@ -16,11 +16,9 @@ const ACCOUNT_HISTORY_DBMODEL = {
   isProfit: 'is_profit',
 };
 
-const PAYMENT_METHOD_DBMODEL = {
+export const PAYMENT_METHOD_DBMODEL = {
   id: 'id',
   userId: 'user_id',
   name: 'name',
   isDelete: 'is_delete',
 };
-
-module.exports = { CATEGORY_DBMODEL, ACCOUNT_HISTORY_DBMODEL, PAYMENT_METHOD_DBMODEL };
