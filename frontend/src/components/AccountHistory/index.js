@@ -63,17 +63,18 @@ class AccountHitoryTable extends Component {
     sortedTargetData.sort(function (a, b) {
       return new Date(a.date) - new Date(b.date);
     });
-    const groupData = sortedTargetData.reduce((acc, cur, idx) => {
+    const groupData = sortedTargetData.reduce((acc, cur) => {
       let len = acc.length;
-      if (len === 0 || acc[len - 1].date != cur.date.getDate()) {
+      const currentDate = new Date(cur.date);
+      if (len === 0 || acc[len - 1].date != currentDate.getDate()) {
         acc.push({});
         len = acc.length;
       }
       if (!acc[len - 1].date) {
         acc[len - 1] = {
-          date: cur.date.getDate(),
-          month: cur.date.getMonth(),
-          day: dayToString(cur.date.getDay()),
+          date: currentDate.getDate(),
+          month: currentDate.getMonth(),
+          day: dayToString(currentDate.getDay()),
           data: [],
           income: 0,
           expenditure: 0,

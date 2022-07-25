@@ -14,6 +14,7 @@ const INITIAL_FORM_DATA = {
   id: '',
   date: new Date().toString(),
   category: '',
+  categoryId: '',
   content: '',
   method: '',
   amount: '',
@@ -91,7 +92,7 @@ class AccountForm extends Component {
         amount: Number($amount.value.toString().replaceAll(',', '')),
         methodName: $method.selectedOptions[0]?.value,
         categoryName: $category.selectedOptions[0]?.value,
-        categoryId: shortid(),
+        categoryId: 1,
         isProfit: true,
       },
       SELECTOR_MAP.ACCOUNT_HISTORY,
@@ -158,13 +159,14 @@ class AccountForm extends Component {
   }
 
   reFatchFormData(newFormData) {
-    const { id, content, amount, date, categoryName, methodName } = newFormData;
+    const { id, content, amount, date, categoryName, categoryId, methodName } = newFormData;
 
     this.setState({
       accountInfo: {
         ...this.state.accountInfo,
         id,
         category: categoryName,
+        categoryId,
         method: methodName,
         content,
         amount,

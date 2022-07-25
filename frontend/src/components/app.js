@@ -3,6 +3,8 @@ import Router from '@/lib/router';
 import './app.scss';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
+import { getAccountHistory } from '@/lib/api/accountHistory';
+import { getStartAndEndDate } from '@/utils/date';
 class App extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -15,59 +17,10 @@ class App extends Component {
     new Router(this.$target);
   }
 
-  initAccountHistory() {
-    const accountHistory = [
-      {
-        id: 1,
-        date: new Date('2022-07-21'),
-        content: '국밥',
-        amount: 8000,
-        methodName: '현대카드',
-        categoryName: '식비',
-        categoryId: 2,
-        isProfit: true,
-      },
-      {
-        id: 2,
-        date: new Date('2022-07-25'),
-        content: '서브웨이',
-        amount: 8000,
-        methodName: '농협카드',
-        categoryName: '식비',
-        categoryId: 4,
-        isProfit: true,
-      },
-      {
-        id: 3,
-        date: new Date('2022-07-22'),
-        content: '국밥',
-        amount: 8000,
-        methodName: '현대카드',
-        categoryName: '차비',
-        categoryId: 1,
-        isProfit: false,
-      },
-      {
-        id: 2,
-        date: new Date(),
-        content: '서브웨이',
-        amount: 8000,
-        methodName: '농협카드',
-        categoryName: '식비',
-        categoryId: 4,
-        isProfit: true,
-      },
-      {
-        id: 4,
-        date: new Date('2022-07-25'),
-        content: '월급',
-        amount: 28000,
-        methodName: '현대카드',
-        categoryName: '월급',
-        categoryId: 11,
-        isProfit: false,
-      },
-    ];
+  async initAccountHistory() {
+    const accountHistory = await getAccountHistory({
+      ...getStartAndEndDate(new Date()),
+    });
     store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
   }
   initPaymentMethodDummyData() {
