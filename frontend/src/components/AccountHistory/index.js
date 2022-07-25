@@ -59,7 +59,11 @@ class AccountHitoryTable extends Component {
   }
 
   groupByDate(targetData) {
-    const groupData = targetData.reduce((acc, cur, idx) => {
+    const sortedTargetData = [...targetData];
+    sortedTargetData.sort(function (a, b) {
+      return new Date(a.date) - new Date(b.date);
+    });
+    const groupData = sortedTargetData.reduce((acc, cur, idx) => {
       let len = acc.length;
       if (len === 0 || acc[len - 1].date != cur.date.getDate()) {
         acc.push({});
