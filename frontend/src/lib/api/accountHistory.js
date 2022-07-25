@@ -26,3 +26,20 @@ export const getAccountHistory = async (query) => {
     return null;
   }
 };
+
+export const putAccountHistory = async (historyItem) => {
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(historyItem),
+  };
+  try {
+    const response = await fetch(`${baseUrl}/account-history`, option);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return null;
+  }
+};
