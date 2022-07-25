@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const exp = require('constants');
 const Router = require('./routes');
 const { initDatabase } = require('./lib/database');
@@ -13,6 +14,7 @@ dbTest();
 
 const app = express();
 
+app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
