@@ -36,8 +36,6 @@ export const getStartAndEndDate = (_date) => {
     .toString()
     .getParsedDatestring('YYYY-MM-DD');
 
-  console.log(startDate, endDate);
-
   return {
     startDate,
     endDate,

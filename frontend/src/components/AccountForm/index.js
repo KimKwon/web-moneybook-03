@@ -57,9 +57,7 @@ class AccountForm extends Component {
     const originCategory = store.getState(SELECTOR_MAP.CATEGORY);
 
     const categories =
-      currentCategoryType === INCOME
-        ? originCategory.incomeCategoryDummyData
-        : originCategory.expenditureCategoryDummyData;
+      currentCategoryType === INCOME ? originCategory.income : originCategory.expenditure;
 
     return categories
       .map(

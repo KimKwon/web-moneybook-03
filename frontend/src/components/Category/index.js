@@ -18,10 +18,7 @@ class Category extends Component {
   paintCategory() {
     /* category 배열이 아닌 객체리터럴이여도 좋을것 같네요 */
     let categories = store.getState(SELECTOR_MAP.CATEGORY);
-    categories = [
-      ...categories.expenditureCategoryDummyData,
-      ...categories.incomeCategoryDummyData,
-    ];
+    categories = [...categories.expenditure, ...categories.income];
     const category = categories.find((category) => {
       return category.id == this.state.id;
     });

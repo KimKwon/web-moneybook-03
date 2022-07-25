@@ -21,7 +21,6 @@ export const getAccountHistory = async (query) => {
   try {
     const response = await fetch(`${baseUrl}/account-history?${queryString}`);
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     return null;
