@@ -22,10 +22,10 @@ class Category extends Component {
       ...categories.expenditureCategoryDummyData,
       ...categories.incomeCategoryDummyData,
     ];
-    const category = categories.filter((category) => {
+    const category = categories.find((category) => {
       return category.id == this.state.id;
     });
-    this.$element.style.backgroundColor = category[0].color;
+    this.$element.style.backgroundColor = category.color;
   }
 
   render() {
