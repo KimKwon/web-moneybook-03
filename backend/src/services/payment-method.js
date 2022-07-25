@@ -1,5 +1,9 @@
 const { create, deleteOne, findAll } = require('../lib/query');
-
+const PAYMENT_METHOD_DBMODEL = {
+  userId: 'user_id',
+  name: 'name',
+  isDelete: 'is_delete',
+};
 const PaymentMethodService = {
   getPaymentMethod: async () => {
     try {
@@ -15,13 +19,20 @@ const PaymentMethodService = {
     }
   },
 
-  createPaymentMethod: (paymentMethodMap) => {
-    const paymentMethod = create('paymentMethod', paymentMethodMap);
+  createPaymentMethod: async (requestData) => {
+    const paymentMethodMap = Object.entries(requestData).reduce((acc, [key, value]) => {
+      if (!key in PAYMENT_METHOD_DBMODEL) return acc;
+      const dbKey = PAYMENT_METHOD_DBMODEL[key];
+      acc[dbKey] = value;
+      return acc;
+    }, new Object());
+
+    const paymentMethod = await create('payment_method', paymentMethodMap);
     return paymentMethod;
   },
 
-  deletePaymentMethod: (id, condition) => {
-    const paymentMethod = deleteOne('paymentMethod', id, condition);
+  deletePaymentMethod: async (id) => {
+    const paymentMethod = await deleteOne('payment_method', { id });
     return paymentMethod;
   },
 };

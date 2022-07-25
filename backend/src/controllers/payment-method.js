@@ -10,14 +10,21 @@ const getPaymentMethod = async (req, res) => {
   res.status(200).json(result);
 };
 
-const createPaymentMethod = (req, res) => {
-  PaymentMethodService.createPaymentMethod();
-  res.status(200).send('결제수단이다~');
+const createPaymentMethod = async (req, res) => {
+  const result = await PaymentMethodService.createPaymentMethod(req.body);
+  if (!result) {
+    res.status(500).send('server error');
+  }
+  res.status(200).send(result);
 };
 
-const deletePaymentMethod = (req, res) => {
-  PaymentMethodService.deletePaymentMethod();
-  res.status(200).send('결제수단이다~');
+const deletePaymentMethod = async (req, res) => {
+  const id = req.params.id;
+  const result = await PaymentMethodService.deletePaymentMethod(id);
+  if (!result) {
+    res.status(500).send('server error');
+  }
+  res.status(200).send(result);
 };
 
 module.exports = { getPaymentMethod, createPaymentMethod, deletePaymentMethod };
