@@ -1,5 +1,13 @@
-const { find, findAll } = require('../lib/query');
-
+const { create, findAll } = require('../lib/query');
+const ACCOUNT_HISTORY_DBMODEL = {
+  userId: 'user_id',
+  categoryId: 'category_id',
+  paymentMethodId: 'payment_method_id',
+  date: 'date',
+  content: 'content',
+  amount: 'amount',
+  isProfit: 'is_profit',
+};
 const AccountHistoryService = {
   getAccountHistory: async (options) => {
     try {
@@ -47,23 +55,27 @@ const AccountHistoryService = {
     }
   },
 
-  createAccountHistory: (accountHistory) => {
-    const { userId, categoryId, paymentMethodId, date, content, amount, isProfit } = accountHistory;
-    const accountHistoryMap = {
-      user_id: userId,
-      category_id: categoryId,
-      payment_method_id: paymentMethodId,
-      date: date,
-      content: content,
-      amount: amount,
-      is_profit: isProfit,
-    };
-    const accountHistory = create('account-history', accountHistoryMap);
+  createAccountHistory: (requestData) => {
+    const accountHistoryMap = Object.entries(requestData).reduce((acc, [key, value]) => {
+      if (!key in ACCOUNT_HISTORY_DBMODEL) return acc;
+      const dbKey = ACCOUNT_HISTORY_DBMODEL[key];
+      acc[dbKey] = value;
+      return acc;
+    }, new Object());
+
+    const accountHistory = create('account_history', accountHistoryMap);
     return accountHistory;
   },
 
-  updateAccountHistory: (id, accountHistoryMap) => {
-    const accountHistory = updateOne('account-history', id, accountHistoryMap);
+  updateAccountHistory: (id, requestData) => {
+    const accountHistoryMap = Object.entries(requestData).reduce((acc, [key, value]) => {
+      if (!key in ACCOUNT_HISTORY_DBMODEL) return acc;
+      const dbKey = ACCOUNT_HISTORY_DBMODEL[key];
+      acc[dbKey] = value;
+      return acc;
+    }, new Object());
+
+    const accountHistory = updateOne('account_history', id, accountHistoryMap);
     return accountHistory;
   },
 };

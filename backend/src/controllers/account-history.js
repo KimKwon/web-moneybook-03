@@ -18,9 +18,13 @@ const createAccountHistory = async (req, res) => {
   res.status(200).send(result);
 };
 
-const updateAccountHistory = (req, res) => {
-  AccountHistoryService.updateAccountHistory();
-  res.status(200).send('결제수단이다~');
+const updateAccountHistory = async (req, res) => {
+  const id = req.query.id;
+  const result = await AccountHistoryService.updateAccountHistory(id, req.body);
+  if (!result) {
+    res.status(500).send('server error');
+  }
+  res.status(200).send(result);
 };
 
 module.exports = { getAccountHistory, createAccountHistory, updateAccountHistory };

@@ -75,7 +75,7 @@ const findOne = async (table, condition) => {
     const [rows] = await getDB().query(seleteQuery);
     return rows.length === 0 ? null : rows[0];
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
@@ -106,7 +106,7 @@ const deleteOne = async (table, condition) => {
     const [row] = await getDB().query(deleteQuery);
     return row.affectedRows === 1 ? beforeDeleteData : null;
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
@@ -128,7 +128,7 @@ const create = async (table, createMap) => {
     const createData = await findOne(table, { id: row.insertId });
     return createData;
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
