@@ -73,7 +73,7 @@ class AccountHitoryTable extends Component {
       if (!acc[len - 1].date) {
         acc[len - 1] = {
           date: currentDate.getDate(),
-          month: currentDate.getMonth(),
+          month: currentDate.getMonth() + 1,
           day: dayToString(currentDate.getDay()),
           data: [],
           income: 0,

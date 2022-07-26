@@ -1,4 +1,6 @@
-const { create, find, findAll } = require('../lib/query');
+const { create, findAll, updateOne } = require('../lib/query');
+const { ACCOUNT_HISTORY_DBMODEL } = require('../constants/model');
+const { getValidDbMap, getDbFields } = require('../utils/db');
 
 const AccountHistoryService = {
   getAccountHistory: async (options) => {
@@ -47,19 +49,19 @@ const AccountHistoryService = {
     }
   },
 
-  createAccountHistory: async (accountHistoryMap) => {
-    try {
-      const accountHistory = await create('account_history', accountHistoryMap);
-      if (!accountHistory) return null;
-      return accountHistory;
-    } catch (error) {
-      console.log('error :>> ', error);
-      return null;
-    }
+  createAccountHistory: (requestData) => {
+    const validMap = getValidDbMap(ACCOUNT_HISTORY_DBMODEL, requestData);
+    const fields = getDbFields(ACCOUNT_HISTORY_DBMODEL);
+    const options = { createMap: validMap, fields };
+    const accountHistory = create('account_history', options);
+    return accountHistory;
   },
 
-  updateAccountHistory: (id, accountHistoryMap) => {
-    const accountHistory = updateOne('account_history', id, accountHistoryMap);
+  updateAccountHistory: (id, requestData) => {
+    const validMap = getValidDbMap(ACCOUNT_HISTORY_DBMODEL, requestData);
+    const fields = getDbFields(ACCOUNT_HISTORY_DBMODEL);
+    const options = { condition: { id }, updateMap: validMap, fields };
+    const accountHistory = updateOne('account_history', options);
     return accountHistory;
   },
 };

@@ -27,17 +27,59 @@ export const getAccountHistory = async (query) => {
   }
 };
 
-export const createAccountHistory = async (historyMap) => {
+/**
+ * @interface HistoryItem {
+ *  categoryId
+ *  paymentMethodId
+ *  date
+ *  content
+ *  amount
+ *  isProfit
+ * }
+ * @param { HistoryItem } historyItem
+ * @returns { Promise<HistoryItem}> }
+ */
+export const createAccountHistory = async (historyItem) => {
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(historyItem),
+  };
   try {
-    const response = await fetch(`${baseUrl}/account-history`, {
-      method: 'POST',
-      body: JSON.stringify(historyMap),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(`${baseUrl}/account-history`, option);
     const result = await response.json();
+    return result;
+  } catch (error) {
+    return null;
+  }
+};
 
+/**
+ * @interface HistoryItem {
+ *  categoryId
+ *  paymentMethodId
+ *  date
+ *  content
+ *  amount
+ *  isProfit
+ * }
+ * @param { Number} id
+ * @param { HistoryItem } historyItem
+ * @returns { Promise<HistoryItem> }
+ */
+export const patchAccountHistory = async (id, historyItem) => {
+  const option = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(historyItem),
+  };
+  try {
+    const response = await fetch(`${baseUrl}/account-history/${id}`, option);
+    const result = await response.json();
     return result;
   } catch (error) {
     return null;
