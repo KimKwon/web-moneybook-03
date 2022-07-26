@@ -33,6 +33,26 @@
     display: inline-block;
     margin-bottom: 0.3rem;
   }
+  &-dropdown-category,
+  &-dropdown-method {
+    text-align: start;
+    width: 100%;
+    position: relative;
+
+    color: $color-gray-dark;
+
+    display: flex;
+    justify-content: space-between;
+
+    &__selected {
+      color: $color-title-active;
+      font-size: 16px;
+    }
+
+    & > svg {
+      width: 16px;
+    }
+  }
   &-input {
     font-size: 1.2rem;
     width: 100%;

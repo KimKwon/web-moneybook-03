@@ -30,8 +30,8 @@ class App extends Component {
     store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
   }
   async initCategorydummyData() {
-    const expenditure = await getCategories('income');
-    const income = await getCategories('expenditure');
+    const income = await getCategories('income');
+    const expenditure = await getCategories('expenditure');
 
     store.dispatch('setCategory', { expenditure, income }, SELECTOR_MAP.CATEGORY);
   }

@@ -9,6 +9,7 @@ const getAccountHistory = async (req, res) => {
 };
 
 const createAccountHistory = async (req, res) => {
+
   const userId = req.get('X-USER-ID') || 'star';
   const requestData = req.body;
   requestData.userId = userId;
@@ -17,6 +18,7 @@ const createAccountHistory = async (req, res) => {
     return res.status(500).send('server error');
   }
   res.status(200).send(result);
+  
 };
 
 const updateAccountHistory = async (req, res) => {
