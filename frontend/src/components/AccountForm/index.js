@@ -106,7 +106,7 @@ class AccountForm extends Component {
                 <input type="text" value=${initialDate} maxlength="8" class="account-form-input date" placeholder="입력해주세요" />
             </div>
             <div class="account-form__delimiter"></div>
-            <div class="account-form-wrapper">
+            <div class="account-form-wrapper --dropable">
                 <span class="account-form-label">분류</span>
                 <button type="button" class="account-form-dropdown-category">
                   <span class="account-form-dropdown-category__selected" data-id="${categoryId}">
@@ -121,7 +121,7 @@ class AccountForm extends Component {
                 <input class="account-form-input content" value="${content}" data-name="content"  placeholder="입력하세요"/>
             </div>
             <div class="account-form__delimiter"></div>
-            <div class="account-form-wrapper">
+            <div class="account-form-wrapper --dropable">
                 <span class="account-form-label">결제수단</span>
                 <button type="button" class="account-form-dropdown-method">
                   <span class="account-form-dropdown-method__selected" data-id="${methodId}">
