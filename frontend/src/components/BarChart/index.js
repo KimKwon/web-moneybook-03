@@ -1,3 +1,5 @@
+import { getStatistic } from '@/lib/api/statistic';
+
 class BarChart {
   constructor(options) {
     const { values, interval } = options;
@@ -6,8 +8,9 @@ class BarChart {
     this.init();
   }
 
-  init() {
+  async init() {
     //
+
     this.Linterval = 60;
     this.interval = 60;
     this.row = 8;
