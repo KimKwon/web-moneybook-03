@@ -1,8 +1,12 @@
-const StatisticService = require("../services/statistic");
+const StatisticService = require('../services/statistic');
 
-const getStatistic = (req, res) => {
-  StatisticService.getStatistic();
-  res.status(200).send('결제수단이다~');
+const getStatistic = async (req, res) => {
+  const { year, month } = req.query;
+  const result = await StatisticService.getStatistic({ year, month });
+  if (!result) {
+    return res.status(500).send('server error');
+  }
+  res.status(200).json(result);
 };
 
 module.exports = { getStatistic };
