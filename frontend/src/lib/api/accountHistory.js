@@ -38,7 +38,7 @@ export const getAccountHistory = async (query) => {
  * @param { HistoryItem } historyItem
  * @returns { Promise<HistoryItem}> }
  */
-export const putAccountHistory = async (historyItem) => {
+export const createAccountHistory = async (historyItem) => {
   const option = {
     method: 'POST',
     headers: {

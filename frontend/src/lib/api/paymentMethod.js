@@ -18,7 +18,7 @@ export const getPaymentMethod = async () => {
   }
 };
 
-export const putPaymentMethod = async (paymentMethod) => {
+export const createPaymentMethod = async (paymentMethod) => {
   const option = {
     method: 'POST',
     headers: {
