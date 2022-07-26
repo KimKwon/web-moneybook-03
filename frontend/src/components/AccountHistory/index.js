@@ -91,15 +91,6 @@ class AccountHitoryTable extends Component {
     this.$accountHeader.setState({ accountHistoryByDate: this.accountHistoryByDate });
   }
 
-  calcGroupedDateInfo() {
-    const length = this.accountHistoryByDate.reduce(
-      (acc, timeGroup) => acc + timeGroup.data.length,
-      0,
-    );
-
-    return length;
-  }
-
   template() {
     return /* html */ `
         <div class="account-history">
