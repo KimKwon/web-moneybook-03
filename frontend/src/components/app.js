@@ -1,6 +1,7 @@
+import './app.scss';
+import '@/assets/style/reset.scss';
 import Component from '@/lib/component';
 import Router from '@/lib/router';
-import './app.scss';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import { getAccountHistory } from '@/lib/api/accountHistory';

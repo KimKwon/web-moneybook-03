@@ -47,7 +47,7 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              additionalData: `@import '@/assets/style/colors.scss'; @import '@/assets/style/reset.scss';`,
+              additionalData: `@import '@/assets/style/colors.scss';`,
             },
           },
         ],
