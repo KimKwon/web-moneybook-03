@@ -13,6 +13,11 @@ class DropDown {
     this.render();
   }
 
+  handleOutsideClick = ({ target }) => {
+    console.log('clicked');
+    if (!this.$target.contains(target)) this.toggle(true);
+  };
+
   init() {
     this.$dropdownItems = document.createElement('ul');
     this.$dropdownItems.className = 'dropdown hide';
@@ -30,14 +35,16 @@ class DropDown {
         this.toggle();
       }
     });
-
-    document.addEventListener('click', ({ target }) => {
-      if (!this.$target.contains(target)) this.toggle(true);
-    });
   }
 
   toggle(forceState) {
     this.$dropdownItems.classList.toggle('hide', forceState);
+
+    if (this.$dropdownItems.classList.contains('hide')) {
+      document.removeEventListener('click', this.handleOutsideClick);
+    } else {
+      document.addEventListener('click', this.handleOutsideClick);
+    }
   }
 
   template() {
