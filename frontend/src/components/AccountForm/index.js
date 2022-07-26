@@ -98,13 +98,14 @@ class AccountForm extends Component {
   template() {
     const { currentCategoryType, accountInfo } = this.state;
     const { date, amount, content, categoryId, categoryName, methodId, methodName } = accountInfo;
-    const initialDate = date.getParsedDatestring('YYYY-MM-DD');
+    const initialDate = date.getParsedDatestring('YYYYMMDD');
     return /*html*/ `
         <form class="account-form">
             <div class="account-form-wrapper">
                 <span class="account-form-label">날짜</span>
-                <input type="date" value=${initialDate} class="account-form-input date" placeholder="입력해주세요" />
+                <input type="text" value=${initialDate} maxlength="8" class="account-form-input date" placeholder="입력해주세요" />
             </div>
+            <div class="account-form__delimiter"></div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">분류</span>
                 <button type="button" class="account-form-dropdown-category">
@@ -114,10 +115,12 @@ class AccountForm extends Component {
                   ${dropArrow}
                 </button>
             </div>
+            <div class="account-form__delimiter"></div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">내용</span>
                 <input class="account-form-input content" value="${content}" data-name="content"  placeholder="입력하세요"/>
             </div>
+            <div class="account-form__delimiter"></div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">결제수단</span>
                 <button type="button" class="account-form-dropdown-method">
@@ -127,6 +130,7 @@ class AccountForm extends Component {
                   ${dropArrow}
                 </button>
             </div>
+            <div class="account-form__delimiter"></div>
             <div class="account-form-wrapper">
                 <span class="account-form-label">금액</span>
                 <div class="account-form-amount">
