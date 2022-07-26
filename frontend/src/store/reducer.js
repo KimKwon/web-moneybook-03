@@ -12,13 +12,23 @@ function reducer(state, action, payload) {
       return { ...state, category: payload };
     case 'setPaymentMethod':
       return { ...state, paymentMethods: payload };
+    case 'addPaymentMethod':
+      return { ...state, paymentMethods: [...state.paymentMethods, payload] };
+    case 'removePaymentMethod':
+      const { id: targetMethodId } = payload;
+      return {
+        ...state,
+        paymentMethods: state.paymentMethods.filter((method) => method.id !== +targetMethodId),
+      };
     case 'setAccountHistory':
       return { ...state, accountHistory: payload };
     case 'addAccountHistory':
       return { ...state, accountHistory: [...state.accountHistory, payload] };
     case 'updateAccountHistory':
-      const { id } = payload;
-      const targetIndex = state.accountHistory.findIndex((history) => history.id === id);
+      const { id: targetHistoryId } = payload;
+      const targetIndex = state.accountHistory.findIndex(
+        (history) => history.id === targetHistoryId,
+      );
 
       if (targetIndex < 0) return state;
 

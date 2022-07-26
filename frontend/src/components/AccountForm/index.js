@@ -166,14 +166,27 @@ class AccountForm extends Component {
       $methodDropdown,
       methods,
       (selectedMethod, selectedId) => {
+        // select
         $methodDropdown.children[0].innerText = selectedMethod;
         $methodDropdown.children[0].dataset.id = selectedId;
+      },
+      (name) => {
+        // add
+        store.dispatch('addPaymentMethod', { name }, SELECTOR_MAP.PAYMENT_METHODS);
+      },
+      (id) => {
+        // delete
+        store.dispatch('removePaymentMethod', { id }, SELECTOR_MAP.PAYMENT_METHODS);
       },
       true,
     );
 
     $methodDropdown.addEventListener('click', () => {
       methodDropdown.toggle();
+    });
+
+    store.subscribe(SELECTOR_MAP.PAYMENT_METHODS, () => {
+      methodDropdown.refetchDropdownData(store.getState(SELECTOR_MAP.PAYMENT_METHODS));
     });
   }
 
