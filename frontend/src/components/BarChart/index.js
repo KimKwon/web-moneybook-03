@@ -1,55 +1,45 @@
 import { getStatistic } from '@/lib/api/statistic';
-
-class BarChart {
-  constructor(options) {
-    const { values, interval } = options;
-    this.values = values;
-    this.interval = interval;
-    this.init();
+import Component from '@/lib/component';
+const COLOR = {
+  grid: '#dddddd',
+};
+class BarChart extends Component {
+  constructor($target, initialState) {
+    super($target, initialState);
   }
 
-  async init() {
-    //
-
-    this.Linterval = 60;
-    this.interval = 60;
-    this.row = 8;
-    this.column = 14;
-    this.width = this.interval * this.column;
-    this.height = this.interval * (this.row + 1);
-    this.values = [100000, 233000, 160000, 140000, 70000, 150400];
-    this.maxValue = Math.max(...this.values);
-    this.myInterval = this.maxValue / this.row - 2;
-    this.rate = this.interval / this.myInterval;
-  }
-  rowLineTemplate = (row, interval, width) => {
+  rowTemplate(options) {
+    const { row, rowInterval, width, color } = options;
     let template = '';
     for (let i = 0; i <= row; i++) {
       template += `
-      <line x1="0" x2="${width}" y1="${interval * i}" y2="${
-        interval * i
-      }" stroke="#cccccc" stroke-width="1" />
+      <line x1="0" x2="${width}" y1="${rowInterval * i}" y2="${
+        rowInterval * i
+      }" stroke=${color} stroke-width="1" />
       `;
     }
     return template;
-  };
-  columnTemplate = (column, interval, height) => {
-    let template = '';
-    for (let i = 0; i <= column; i++) {
-      template += `
-      <line x1="${interval * i}" x2="${
-        interval * i
-      }" y1="0" y2="${height}" stroke="#cccccc" stroke-width="1" />
-      `;
-    }
-    return template;
-  };
+  }
 
-  circleTemplate = () => {
-    const template = this.values
+  columnTemplate(options) {
+    const { column, columnInterval, height, color, split } = options;
+    let template = '';
+    for (let i = 0; i <= column * split; i++) {
+      template += `
+      <line x1="${(columnInterval / split) * i}" x2="${
+        (columnInterval / split) * i
+      }" y1="0" y2="${height}" stroke="${color}" stroke-width="1" />
+      `;
+    }
+    return template;
+  }
+
+  circleTemplate(options) {
+    const { data, columnInterval, rowInterval, height, rate } = options;
+    const template = data
       .map((value, index) => {
-        const x = this.interval * 2 * (index + 1);
-        let y = this.interval + this.height - value * this.rate; // * (interval / myInterval); //height - value; /// myInterval; /// myInterval;
+        const x = columnInterval * (index + 1);
+        let y = rowInterval + height - value * rate;
         if (y < 0) y = 0;
         return `<circle cx="${x}" cy="${y}" r="5"  fill="#2ac1bc" stroke-width="5" data-idx="${index}"/>
           <text class="gray-dark" x="${x - 20}" y="${y - 25}" > ${Number(
@@ -57,72 +47,112 @@ class BarChart {
         ).toLocaleString()}</text>`;
       })
       .join('');
-    console.log(template);
     return template;
-  };
+  }
 
-  lineTemplate = () => {
-    const template = this.values
+  lineTemplate(options) {
+    const { data, rowInterval, columnInterval, height, rate } = options;
+    const len = data.length;
+    const template = data
       .map((value, index) => {
-        if (this.values.length - 1 === index) return;
-        const x1 = this.interval * 2 * (index + 1);
-        const x2 = this.interval * 2 * (index + 2);
-        const y1 = this.Linterval + this.height - value * this.rate;
-        const y2 = this.Linterval + this.height - this.values[index + 1] * this.rate;
+        if (len - 1 === index) return;
+        const x1 = columnInterval * (index + 1);
+        const x2 = columnInterval * (index + 2);
+        const y1 = rowInterval + height - value * rate;
+        const y2 = rowInterval + height - data[index + 1] * rate;
         return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" stroke="#2ac1bc" stroke-width="2"/>`;
       })
       .join('');
     return template;
-  };
-  keyTemplate = () => {
-    const month = ['1월', '2월', '3월', '4월', '5월', '6월 '];
-    const template = month
-      .map((value, index) => {
-        return ` <text class="gray" x="${this.interval * 2 * (index + 1) - 10}" y="${
-          this.height + 20
-        }">${value}</text>`;
+  }
+  labelTemplate(options) {
+    const { labels, columnInterval, height } = options;
+    const template = labels
+      .map((label, index) => {
+        return ` <text class="gray" x="${columnInterval * (index + 1) - 30}" y="${
+          height + 20
+        }">${label}</text>`;
       })
       .join('');
-    console.log(template);
     return template;
-  };
+  }
+  styleTemplate() {
+    return /* html */ `
+      <style>
+        .small{
+          fill : #666666
+        }
+        .gray{
+          fill : #999
+        }
+        .gray-dark{
+          fill : #666
+        }
+        .primary{
+          fill :#2ac1bc;
+        }
+      </style>`;
+  }
+  template() {
+    const {
+      data,
+      labels,
+      rowInterval,
+      columnInterval,
+      row,
+      column,
+      width,
+      height,
+      svgHeight,
+      rate,
+      split,
+    } = this.chartInfo;
+    /* html */ return `
+    <?xml version="1.0" standalone="no"?>
+    <svg width="${width}" height="${svgHeight}" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="100%" height="100%" stroke="none" fill="transparent" stroke-width="1"/>
+      ${this.styleTemplate()}
+      ${this.rowTemplate({ row, rowInterval, width, color: COLOR.grid })}
+      ${this.columnTemplate({ column, columnInterval, height, color: COLOR.grid, split })}
+      ${this.lineTemplate({ data, rowInterval, columnInterval, height, rate })}
+      ${this.circleTemplate({ data, rowInterval, columnInterval, height, rate })}
+      ${this.labelTemplate({ labels, columnInterval, height })}
+      </svg>`;
+  }
 
-  template = () => {
-    /* html */
-    return `
-  <?xml version="1.0" standalone="no"?>
-  <svg width="${this.width}" height="${
-      this.height + this.Linterval
-    }" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <style>
-      .small{
-        fill : #666666
-      }
-      .gray{
-        fill : #999
-      }
-      .gray-dark{
-        fill : #666
-      }
-      .primary{
-        fill :#2ac1bc;
-      }
-    </style>
-    ${this.rowLineTemplate(this.row, this.interval, this.width)}
-    ${this.columnTemplate(this.column, this.interval, this.height)}
-    ${this.circleTemplate()}
-    ${this.lineTemplate()}
-    ${this.keyTemplate()}
-    <rect x="0" y="0" width="100%" height="100%" stroke="none" fill="transparent" stroke-width="1"/>
-  </svg>`;
-  };
+  render() {
+    this.calculateChartData();
+    const template = this.template();
+    this.$target.insertAdjacentHTML('beforeend', template);
+  }
+
+  calculateChartData() {
+    const { data, labels, width, height, row, split = 1 } = this.state;
+    const maxValue = Math.max(...data);
+    const column = data.length + 1;
+    const rowInterval = height / row;
+    const columnInterval = width / column;
+    const svgHeight = height + rowInterval;
+    const rate = (rowInterval * row) / maxValue;
+    this.chartInfo = {
+      data,
+      labels,
+      rowInterval,
+      columnInterval,
+      row,
+      column,
+      width,
+      height,
+      svgHeight,
+      rate,
+      split,
+    };
+  }
 }
 
-/*${circleTemplate(this.interval * 2)}
-${lineTemplate(this.interval * 2)}
-${keyTemplate(this.interval * 2)}
-  ${this.lineTemplate(this.interval * 2)}
-
-*/
-
 export default BarChart;
+/*
+
+    ${this.lineTemplate()}
+    ${this.keyTemplate()}
+*/
