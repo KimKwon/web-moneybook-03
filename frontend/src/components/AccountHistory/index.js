@@ -4,6 +4,7 @@ import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import AccountHistoryTable from '../AccountHistoryTable/index';
 import { dayToString } from '@/utils/date';
+import AccountHistoryHeader from '../AccountHistoryHeader/index';
 
 class AccountHitoryTable extends Component {
   constructor($target, initialState, onChangeFormData) {
@@ -13,6 +14,10 @@ class AccountHitoryTable extends Component {
 
   init() {
     this.filterInfo = { income: true, expenditure: true };
+    this.refineData();
+  }
+
+  refineData() {
     this.originAccountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
     this.setIndex(this.originAccountHistory);
     this.accountHistoryByDate = this.groupByDate(this.originAccountHistory);
@@ -20,22 +25,11 @@ class AccountHitoryTable extends Component {
 
   didMount() {
     this.$target.addEventListener('click', this.changeFormData.bind(this));
-    this.$target
-      .querySelector('.account-history-filter')
-      .addEventListener('click', this.handelFilterClickEvent.bind(this));
 
     store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, () => {
-      this.init();
+      this.refineData();
       this.filterAccountHistory();
     });
-  }
-
-  handelFilterClickEvent(e) {
-    const $filterCheckbox = e.target.closest('.filter-checkbox');
-    if (!$filterCheckbox) return;
-    const filterType = $filterCheckbox.dataset['type'];
-    this.filterInfo[filterType] = !this.filterInfo[filterType];
-    this.filterAccountHistory();
   }
 
   filterAccountHistory() {
@@ -47,7 +41,7 @@ class AccountHitoryTable extends Component {
     });
 
     this.accountHistoryByDate = this.groupByDate(accountHistory);
-    this.reFatchAccountHistoryTable();
+    this.refetchAccountHistoryTable();
   }
 
   changeFormData(e) {
@@ -92,20 +86,24 @@ class AccountHitoryTable extends Component {
     targetData.map((item, index) => (item['idx'] = index));
   }
 
-  reFatchAccountHistoryTable() {
+  refetchAccountHistoryTable() {
     this.$accountTable.setState({ accountHistoryByDate: this.accountHistoryByDate });
+    this.$accountHeader.setState({ accountHistoryByDate: this.accountHistoryByDate });
+  }
+
+  calcGroupedDateInfo() {
+    const length = this.accountHistoryByDate.reduce(
+      (acc, timeGroup) => acc + timeGroup.data.length,
+      0,
+    );
+
+    return length;
   }
 
   template() {
     return /* html */ `
         <div class="account-history">
-          <div class="account-history-header">
-            <h1 >전체내역</h1>
-            <div class="account-history-filter">
-                <div class="filter-checkbox" data-type="income" >[ ] 수입</div>
-                <div class="filter-checkbox" data-type="expenditure" >[ ] 지출</div>
-            </div>
-          </div>  
+          <div class="account-history-header"></div>  
           <div class="account-history-table"></div>
         </div>
     `;
@@ -114,8 +112,15 @@ class AccountHitoryTable extends Component {
   render() {
     this.$target.insertAdjacentHTML('beforeend', this.template());
     const $historyTable = this.$target.querySelector('.account-history-table');
+    const $historyHeader = this.$target.querySelector('.account-history-header');
     this.$accountTable = new AccountHistoryTable($historyTable, {
       accountHistoryByDate: this.accountHistoryByDate,
+    });
+
+    this.$accountHeader = new AccountHistoryHeader($historyHeader, {
+      accountHistoryByDate: this.accountHistoryByDate,
+      filterInfo: this.filterInfo,
+      filterAccountHistory: this.filterAccountHistory.bind(this),
     });
   }
 }
