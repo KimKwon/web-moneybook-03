@@ -24,7 +24,7 @@ export const createPaymentMethod = async (paymentMethod) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(paymentMethod),
+    body: JSON.stringify({ name: paymentMethod, is_delete: 0 }),
   };
   try {
     const response = await fetch(`${baseUrl}/payment-method`, option);

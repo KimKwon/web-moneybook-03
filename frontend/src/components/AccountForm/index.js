@@ -8,6 +8,7 @@ import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import { createAccountHistory } from '@/lib/api/accountHistory';
 import DropDown from '../Dropdown/index';
+import { createPaymentMethod, deletePaymentMethod } from '@/lib/api/paymentMethod';
 
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
@@ -170,13 +171,18 @@ class AccountForm extends Component {
         $methodDropdown.children[0].innerText = selectedMethod;
         $methodDropdown.children[0].dataset.id = selectedId;
       },
-      (name) => {
+      async (name) => {
         // add
-        store.dispatch('addPaymentMethod', { name }, SELECTOR_MAP.PAYMENT_METHODS);
+        const newPaymentMethod = await createPaymentMethod({ name });
+        store.dispatch('addPaymentMethod', newPaymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
       },
       (id) => {
         // delete
         store.dispatch('removePaymentMethod', { id }, SELECTOR_MAP.PAYMENT_METHODS);
+        deletePaymentMethod(id);
+        this.setState({
+          methodName: '',
+        });
       },
       true,
     );
