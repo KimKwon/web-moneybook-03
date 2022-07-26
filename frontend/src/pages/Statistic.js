@@ -16,7 +16,7 @@ function Statistic($root) {
       sum: '516515944',
     },
   ];
-  const data = ['850000', '5167183', '60000'];
+  const data = ['850000', '5167183', '600000'];
   const labels = ['2022-06', '2022-07', '2022-08'];
   const barChartState = { data, labels, width: 800, height: 500, row: 8, split: 3 };
   new BarChart($main, barChartState);
