@@ -234,21 +234,13 @@ class AccountForm extends Component {
     });
   }
 
-  reFatchFormData(newFormData) {
-    const { id, content, amount, date, categoryName, categoryId, methodName, methodId, isProfit } =
-      newFormData;
+  refetchFormData(newFormData) {
+    const { isProfit, ...restNewFormData } = newFormData;
 
     this.setState({
       accountInfo: {
         ...this.state.accountInfo,
-        id,
-        categoryName,
-        categoryId,
-        methodName,
-        methodId,
-        content,
-        amount,
-        date: date.toString(),
+        ...restNewFormData,
       },
       isEditMode: true,
       currentCategoryType: isProfit ? INCOME : EXPENDITURE,
