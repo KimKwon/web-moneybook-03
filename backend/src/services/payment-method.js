@@ -7,7 +7,6 @@ const PaymentMethodService = {
       const paymentMethod = await findAll('payment_method', {
         fields: ['id', 'name', 'is_delete as isDelete'],
       });
-
       if (!paymentMethod) return null;
 
       return paymentMethod[0];

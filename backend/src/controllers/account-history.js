@@ -5,7 +5,6 @@ const getAccountHistory = async (req, res) => {
   if (!result) {
     return res.status(500).send('server error');
   }
-
   res.status(200).json(result);
 };
 

@@ -6,6 +6,7 @@ import plusIcon from '@/assets/icon/plus.svg';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import shortid from 'shortid';
+import { createAccountHistory } from '@/lib/api/accountHistory';
 
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
@@ -17,6 +18,7 @@ const INITIAL_FORM_DATA = {
   categoryId: '',
   content: '',
   method: '',
+  paymentMethodId: '',
   amount: '',
 };
 
@@ -42,8 +44,8 @@ class AccountForm extends Component {
     const { method } = this.state.accountInfo;
     return methods
       .map(
-        ({ name }) => `
-        <option ${method === name ? 'selected' : ''}>
+        ({ name, id }) => `
+        <option value=${id} ${method === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
@@ -61,8 +63,8 @@ class AccountForm extends Component {
 
     return categories
       .map(
-        ({ name }) => `
-        <option ${category === name ? 'selected' : ''}>
+        ({ name, id }) => `
+        <option value=${id} ${category === name ? 'selected' : ''}>
           ${name}
         </option>
       `,
@@ -70,7 +72,7 @@ class AccountForm extends Component {
       .join('');
   }
 
-  handleFormSubmit(e) {
+  async handleFormSubmit(e) {
     e.preventDefault();
     const $date = this.$form.querySelector('.account-form-input.date');
     const $category = this.$form.querySelector('.account-form-dropdown.category');
@@ -81,10 +83,21 @@ class AccountForm extends Component {
     const { isEditMode, accountInfo } = this.state;
     const { id } = accountInfo;
 
+    if (!isEditMode) {
+      createAccountHistory({
+        date: new Date($date.value),
+        content: $content.value,
+        amount: Number($amount.value.toString().replaceAll(',', '')),
+        paymentMethodId: $method.selectedOptions[0]?.value,
+        categoryId: $category.selectedOptions[0]?.value,
+        isProfit: true,
+      });
+    }
+
     store.dispatch(
       isEditMode ? 'updateAccountHistory' : 'addAccountHistory',
       {
-        id: id || shortid(),
+        id,
         date: new Date($date.value),
         content: $content.value,
         amount: Number($amount.value.toString().replaceAll(',', '')),

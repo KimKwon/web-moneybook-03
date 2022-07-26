@@ -130,8 +130,9 @@ const create = async (table, options = {}) => {
       keys.push(key);
       values.push(convertType(value));
     });
-    const createQuery = `INSERT INTO ${table} ( ${keys.join(',')} ) values ( ${values.join(',')} )`;
-    const [row] = await getDB().execute(createQuery);
+    const createQuery = `INSERT INTO ${table} (${keys.join(',')}) VALUES (${values.join(',')})`;
+    const [row] = await getDB().query(createQuery);
+
     if (row.affectedRows !== 1) return null;
     const createData = await findOne(table, { condition: { id: row.insertId }, fields });
     return createData;

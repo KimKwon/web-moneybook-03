@@ -26,6 +26,7 @@ export const getAccountHistory = async (query) => {
     return null;
   }
 };
+
 /**
  * @interface HistoryItem {
  *  categoryId
@@ -54,6 +55,7 @@ export const createAccountHistory = async (historyItem) => {
     return null;
   }
 };
+
 /**
  * @interface HistoryItem {
  *  categoryId
