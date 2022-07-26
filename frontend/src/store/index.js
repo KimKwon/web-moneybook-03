@@ -20,7 +20,7 @@ const createStore = (initialState, reducer) => {
     [ACCOUNT_HISTORY]: [],
     [CATEGORY]: [],
     [PAYMENT_METHODS]: [],
-    [CURRENT_DATE]: { year: 2022, month: 5 },
+    [CURRENT_DATE]: { year: 2022, month: 7 },
   };
 
   const isValidSelector = (selector) => {

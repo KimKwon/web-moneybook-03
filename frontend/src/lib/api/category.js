@@ -19,3 +19,20 @@ export const getCategories = async (type) => {
     return null;
   }
 };
+
+export const patchCategory = async (id, category) => {
+  const option = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(category),
+  };
+  try {
+    const response = await fetch(`${baseUrl}/category/${id}`, option);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return null;
+  }
+};

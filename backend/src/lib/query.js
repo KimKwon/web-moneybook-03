@@ -68,21 +68,27 @@ const findAll = async (table, options = {}) => {
   }
 };
 
-const findOne = async (table, condition) => {
+const findOne = async (table, options = {}) => {
+  const { condition, fields } = options;
+
   try {
     const whereTemplate = createWhereTemplate(condition);
-    const seleteQuery = `SELECT * FROM ${table} WHERE ${whereTemplate}`;
+    const seleteQuery = `SELECT ${
+      fields ? fields.join(', ') : '*'
+    } FROM ${table} WHERE ${whereTemplate}`;
     const [rows] = await getDB().query(seleteQuery);
     return rows.length === 0 ? null : rows[0];
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
 
-const updateOne = async (table, condition, updateMap) => {
+const updateOne = async (table, options = {}) => {
+  const { condition, updateMap, fields } = options;
+
   try {
-    const beforeUpdateData = await findOne(table, condition);
+    const beforeUpdateData = await findOne(table, { condition, fields });
     if (!beforeUpdateData) return null;
     const whereTemplate = createWhereTemplate(condition);
     const setTemplate = createSetTemplate(updateMap);
@@ -90,30 +96,32 @@ const updateOne = async (table, condition, updateMap) => {
     const [row] = await getDB().query(updateQuery);
     return row.affectedRows === 1 ? beforeUpdateData : null;
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
 
 const updateAll = (table, condition, updateMap) => {};
 
-const deleteOne = async (table, condition) => {
+const deleteOne = async (table, options = {}) => {
+  const { condition, fields } = options;
   try {
-    const beforeDeleteData = await findOne(table, condition);
+    const beforeDeleteData = await findOne(table, { condition, fields });
     if (!beforeDeleteData) return null;
     const whereTemplate = createWhereTemplate(condition);
     const deleteQuery = `DELETE FROM ${table} WHERE ${whereTemplate};`;
     const [row] = await getDB().query(deleteQuery);
     return row.affectedRows === 1 ? beforeDeleteData : null;
   } catch (err) {
-    console.err(err);
+    console.log(err);
     return null;
   }
 };
 
 const deleteAll = (table, condition) => {};
 
-const create = async (table, createMap) => {
+const create = async (table, options = {}) => {
+  const { createMap, fields } = options;
   try {
     const keys = [],
       values = [];
@@ -126,17 +134,8 @@ const create = async (table, createMap) => {
     const [row] = await getDB().query(createQuery);
 
     if (row.affectedRows !== 1) return null;
-    const createData = await findOne(table, { id: row.insertId });
-    if (!createData) return null;
-
-    const { user_id, category_id, payment_method_id, is_profit, ...rest } = createData;
-    return {
-      ...rest,
-      userId: user_id,
-      categoryId: category_id,
-      paymentMethodId: payment_method_id,
-      isProfit: is_profit,
-    };
+    const createData = await findOne(table, { condition: { id: row.insertId }, fields });
+    return createData;
   } catch (err) {
     console.log(err);
     return null;
