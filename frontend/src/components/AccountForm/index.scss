@@ -85,10 +85,24 @@
 
   &-button {
     margin-left: 15px;
+    cursor: not-allowed;
     & > svg {
       width: 40px;
+      & > path:first-child {
+        fill: $color-gray-dark;
+      }
+    }
+
+    &.active {
+      cursor: pointer;
+      & > svg {
+        & > path:first-child {
+          fill: $color-primary;
+        }
+      }
     }
   }
+
   input {
     border: none;
   }
