@@ -10,7 +10,6 @@ class DonutChartDetail extends Component {
   }
   init() {
     this.categories = store.getState(SELECTOR_MAP.CATEGORY).expenditure;
-    console.log(this.categories, this.state.groupedByCategory);
   }
 
   roundToTwo(num) {
