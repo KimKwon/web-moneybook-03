@@ -9,7 +9,7 @@ const ACCOUNT_HISTORY_DBMODEL = {
   id: 'id',
   userId: 'user_id',
   categoryId: 'category_id',
-  paymentMethodId: 'payment_method_id',
+  methodId: 'payment_method_id',
   date: 'date',
   content: 'content',
   amount: 'amount',

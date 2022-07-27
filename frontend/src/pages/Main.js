@@ -11,7 +11,7 @@ function Main($root) {
   const $accountForm = new AccountForm($main);
 
   const onChangeFormData = (nextState) => {
-    $accountForm.reFatchFormData(nextState);
+    $accountForm.refetchFormData(nextState);
   };
 
   new AccountHistory($main, {}, onChangeFormData);

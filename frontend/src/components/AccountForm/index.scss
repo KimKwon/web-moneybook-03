@@ -1,5 +1,6 @@
 .account-form {
-  width: 100%;
+  width: 110%;
+  transform: translateX(-5%);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -7,26 +8,35 @@
   border-radius: 0.7rem;
   border: 1px solid $color-gray;
   margin-top: -2.5rem;
-  padding: 0.5rem;
+  padding: 16px 32px;
+
+  &__delimiter {
+    height: 44px;
+    width: 1px;
+    background-color: $color-placeholder;
+    margin: 0 15px;
+  }
+
   &-wrapper {
     display: flex;
     flex-direction: column;
     display: inline-block;
-    padding: 0.2rem 2.5rem;
-    border-left: 1px solid $color-gray;
-    flex: 1 1 0;
-  }
-  &-wrapper:nth-child(2) {
-    flex-grow: 1;
-  }
-  &-wrapper:nth-child(4) {
-    flex-grow: 1;
-  }
-  &-wrapper:first-child {
-    border: none;
+    flex: 1;
+    &:first-child {
+      border: none;
+      flex: 0.7;
+    }
+
+    &.--dropable {
+      flex: 0.6;
+    }
+
+    &:last-of-type {
+      flex: 0.7;
+    }
   }
   &-label {
-    font-size: 0.9rem;
+    font-size: 12px;
     color: $color-primary;
     width: 100%;
     font-weight: 600;
@@ -54,26 +64,46 @@
     }
   }
   &-input {
-    font-size: 1.2rem;
+    font-size: 16px;
     width: 100%;
-    padding-left: 0rem;
+
+    &.amount {
+      text-align: right;
+    }
+
     &::placeholder {
       color: $color-gray-dark;
     }
   }
   &-amount {
+    justify-self: flex-end;
     display: flex;
     align-items: center;
     & svg {
-      width: 9.3px;
+      width: 13px;
     }
   }
 
   &-button {
+    margin-left: 15px;
+    cursor: not-allowed;
     & > svg {
       width: 40px;
+      & > path:first-child {
+        fill: $color-gray-dark;
+      }
+    }
+
+    &.active {
+      cursor: pointer;
+      & > svg {
+        & > path:first-child {
+          fill: $color-primary;
+        }
+      }
     }
   }
+
   input {
     border: none;
   }

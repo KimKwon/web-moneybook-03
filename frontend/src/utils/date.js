@@ -52,6 +52,10 @@ function getParsedDatestring(dateType) {
           date.getDate(),
           2,
         )}`;
+      case 'YYYYMMDD':
+        return `${date.getFullYear()}${formatStringTo(date.getMonth() + 1, 2)}${formatStringTo(
+          date.getDate(),
+        )}`;
       default:
         return this;
     }
