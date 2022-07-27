@@ -11,7 +11,9 @@ class Loader {
 
   createLoaderTemplate() {
     const loaderRef = document.createElement('div');
-    loaderRef.innerHTML = '로딩중...';
+    const spanRef = document.createElement('span');
+    spanRef.innerText = 'LOADING . . .';
+    loaderRef.appendChild(spanRef);
     loaderRef.className = 'loader';
 
     return loaderRef;
@@ -19,8 +21,10 @@ class Loader {
 
   render() {
     const currentLoadingState = store.getState(SELECTOR_MAP.IS_LOADING);
-    if (currentLoadingState) this.$target.appendChild(this.$loader);
-    else {
+    if (currentLoadingState) {
+      this.$target.innerHTML = '';
+      this.$target.appendChild(this.$loader);
+    } else {
       this.$loader.remove();
     }
   }

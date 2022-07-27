@@ -95,16 +95,16 @@ class AccountHitoryTable extends Component {
   template() {
     return /* html */ `
         <div class="account-history">
-          <div class="account-history-header"></div>  
-          <div class="account-history-table"></div>
+          <div class="account-history__header"></div>  
+          <div class="account-history__table"></div>
         </div>
     `;
   }
 
   render() {
     this.$target.insertAdjacentHTML('beforeend', this.template());
-    const $historyTable = this.$target.querySelector('.account-history-table');
-    const $historyHeader = this.$target.querySelector('.account-history-header');
+    const $historyTable = this.$target.querySelector('.account-history__table');
+    const $historyHeader = this.$target.querySelector('.account-history__header');
     this.$loader = new Loader($historyTable);
     store.subscribe(SELECTOR_MAP.IS_LOADING, this.$loader.render.bind(this.$loader));
     this.$accountTable = new AccountHistoryTable($historyTable, {

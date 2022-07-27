@@ -39,10 +39,14 @@ export default class MonthController extends Component {
     const nextAccountHistory = await getAccountHistory({
       ...getStartAndEndDate(new Date(year, month - 1)),
     });
+
+    /**
+     * 로딩 상태 확인을 위해 임시로 setTimeout 부여.
+     */
     setTimeout(() => {
       store.dispatch('changeLoadingState', false, SELECTOR_MAP.IS_LOADING);
       store.dispatch('setAccountHistory', nextAccountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
-    }, 1000);
+    }, 1500);
   }
 
   refetchDate() {

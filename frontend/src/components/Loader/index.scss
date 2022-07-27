@@ -6,6 +6,27 @@
 
   width: 150px;
   height: 150px;
-  background-color: white;
-  border-radius: 18px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  background-image: url('../../assets/icon/woowa-logo.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: broombroom 2s ease-out infinite;
+
+  & > span {
+    position: absolute;
+    bottom: -30px;
+  }
+}
+
+@keyframes broombroom {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-150%);
+  }
 }
