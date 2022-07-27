@@ -9,10 +9,11 @@ class BarChartContainer extends Component {
   }
 
   template() {
+    const { categoryName } = this.state;
     return /* html */ `
     <div class='chart-container'>
       <div class="chart-container__header">
-        <h2 class="chart-container__title">생활 카테고리 소비 추이</h2>
+        <h2 class="chart-container__title">${categoryName} 카테고리 소비 추이</h2>
         <div class="chart-container__button">
           <button class="chart_button" data-period="3">3개월</button>
           <button class="chart_button" data-period="6">6개월</button>

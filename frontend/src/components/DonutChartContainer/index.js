@@ -24,7 +24,10 @@ class DonutChartContainer extends Component {
   handelCategoryClickEvent(e) {
     const $category = e.target.closest('.category');
     if (!$category) return;
-    this.onCategoryClick($category.dataset['id']);
+    this.onCategoryClick({
+      categoryId: $category.dataset['id'],
+      categoryName: $category.innerText,
+    });
   }
 
   async render() {
