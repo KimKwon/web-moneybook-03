@@ -1,7 +1,11 @@
 .account-history {
   display: flex;
   flex-direction: column;
-  &-header {
+  &__table {
+    position: relative;
+    min-height: 40vh;
+  }
+  &__header {
     font-size: 22px;
     display: flex;
     flex-direction: row;
