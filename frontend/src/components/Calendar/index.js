@@ -23,7 +23,6 @@ class Calendar extends Component {
 
   footerTemplate() {
     const { calendarData, totalData } = this.state;
-    if (!calendarData) return;
     const { totalIncome, totalExpenditure } = totalData;
     return `
         <span>
@@ -38,7 +37,6 @@ class Calendar extends Component {
 
   calendarGridTemplate() {
     const { calendarData, month, year } = this.state;
-    if (!calendarData) return;
     const startDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
     return `
@@ -105,6 +103,8 @@ class Calendar extends Component {
   }
 
   render() {
+    //첫번째 render를 막고 싶은데, 어떤 방법이 있을까요.
+    if (Object.keys(this.state).length === 0) return;
     this.$target.innerHTML = this.template();
   }
 }
