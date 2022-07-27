@@ -5,6 +5,7 @@ import { SELECTOR_MAP } from '@/constants/selector-map';
 import AccountHistoryTable from '../AccountHistoryTable/index';
 import { dayToString } from '@/utils/date';
 import AccountHistoryHeader from '../AccountHistoryHeader/index';
+import Loader from '../Loader/index';
 
 class AccountHitoryTable extends Component {
   constructor($target, initialState, onChangeFormData) {
@@ -104,6 +105,8 @@ class AccountHitoryTable extends Component {
     this.$target.insertAdjacentHTML('beforeend', this.template());
     const $historyTable = this.$target.querySelector('.account-history-table');
     const $historyHeader = this.$target.querySelector('.account-history-header');
+    this.$loader = new Loader($historyTable);
+    store.subscribe(SELECTOR_MAP.IS_LOADING, this.$loader.render.bind(this.$loader));
     this.$accountTable = new AccountHistoryTable($historyTable, {
       accountHistoryByDate: this.accountHistoryByDate,
     });

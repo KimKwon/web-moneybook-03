@@ -36,6 +36,8 @@ function reducer(state, action, payload) {
       nextHistory[targetIndex] = payload;
 
       return { ...state, accountHistory: nextHistory };
+    case 'changeLoadingState':
+      return { ...state, isLoading: payload };
     default:
       return { ...state };
   }

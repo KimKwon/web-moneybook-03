@@ -3,4 +3,5 @@ export const SELECTOR_MAP = {
   CATEGORY: 'category',
   PAYMENT_METHODS: 'paymentMethods',
   CURRENT_DATE: 'currentDate',
+  IS_LOADING: 'isLoading',
 };

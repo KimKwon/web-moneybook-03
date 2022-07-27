@@ -6,7 +6,7 @@ function debounce(cb) {
 
     debounceTimer = setTimeout(() => {
       cb(...args);
-    }, 250);
+    }, 150);
   };
 }
 
