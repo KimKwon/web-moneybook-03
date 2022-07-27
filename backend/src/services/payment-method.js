@@ -1,4 +1,4 @@
-const { create, deleteOne, findAll } = require('../lib/query');
+const { create, deleteOne, findAll, updateOne } = require('../lib/query');
 const { PAYMENT_METHOD_DBMODEL } = require('../constants/model');
 const { getValidDbMap, getDbFields } = require('../utils/db');
 const PaymentMethodService = {
@@ -6,6 +6,7 @@ const PaymentMethodService = {
     try {
       const paymentMethod = await findAll('payment_method', {
         fields: ['id', 'name', 'is_delete as isDelete'],
+        where: { is_delete: 0 },
       });
       if (!paymentMethod) return null;
 
@@ -25,8 +26,8 @@ const PaymentMethodService = {
 
   deletePaymentMethod: async (id) => {
     const fields = getDbFields(PAYMENT_METHOD_DBMODEL);
-    const options = { condition: { id }, fields };
-    const paymentMethod = await deleteOne('payment_method', options);
+    const options = { condition: { id }, fields, updateMap: { is_delete: 1 } };
+    const paymentMethod = await updateOne('payment_method', options);
     return paymentMethod;
   },
 };
