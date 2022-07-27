@@ -1,11 +1,11 @@
+import Calendar from '@/components/Calendar/index';
 import Header from '@/components/Header/index';
 
-function Calendar($root) {
+function CalendarPage($root) {
   const $header = $root.querySelector('header');
-  new Header($header);
-
   const $main = $root.querySelector('main');
-  $main.innerHTML = `<h1>달력 페이지</h1>`;
+  new Header($header);
+  new Calendar($main);
 }
 
-export default Calendar;
+export default CalendarPage;

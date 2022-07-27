@@ -1,4 +1,4 @@
-import Calendar from '@/pages/Calendar';
+import CalendarPage from '@/pages/Calendar';
 import Main from '@/pages/Main';
 import Statistic from '@/pages/Statistic';
 
@@ -8,7 +8,7 @@ class Router {
     this.currentActivePage = null;
     this.routes = [
       { path: /^\/$/, element: () => Main(this.$rootTarget) },
-      { path: /^\/calendar$/, element: () => Calendar(this.$rootTarget) },
+      { path: /^\/calendar$/, element: () => CalendarPage(this.$rootTarget) },
       { path: /^\/statistic$/, element: () => new Statistic(this.$rootTarget) },
     ];
 
