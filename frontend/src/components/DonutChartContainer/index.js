@@ -38,7 +38,7 @@ class DonutChartContainer extends Component {
 
   template() {
     return /* html */ `
-      <div class='chart-container'>
+      <div class='donut-chart-container'>
         <div class="donut-chart"></div>
         <div class="donut-chart-detail"></div>
       </div>  
