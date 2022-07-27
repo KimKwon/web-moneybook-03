@@ -10,13 +10,13 @@ class Loader {
   }
 
   createLoaderTemplate() {
-    const loaderRef = document.createElement('div');
-    const spanRef = document.createElement('span');
-    spanRef.innerText = 'LOADING . . .';
-    loaderRef.appendChild(spanRef);
-    loaderRef.className = 'loader';
+    const $loaderBox = document.createElement('div');
+    const $loaderText = document.createElement('span');
+    $loaderText.innerText = 'LOADING . . .';
+    $loaderBox.appendChild($loaderText);
+    $loaderBox.className = 'loader';
 
-    return loaderRef;
+    return $loaderBox;
   }
 
   render() {
