@@ -9,7 +9,7 @@ class Router {
     this.routes = [
       { path: /^\/$/, element: () => Main(this.$rootTarget) },
       { path: /^\/calendar$/, element: () => Calendar(this.$rootTarget) },
-      { path: /^\/statistic$/, element: () => Statistic(this.$rootTarget) },
+      { path: /^\/statistic$/, element: () => new Statistic(this.$rootTarget) },
     ];
 
     this.#init();

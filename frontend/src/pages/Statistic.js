@@ -1,19 +1,86 @@
+import AccountHitoryTable from '@/components/AccountHistoryTable/index';
 import BarChartContainer from '@/components/BarChartContainer/index';
+import DonutChartContainer from '@/components/DonutChartContainer/index';
 import Header from '@/components/Header/index';
+import { SELECTOR_MAP } from '@/constants/selector-map';
+import { getAccountHistory } from '@/lib/api/accountHistory';
 
-function Statistic($root) {
-  const $header = $root.querySelector('header');
-  const $main = $root.querySelector('main');
-  new Header($header);
-  const initialState = { month: 7, year: 2022, categoryId: 1, period: 12 };
-  const $barChart = new BarChartContainer($main, initialState);
+import store from '@/store/index';
+import { getStartAndEndDate, groupByDate } from '@/utils/date';
 
-  const $testButton = document.createElement('button');
-  $testButton.innerHTML = 'testButton';
-  $testButton.addEventListener('click', () => {
-    $barChart.setState({ month: 6, year: 2022, categoryId: 1, period: 3 });
-  });
-  $root.appendChild($testButton);
+class Statistic {
+  constructor($target) {
+    this.$target = $target;
+    this.$header = $target.querySelector('header');
+    this.$main = $target.querySelector('main');
+    this.state = {};
+    this.init();
+  }
+
+  init() {
+    new Header(this.$header);
+    this.$donutChartContainer = document.createElement('div');
+    this.$barChartContainer = document.createElement('div');
+    this.$acountHistoryTableContainer = document.createElement('div');
+    this.$main.appendChild(this.$donutChartContainer);
+    this.$main.appendChild(this.$barChartContainer);
+    this.$main.appendChild(this.$acountHistoryTableContainer);
+    store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.setCurrentDate.bind(this));
+    this.setCurrentDate();
+  }
+
+  barChartRender() {
+    const { categoryId, currentDate } = this.state;
+    const { month, year } = currentDate;
+    if (!categoryId) return;
+    const initialState = { month, year, categoryId, period: 6 };
+    this.$barChart = new BarChartContainer(this.$barChartContainer, initialState);
+  }
+
+  async accountHistoryTableRender() {
+    const { categoryId } = this.state;
+    if (!categoryId) return;
+    const accountHistoryData = await getAccountHistory({
+      ...getStartAndEndDate(new Date()),
+      categoryId: categoryId,
+      type: 'expenditure',
+    });
+    const accountHistoryByDate = groupByDate(accountHistoryData);
+    this.$accountHistoryTable = new AccountHitoryTable(this.$acountHistoryTableContainer, {
+      accountHistoryByDate: accountHistoryByDate,
+    });
+  }
+
+  donutChartRender() {
+    const { year, month } = this.state.currentDate;
+    this.$donutChart = new DonutChartContainer(
+      this.$donutChartContainer,
+      { year, month },
+      this.changeCategory.bind(this),
+    );
+  }
+
+  changeCategory(categoryId) {
+    this.setState({ categoryId });
+  }
+
+  setState(nextState) {
+    const { currentDate, categoryId } = nextState;
+    if (currentDate) {
+      this.state['currentDate'] = currentDate;
+      this.donutChartRender();
+    }
+    if (categoryId) {
+      this.state['categoryId'] = categoryId;
+      this.barChartRender();
+      this.accountHistoryTableRender();
+    }
+  }
+
+  setCurrentDate() {
+    const currentDate = store.getState(SELECTOR_MAP.CURRENT_DATE);
+    this.setState({ currentDate });
+  }
 }
 
 export default Statistic;

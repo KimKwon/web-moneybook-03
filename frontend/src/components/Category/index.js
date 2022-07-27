@@ -10,6 +10,7 @@ class Category extends Component {
   init() {
     this.$element = document.createElement('div');
     this.$element.className = 'category';
+    this.$element.dataset['id'] = this.state.id;
   }
   didMount() {
     store.subscribe(SELECTOR_MAP.CATEGORY, this.paintCategory.bind(this));

@@ -49,9 +49,9 @@ class BarChartContainer extends Component {
     this.$target.innerHTML = this.template();
     const $barChart = this.$target.querySelector('.bar-chart');
     const chartData = this.chartData.reduce(
-      (acc, { date, sum }) => {
+      (acc, { baseDate, sum }) => {
         acc.data.push(sum);
-        acc.labels.push(date.split('-')[1]);
+        acc.labels.push(baseDate.split('-')[1]);
         return acc;
       },
       { data: [], labels: [] },
@@ -63,7 +63,7 @@ class BarChartContainer extends Component {
       width: 800,
       height: 500,
       row: 8,
-      split: 3,
+      split: 5,
     };
     new BarChart($barChart, barChartState);
   }

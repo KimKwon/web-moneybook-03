@@ -14,13 +14,13 @@ const StatisticService = {
       category_id: categoryId,
     };
 
-    const fields = [' date', 'SUM(amount) as sum'];
-    const order = { target: 'date' };
+    const fields = ['date_format(date, "%Y-%m") as baseDate', 'SUM(amount) as sum'];
+    const order = { target: 'baseDate' };
     try {
       const statistic = await findAll('account_history', {
         where: whereOptions,
         fields,
-        group: 'date',
+        group: 'baseDate',
         order,
       });
       if (!statistic) return null;

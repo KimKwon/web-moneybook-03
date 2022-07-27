@@ -81,3 +81,33 @@ export const dayToString = (day) => {
   };
   return dayMap[day];
 };
+
+export const groupByDate = (targetData) => {
+  const sortedTargetData = [...targetData];
+  sortedTargetData.sort(function (a, b) {
+    return new Date(a.date) - new Date(b.date);
+  });
+  const groupData = sortedTargetData.reduce((acc, cur) => {
+    let len = acc.length;
+    const currentDate = new Date(cur.date);
+    if (len === 0 || acc[len - 1].date != currentDate.getDate()) {
+      acc.push({});
+      len = acc.length;
+    }
+    if (!acc[len - 1].date) {
+      acc[len - 1] = {
+        date: currentDate.getDate(),
+        month: currentDate.getMonth() + 1,
+        day: dayToString(currentDate.getDay()),
+        data: [],
+        income: 0,
+        expenditure: 0,
+      };
+    }
+    acc[len - 1].income += cur.isProfit ? cur.amount : 0;
+    acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
+    acc[len - 1].data.push(cur);
+    return [...acc];
+  }, []);
+  return groupData;
+};

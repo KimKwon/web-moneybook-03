@@ -3,7 +3,7 @@ import Component from '@/lib/component';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import AccountHistoryTable from '../AccountHistoryTable/index';
-import { dayToString } from '@/utils/date';
+import { groupByDate } from '@/utils/date';
 import AccountHistoryHeader from '../AccountHistoryHeader/index';
 import Loader from '../Loader/index';
 
@@ -21,7 +21,7 @@ class AccountHitoryTable extends Component {
   refineData() {
     this.originAccountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
     this.setIndex(this.originAccountHistory);
-    this.accountHistoryByDate = this.groupByDate(this.originAccountHistory);
+    this.accountHistoryByDate = groupByDate(this.originAccountHistory);
   }
 
   didMount() {
@@ -41,7 +41,7 @@ class AccountHitoryTable extends Component {
       );
     });
 
-    this.accountHistoryByDate = this.groupByDate(accountHistory);
+    this.accountHistoryByDate = groupByDate(accountHistory);
     this.refetchAccountHistoryTable();
   }
 
@@ -51,36 +51,6 @@ class AccountHitoryTable extends Component {
     const idx = $account.dataset['idx'];
     const account = this.originAccountHistory[idx];
     this.onChangeFormData(account);
-  }
-
-  groupByDate(targetData) {
-    const sortedTargetData = [...targetData];
-    sortedTargetData.sort(function (a, b) {
-      return new Date(a.date) - new Date(b.date);
-    });
-    const groupData = sortedTargetData.reduce((acc, cur) => {
-      let len = acc.length;
-      const currentDate = new Date(cur.date);
-      if (len === 0 || acc[len - 1].date != currentDate.getDate()) {
-        acc.push({});
-        len = acc.length;
-      }
-      if (!acc[len - 1].date) {
-        acc[len - 1] = {
-          date: currentDate.getDate(),
-          month: currentDate.getMonth() + 1,
-          day: dayToString(currentDate.getDay()),
-          data: [],
-          income: 0,
-          expenditure: 0,
-        };
-      }
-      acc[len - 1].income += cur.isProfit ? cur.amount : 0;
-      acc[len - 1].expenditure += cur.isProfit ? 0 : cur.amount;
-      acc[len - 1].data.push(cur);
-      return [...acc];
-    }, []);
-    return groupData;
   }
 
   setIndex(targetData) {
