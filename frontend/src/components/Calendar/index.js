@@ -15,9 +15,9 @@ class Calendar extends Component {
   didMount() {
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.setData.bind(this));
   }
-  headerTemplate() {
+  dayOfWeekTemplate() {
     return `
-    ${DAY.map((day) => `<span>${day}</span>`).join('')}
+    ${DAY.map((day) => `<div>${day}</div>`).join('')}
     `;
   }
 
@@ -34,12 +34,31 @@ class Calendar extends Component {
         </span>
     `;
   }
-  calendarTemplate() {}
+  emptyCalendarDate(num) {
+    let emptyTemplate = '';
+    for (let i = 0; i < num; i++) {
+      emptyTemplate += `<div></div>`;
+    }
+    return emptyTemplate;
+  }
+  dateGridTemplate() {
+    const { calendarData, month, year } = this.state;
+    if (!calendarData) return;
+    const startDay = new Date(year, month - 1, 1).getDay();
+    const lastDate = new Date(year, month, 0).getDate();
+    console.log(month);
+    console.log(year);
+    return `
+        ${this.emptyCalendarDate(startDay)}    
+        ${calendarData.map((item) => `<div>item</div>`).join('')}
+        ${this.emptyCalendarDate(7 - ((lastDate % 7) - (7 - startDay)))}    
+    `;
+  }
   template() {
     return `
     <div class="calendar">
-        <div class="calendar-header">${this.headerTemplate()}</div>
-        <div class="calendar-body">${this.calendarTemplate()}</div>
+        <div class="calendar-header">${this.dayOfWeekTemplate()}</div>
+        <div class="calendar-body">${this.dateGridTemplate()}</div>
         <div class="calendar-footer">
         ${this.footerTemplate()}
         </div>
@@ -52,8 +71,7 @@ class Calendar extends Component {
     const accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
     const historyDataByDate = groupByDate(accountHistory);
     const filledData = fillEmptyDay(historyDataByDate, year, month);
-    this.setState({ calendarData: filledData });
-    console.log(filledData);
+    this.setState({ year, month, calendarData: filledData });
   }
 
   render() {
