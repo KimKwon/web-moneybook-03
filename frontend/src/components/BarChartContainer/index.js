@@ -2,8 +2,6 @@ import './index.scss';
 import Component from '@/lib/component';
 import BarChart from '../BarChart/index';
 import { getStatistic } from '@/lib/api/statistic';
-import store from '@/store/index';
-import { SELECTOR_MAP } from '@/constants/selector-map';
 
 class BarChartContainer extends Component {
   constructor($target, initialState) {
@@ -41,11 +39,10 @@ class BarChartContainer extends Component {
 
   async getChartData(period) {
     const { month, year, categoryId } = this.state;
-    console.log(period ? period : 3);
     this.chartData = await getStatistic({
       month: 7,
       year: 2022,
-      period: period ? period : 3,
+      period: period ? period : 6,
       categoryId: 1,
     });
   }

@@ -106,6 +106,10 @@ class BarChart extends Component {
           fill :#219A95;
           stroke :#219A95;
         }
+        circle:hover{
+          fill :#219A95;
+          stroke :#219A95;
+        }
       </style>`;
   }
   template() {
