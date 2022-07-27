@@ -40,7 +40,7 @@ const findAll = async (table, options = {}) => {
 
   let query = '';
 
-  const { joinOptions, fields, where, order } = options;
+  const { joinOptions, fields, where, order, group } = options;
 
   try {
     if (typeof table !== 'string') throw Error('테이블 형식이 잘못됨.');
@@ -53,9 +53,11 @@ const findAll = async (table, options = {}) => {
     `;
 
     if (where) {
-      query += `WHERE ${createWhereTemplate(where)}`;
+      query += `WHERE ${createWhereTemplate(where)} `;
     }
-
+    if (group) {
+      query += `GROUP BY ${group} `;
+    }
     if (order) {
       // target: 기준 필드, type: asc or desc
       const { target, type = 'ASC' } = order;
