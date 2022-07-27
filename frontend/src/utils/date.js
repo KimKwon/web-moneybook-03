@@ -111,3 +111,28 @@ export const groupByDate = (targetData) => {
   }, []);
   return groupData;
 };
+
+export const fillEmptyDay = (data, year, month) => {
+  const lastDate = new Date(year, month, 0).getDate();
+  const filledData = data.reduce((acc, cur, idx) => {
+    while (acc.length + 1 !== cur.date) {
+      acc.push({
+        date: acc.length + 1,
+        income: 0,
+        expenditure: 0,
+      });
+    }
+    acc.push(cur);
+    if (idx + 1 === data.length && acc.length !== lastDate) {
+      while (acc.length < lastDate) {
+        acc.push({
+          date: acc.length + 1,
+          income: 0,
+          expenditure: 0,
+        });
+      }
+    }
+    return acc;
+  }, []);
+  return filledData;
+};
