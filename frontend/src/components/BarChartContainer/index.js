@@ -26,44 +26,38 @@ class BarChartContainer extends Component {
     `;
   }
   attachEvent() {
-    this.$target.addEventListener('click', getCharData);
+    this.$target.addEventListener('click', this.handleClickEvent.bind(this));
   }
 
   didMount() {
     this.attachEvent();
   }
   async handleClickEvent(e) {
-    const $chartButton = e.target.closest('.chart_button');
+    const $chartButton = e.target.closest('button');
     if (!$chartButton) return;
-    const period = $chartButton.dateset['period'];
-    await this.getChartData(period);
-    this.render();
+    const period = $chartButton.dataset['period'];
+    this.render(period);
   }
 
   async getChartData(period) {
     const { month, year, categoryId } = this.state;
-    this.chartData = await getStatistic({ month, year, period, categoryId });
+    console.log(period ? period : 3);
+    this.chartData = await getStatistic({
+      month: 7,
+      year: 2022,
+      period: period ? period : 3,
+      categoryId: 1,
+    });
   }
 
-  render() {
-    this.getChartData();
+  async render(period) {
+    await this.getChartData(period);
     this.$target.innerHTML = this.template();
     const $barChart = this.$target.querySelector('.bar-chart');
-    const data1 = [
-      {
-        baseDate: '2022-06',
-        sum: '850000',
-      },
-      {
-        baseDate: '2022-07',
-        sum: '516515944',
-      },
-    ];
-
     const chartData = this.chartData.reduce(
-      (acc, { baseDate, sum }) => {
+      (acc, { date, sum }) => {
         acc.data.push(sum);
-        acc.labels.push(baseDate.split('-')[1]);
+        acc.labels.push(date.split('-')[1]);
         return acc;
       },
       { data: [], labels: [] },
@@ -77,7 +71,6 @@ class BarChartContainer extends Component {
       row: 8,
       split: 3,
     };
-
     new BarChart($barChart, barChartState);
   }
 }
