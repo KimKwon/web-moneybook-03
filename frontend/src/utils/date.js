@@ -114,9 +114,11 @@ export const groupByDate = (targetData) => {
 
 export const fillEmptyDay = (data, year, month) => {
   const lastDate = new Date(year, month, 0).getDate();
+  if (data.length === 0) data.push({ data: 1, income: 0, expenditure: 0 });
   const filledData = data.reduce((acc, cur, idx) => {
     while (acc.length + 1 !== cur.date) {
       acc.push({
+        data: new Array(),
         date: acc.length + 1,
         income: 0,
         expenditure: 0,

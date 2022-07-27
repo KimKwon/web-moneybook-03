@@ -1,5 +1,6 @@
 import Component from '@/lib/component';
 import checkbox from '@/assets/icon/save-button-active.svg';
+import { calcGroupedDateInfo } from '@/utils/calculation';
 
 class AccountHistoryHeader extends Component {
   constructor($target, initialState) {
@@ -32,20 +33,9 @@ class AccountHistoryHeader extends Component {
     filterAccountHistory();
   }
 
-  calcGroupedDateInfo() {
-    const { accountHistoryByDate } = this.state;
-    const length = accountHistoryByDate.reduce((acc, timeGroup) => acc + timeGroup.data.length, 0);
-
-    const [totalIncome, totalExpenditure] = accountHistoryByDate.reduce(
-      (acc, timeGroup) => [acc[0] + timeGroup.income, acc[1] + timeGroup.expenditure],
-      [0, 0],
-    );
-
-    return { length, totalIncome, totalExpenditure };
-  }
-
   template() {
-    const { length, totalIncome, totalExpenditure } = this.calcGroupedDateInfo();
+    const { accountHistoryByDate } = this.state;
+    const { length, totalIncome, totalExpenditure } = calcGroupedDateInfo(accountHistoryByDate);
     return /* html */ `
       <h1>전체내역 ${length}건</h1>
       <div class="account-history-filter">

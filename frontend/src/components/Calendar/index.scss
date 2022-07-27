@@ -47,21 +47,50 @@
 
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    div {
-      height: 110px;
+    > div {
+      position: relative;
+      height: 130px;
       border-right: 1px solid $color-gray;
       border-top: 1px solid $color-gray;
-    }
 
-    div:nth-child(7n) {
-      border-right: none;
-    }
-    div:nth-child(n + 1):nth-child(-n + 7) {
-      border-top: none;
+      &:nth-child(7n) {
+        border-right: none;
+      }
+
+      &:nth-child(n + 1):nth-child(-n + 7) {
+        border-top: none;
+      }
     }
   }
   &-footer {
     display: flex;
     justify-content: space-between;
+    color: $color-gray-dark;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    font-size: 0.9rem;
   }
+}
+.calendar-amount-info {
+  font-size: 0.9rem;
+  padding: 7px;
+  > div {
+    margin-bottom: 3px;
+  }
+  .calendar-income {
+    color: $color-primary;
+  }
+  .calendar-expenditure {
+    color: $color-red;
+  }
+  .calendar-total {
+    color: $color-black;
+  }
+}
+.calendar-date {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: $color-gray-dark;
 }
