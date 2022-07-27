@@ -1,5 +1,6 @@
 .donut-chart-container {
   display: flex;
+  gap: 80px;
   margin: 1rem auto;
   border: 0.2rem;
   background: #fcfcfc;
@@ -11,5 +12,10 @@
 
   & > div {
     flex: 1;
+  }
+
+  .donut-chart {
+    display: flex;
+    align-items: center;
   }
 }

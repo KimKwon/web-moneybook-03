@@ -3,6 +3,7 @@ import Component from '@/lib/component';
 import DonutChartDetail from '../DonutChartDetail/index';
 import store from '@/store/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
+import DonutChart from '../DonutChart/index';
 
 class DonutChartContainer extends Component {
   constructor($target, initialState, onCategoryClick) {
@@ -51,7 +52,7 @@ class DonutChartContainer extends Component {
 
   handelCategoryClickEvent(e) {
     const $categoryItem = e.target.closest('.donut-chart-detail__item');
-    const $category = $categoryItem.querySelector('.category');
+    const $category = $categoryItem?.querySelector('.category');
     if (!$category) return;
     this.onCategoryClick({
       categoryId: $category.dataset['id'],
@@ -63,7 +64,9 @@ class DonutChartContainer extends Component {
     const { totalAmount, groupedByCategory } = this.getGroupedData();
     this.$target.innerHTML = this.template();
     const $donutChartDetail = this.$target.querySelector('.donut-chart-detail');
+    const $donutChart = this.$target.querySelector('.donut-chart');
     new DonutChartDetail($donutChartDetail, { totalAmount, groupedByCategory });
+    new DonutChart($donutChart, { totalAmount, groupedByCategory });
   }
 }
 
