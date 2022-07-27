@@ -1,11 +1,39 @@
 import './index.scss';
 import Component from '@/lib/component';
 import DonutChartDetail from '../DonutChartDetail/index';
+import store from '@/store/index';
+import { SELECTOR_MAP } from '@/constants/selector-map';
 
 class DonutChartContainer extends Component {
   constructor($target, initialState, onCategoryClick) {
     super($target, initialState);
     this.onCategoryClick = onCategoryClick;
+  }
+
+  init() {
+    this.accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
+    store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, this.render.bind(this));
+  }
+
+  getGroupedData() {
+    let totalAmount = 0;
+    const groupedByCategory = this.accountHistory
+      .filter(({ isProfit }) => !isProfit)
+      .reduce((acc, cur) => {
+        const { amount, categoryId, categoryName } = cur;
+        totalAmount += amount;
+        return {
+          ...acc,
+          [categoryId]: acc[categoryId]
+            ? {
+                ...acc[categoryId],
+                amount: acc[categoryId].amount + amount,
+              }
+            : { amount, categoryName },
+        };
+      }, {});
+
+    return { totalAmount, groupedByCategory };
   }
 
   template() {
@@ -31,9 +59,10 @@ class DonutChartContainer extends Component {
   }
 
   async render() {
+    const { totalAmount, groupedByCategory } = this.getGroupedData();
     this.$target.innerHTML = this.template();
     const $donutChartDetail = this.$target.querySelector('.donut-chart-detail');
-    new DonutChartDetail($donutChartDetail, {});
+    new DonutChartDetail($donutChartDetail, { totalAmount, groupedByCategory });
   }
 }
 
