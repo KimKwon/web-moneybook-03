@@ -7,8 +7,11 @@
   background-color: $color-primary;
   color: $color-white;
   .header-title {
+    cursor: pointer;
     font-size: 1.4rem;
     font-weight: 600;
+
+    font-family: 'Do Hyeon';
   }
   .nav {
     cursor: pointer;
@@ -33,6 +36,7 @@
 .month-controller {
   display: flex;
   text-align: center;
+  font-family: 'Do Hyeon';
   & > button {
     margin: 0 3rem;
 
@@ -42,11 +46,11 @@
   }
   .month-controller-year {
     margin-top: 0.8rem;
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 400;
   }
   .month-controller-month {
-    font-size: 2.7rem;
-    font-weight: 600;
+    font-size: 48px;
+    font-weight: 400;
   }
 }
