@@ -5,6 +5,9 @@ import store from '@/store';
 import leftArrowIcon from '@/assets/icon/left-arrow.svg';
 import rightArrowIcon from '@/assets/icon/right-arrow.svg';
 import Component from '@/lib/component';
+import debounce from '@/utils/debounce';
+import { getAccountHistory } from '@/lib/api/accountHistory';
+import { getStartAndEndDate } from '@/utils/date';
 
 export default class MonthController extends Component {
   constructor($target) {
@@ -16,7 +19,9 @@ export default class MonthController extends Component {
     this.$month = this.$target.querySelector('.month-controller-month');
     this.refetchDate();
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.refetchDate.bind(this));
-    this.$target.addEventListener('click', this.changeMonth);
+    this.$target.addEventListener('click', this.changeMonth.bind(this));
+
+    this.debouncedRequest = debounce(this.requestRefetchHistory.bind(this));
   }
 
   changeMonth(e) {
@@ -25,6 +30,15 @@ export default class MonthController extends Component {
     if (!$prev) return;
     const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
     store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
+    this.debouncedRequest();
+  }
+
+  async requestRefetchHistory() {
+    const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
+    const nextAccountHistory = await getAccountHistory({
+      ...getStartAndEndDate(new Date(year, month - 1)),
+    });
+    store.dispatch('setAccountHistory', nextAccountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
   }
 
   refetchDate() {
