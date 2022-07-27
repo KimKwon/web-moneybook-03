@@ -63,7 +63,7 @@ const findAll = async (table, options = {}) => {
       const { target, type = 'ASC' } = order;
       query += `ORDER BY ${target} ${type}`;
     }
-    console.log(query);
+
     return await getDB().query(query);
   } catch (error) {
     console.error(error);

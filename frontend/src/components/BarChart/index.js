@@ -1,4 +1,3 @@
-import { getStatistic } from '@/lib/api/statistic';
 import Component from '@/lib/component';
 
 class BarChart extends Component {

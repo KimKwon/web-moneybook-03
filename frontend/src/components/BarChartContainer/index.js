@@ -23,32 +23,29 @@ class BarChartContainer extends Component {
     </div>  
     `;
   }
-  attachEvent() {
-    this.$target.addEventListener('click', this.handleClickEvent.bind(this));
-  }
 
   didMount() {
-    this.attachEvent();
+    this.$target.addEventListener('click', this.handleClickEvent.bind(this));
   }
   async handleClickEvent(e) {
     const $chartButton = e.target.closest('button');
     if (!$chartButton) return;
     const period = $chartButton.dataset['period'];
-    this.render(period);
+    this.setState({ period });
   }
 
-  async getChartData(period) {
-    const { month, year, categoryId } = this.state;
+  async getChartData() {
+    const { month, year, categoryId, period } = this.state;
     this.chartData = await getStatistic({
-      month: 7,
-      year: 2022,
-      period: period ? period : 6,
-      categoryId: 1,
+      month,
+      year,
+      period,
+      categoryId,
     });
   }
 
-  async render(period) {
-    await this.getChartData(period);
+  async render() {
+    await this.getChartData();
     this.$target.innerHTML = this.template();
     const $barChart = this.$target.querySelector('.bar-chart');
     const chartData = this.chartData.reduce(
