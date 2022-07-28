@@ -32,8 +32,17 @@ class BarChart extends Component {
   }
 
   circleTemplate(options) {
-    const { data, columnInterval, rowInterval, height, rate, circleClass, textClass, focusIndex } =
-      options;
+    const {
+      data,
+      columnInterval,
+      rowInterval,
+      height,
+      rate,
+      circleClass,
+      textClass,
+      focusIndex,
+      color,
+    } = options;
     const [defaultCircle, focusCircle] = circleClass;
     const [defaultText, focusText] = textClass;
     const template = data
@@ -41,12 +50,10 @@ class BarChart extends Component {
         const x = columnInterval * (index + 1);
         let y = height - value * rate;
         if (y < 0) y = 0;
-        return `<circle cx="${x}" cy="${y}" r="5" class="${
-          index !== focusIndex ? defaultCircle : focusCircle
-        }" stroke-width="5" data-idx="${index}"/>
-          <text class="${index !== focusIndex ? defaultText : focusText}"  x="${x - 20}" y="${
-          y - 25
-        }" > ${Number(value).toLocaleString()}</text>`;
+        return `<circle cx="${x}" cy="${y}" r="5" stroke="${color}" fill="${color}" stroke-width="5" data-idx="${index}"/>
+          <text fill="${color}"   x="${x - 20}" y="${y - 25}" > ${Number(
+          value,
+        ).toLocaleString()}</text>`;
       })
       .join('');
     return template;
@@ -61,8 +68,8 @@ class BarChart extends Component {
         const x1 = columnInterval * (index + 1);
         const x2 = columnInterval * (index + 2);
         const y1 = height - value * rate;
-        const y2 = height - data[index + 1] * rate;
-        return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" class="${className}" stroke="${color}" stroke-width="2"/>`;
+        const y2 = height - data[index + 1] * rate; //class="${className}"
+        return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"  stroke="${color}" stroke-width="2"/>`;
       })
       .join('');
     return template;
@@ -106,8 +113,8 @@ class BarChart extends Component {
           stroke :#219A95;
         }
         circle:hover{
-          fill :#219A95;
-          stroke :#219A95;
+          fill :#555555;
+          stroke :#555555;
         }
       </style>`;
   }
@@ -124,6 +131,7 @@ class BarChart extends Component {
       svgHeight,
       rate,
       split,
+      color,
     } = this.chartInfo;
     /* html */ return `
     <?xml version="1.0" standalone="no"?>
@@ -150,6 +158,7 @@ class BarChart extends Component {
         circleClass: ['primary', 'primary-dark'],
         textClass: ['gray', 'primary-dark'],
         focusIndex: data.length - 1,
+        color,
       })}
       ${this.labelTemplate({ labels, columnInterval, height, className: 'gray' })}
       </svg>`;
