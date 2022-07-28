@@ -28,6 +28,8 @@ class Statistic {
     this.$main.appendChild(this.$donutChartContainer);
     this.$main.appendChild(this.$barChartContainer);
     this.$main.appendChild(this.$acountHistoryTableContainer);
+
+    store.cleanupListener(SELECTOR_MAP.CURRENT_DATE);
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.setCurrentDate.bind(this));
     store.subscribe(SELECTOR_MAP.IS_LOADING, () => {
       Loader.showLoader(this.$main);

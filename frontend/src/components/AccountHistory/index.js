@@ -7,7 +7,7 @@ import { groupByDate } from '@/utils/date';
 import AccountHistoryHeader from '../AccountHistoryHeader/index';
 import Loader from '../Loader/index';
 
-class AccountHitoryTable extends Component {
+class AccountHistory extends Component {
   constructor($target, initialState, onChangeFormData) {
     super($target);
     this.onChangeFormData = onChangeFormData;
@@ -58,6 +58,7 @@ class AccountHitoryTable extends Component {
   }
 
   refetchAccountHistoryTable() {
+    store.cleanupListener(SELECTOR_MAP.CATEGORY);
     this.$accountTable.setState({ accountHistoryByDate: this.accountHistoryByDate });
     this.$accountHeader.setState({ accountHistoryByDate: this.accountHistoryByDate });
   }
@@ -88,4 +89,4 @@ class AccountHitoryTable extends Component {
   }
 }
 
-export default AccountHitoryTable;
+export default AccountHistory;

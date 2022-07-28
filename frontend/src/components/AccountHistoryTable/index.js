@@ -1,6 +1,8 @@
 import './index.scss';
 import Component from '@/lib/component';
 import Category from '../Category/index';
+import store from '@/store/index';
+import { SELECTOR_MAP } from '@/constants/selector-map';
 class AccountHistoryTable extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -58,8 +60,8 @@ class AccountHistoryTable extends Component {
     `;
   }
 
-  /* 위에가 템플릿으로 만들어져서 아래부분을 끼워 넣을 수가 없네요 */
   renderCategory() {
+    store.cleanupListener(SELECTOR_MAP.CATEGORY);
     const $categories = this.$target.querySelectorAll('.history-item-category');
     $categories.forEach(($category) => {
       const id = $category.dataset['id'];

@@ -67,7 +67,7 @@ class AccountForm extends Component {
 
     return {
       id,
-      date: new Date($date.value),
+      date: $date.value,
       content: $content.value,
       amount: Number($amount.value.toString().replaceAll(',', '')),
       methodId,
@@ -272,11 +272,13 @@ class AccountForm extends Component {
   }
 
   render() {
-    const template = this.template();
+    store.cleanupListener(SELECTOR_MAP.PAYMENT_METHODS);
     if (this.$form) {
       this.$form.remove();
       this.$form = null;
     }
+
+    const template = this.template();
     this.$target.insertAdjacentHTML('afterBegin', template);
 
     this.afterRender();

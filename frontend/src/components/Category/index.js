@@ -7,17 +7,18 @@ class Category extends Component {
   constructor($target, initialState) {
     super($target, initialState);
   }
+
   init() {
     this.$element = document.createElement('div');
     this.$element.className = 'category';
     this.$element.dataset['id'] = this.state.id;
   }
+
   didMount() {
     store.subscribe(SELECTOR_MAP.CATEGORY, this.paintCategory.bind(this));
   }
 
   paintCategory() {
-    /* category 배열이 아닌 객체리터럴이여도 좋을것 같네요 */
     let categories = store.getState(SELECTOR_MAP.CATEGORY);
     categories = [...categories.expenditure, ...categories.income];
     const category = categories.find((category) => {

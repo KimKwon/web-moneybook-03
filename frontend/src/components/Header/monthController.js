@@ -14,6 +14,10 @@ export default class MonthController extends Component {
     super($target);
   }
 
+  init() {
+    store.cleanupListener(SELECTOR_MAP.CURRENT_DATE);
+  }
+
   didMount() {
     this.$year = this.$target.querySelector('.month-controller-year');
     this.$month = this.$target.querySelector('.month-controller-month');

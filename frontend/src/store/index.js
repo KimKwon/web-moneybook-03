@@ -16,7 +16,6 @@ const createStore = (initialState, reducer) => {
     [CURRENT_DATE]: [],
     [IS_LOADING]: [],
   };
-  //initialState ||
   let state = {
     [ACCOUNT_HISTORY]: [],
     [CATEGORY]: [],
@@ -38,6 +37,9 @@ const createStore = (initialState, reducer) => {
   };
 
   return {
+    cleanupListener(selector) {
+      listeners[selector] = [];
+    },
     getState(selector) {
       if (selector && selector in state) return Object.freeze(state[selector]);
 
