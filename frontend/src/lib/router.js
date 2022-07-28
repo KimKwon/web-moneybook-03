@@ -1,5 +1,6 @@
 import CalendarPage from '@/pages/Calendar';
 import Main from '@/pages/Main';
+import NotFound from '@/pages/NotFound';
 import Statistic from '@/pages/Statistic';
 
 class Router {
@@ -34,10 +35,7 @@ class Router {
   #route() {
     const targetPage = this.routes.find((route) => route.path.test(Router.getCurrentPath()));
     if (!targetPage) {
-      /**
-       * TODO :: NOT FOUND PAGE 인스턴스 호출 or 메인페이지로 fallback
-       */
-      console.log('NOT FOUND!');
+      NotFound(this.$rootTarget);
       return;
     }
 
