@@ -39,10 +39,12 @@ class Calendar extends Component {
     const { calendarData, month, year } = this.state;
     const startDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
+
     return `
         ${this.emptyCalendarDateTemplate(startDay)}    
-        ${calendarData.map((item, index) => this.validCalendarDateTemplate(item)).join('')}
-        ${this.emptyCalendarDateTemplate(7 - ((lastDate % 7) - (7 - startDay)))}    
+        ${calendarData.map((item) => this.validCalendarDateTemplate(item)).join('')}
+        
+        ${this.emptyCalendarDateTemplate((7 - ((lastDate % 7) - (7 - startDay))) % 7)}    
     `;
   }
 

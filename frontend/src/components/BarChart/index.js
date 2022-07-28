@@ -157,7 +157,7 @@ class BarChart extends Component {
   render() {
     this.calculateChartData();
     const template = this.template();
-    this.$target.insertAdjacentHTML('beforeend', template);
+    this.$target.innerHTML = template;
   }
 
   calculateChartData() {

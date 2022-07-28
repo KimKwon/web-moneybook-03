@@ -18,25 +18,29 @@ class Statistic {
     this.init();
   }
 
-  init() {
-    new Header(this.$header);
-    this.$donutChartContainer = document.createElement('div');
-    this.$barChartContainer = document.createElement('div');
-    this.$acountHistoryTableContainer = document.createElement('div');
-
+  createStatisticTemplate() {
     this.$main.innerHTML = '';
     this.$main.appendChild(this.$donutChartContainer);
     this.$main.appendChild(this.$barChartContainer);
     this.$main.appendChild(this.$acountHistoryTableContainer);
+  }
 
+  init() {
     store.cleanupListener(SELECTOR_MAP.CURRENT_DATE);
+    store.cleanupListener(SELECTOR_MAP.ACCOUNT_HISTORY);
+
+    this.$donutChartContainer = document.createElement('div');
+    this.$barChartContainer = document.createElement('div');
+    this.$acountHistoryTableContainer = document.createElement('div');
+
+    new Header(this.$header);
+    this.createStatisticTemplate();
+
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.setCurrentDate.bind(this));
     store.subscribe(SELECTOR_MAP.IS_LOADING, () => {
       Loader.showLoader(this.$main);
       if (store.getState(SELECTOR_MAP.IS_LOADING) === false) {
-        this.$main.appendChild(this.$donutChartContainer);
-        this.$main.appendChild(this.$barChartContainer);
-        this.$main.appendChild(this.$acountHistoryTableContainer);
+        this.createStatisticTemplate();
       }
     });
     this.setCurrentDate();
@@ -66,11 +70,14 @@ class Statistic {
 
   donutChartRender() {
     const { year, month } = this.state.currentDate;
+    this.$donutChartContainer.innerHTML = '';
     this.$donutChart = new DonutChartContainer(
       this.$donutChartContainer,
       { year, month },
       this.changeCategory.bind(this),
     );
+    this.$barChartContainer.innerHTML = '';
+    this.$acountHistoryTableContainer.innerHTML = '';
   }
 
   changeCategory({ categoryId, categoryName }) {
@@ -79,6 +86,7 @@ class Statistic {
 
   setState(nextState) {
     const { currentDate, categoryId, categoryName } = nextState;
+
     if (currentDate) {
       this.state['currentDate'] = currentDate;
       this.donutChartRender();
@@ -89,7 +97,11 @@ class Statistic {
         categoryId,
         categoryName,
       };
-      this.barChartRender();
+      if (this.$barChart) {
+        this.$barChart.setState({ categoryId, categoryName });
+      } else {
+        this.barChartRender();
+      }
       this.accountHistoryTableRender();
     }
   }

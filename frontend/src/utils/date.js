@@ -119,17 +119,23 @@ export const fillEmptyDay = (data, year, month) => {
   const filledData = data.reduce((acc, cur, idx) => {
     const emptyData = {
       data: new Array(),
-      date: acc.length + 1,
+      date: acc.length,
       income: 0,
       expenditure: 0,
     };
     while (acc.length + 1 !== cur.date) {
-      acc.push(emptyData);
+      emptyData.date = acc.length + 1;
+      acc.push({
+        ...emptyData,
+      });
     }
     acc.push(cur);
     if (idx + 1 === data.length && acc.length !== lastDate) {
       while (acc.length < lastDate) {
-        acc.push(emptyData);
+        emptyData.date = acc.length + 1;
+        acc.push({
+          ...emptyData,
+        });
       }
     }
     return acc;
