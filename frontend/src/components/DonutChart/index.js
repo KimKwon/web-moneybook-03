@@ -15,6 +15,15 @@ class DonutChart extends Component {
 
   getSVGCircles() {
     const { totalAmount, groupedByCategory } = this.state;
+
+    if (totalAmount === 0) {
+      return /*html*/ `
+      <circle cx="100" cy="100" r="${
+        this.radius
+      }" fill="transparent" stroke="${'#2ac1bc'}" stroke-width="40" ></circle>
+      `;
+    }
+
     const accumulativeAmount = Object.values(groupedByCategory).reduce(
       (acc, { amount }) => [...acc, acc[acc.length - 1] + amount],
       [0],
