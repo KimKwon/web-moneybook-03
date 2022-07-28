@@ -1,12 +1,21 @@
-.chart-container {
-  margin: 1rem auto;
+.donut-chart-container {
   display: flex;
-  flex-direction: column;
+  gap: 80px;
+  margin: 1rem auto;
   border: 0.2rem;
   background: #fcfcfc;
   border: 1px solid #ccd3d3;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  padding: 20px 100px;
-  width: 1000px;
+  padding: 35px 42px;
+  width: 100%;
+
+  & > div {
+    flex: 1;
+  }
+
+  .donut-chart {
+    display: flex;
+    align-items: center;
+  }
 }

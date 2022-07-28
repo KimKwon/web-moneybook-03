@@ -1,0 +1,40 @@
+.donut-chart-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 51px;
+
+  &__total-amount {
+    padding: 0 16px;
+    font-size: 22px;
+    line-height: 22px;
+    font-weight: 400;
+    color: $color-title-active;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid $color-line;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-background;
+    }
+  }
+
+  &__percentage {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 18px;
+    font-weight: 400;
+    color: $color-title-active;
+
+    & > span:nth-child(2) {
+      font-weight: 500;
+    }
+  }
+}

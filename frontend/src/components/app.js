@@ -8,6 +8,7 @@ import { getAccountHistory } from '@/lib/api/accountHistory';
 import { getStartAndEndDate } from '@/utils/date';
 import { getCategories } from '@/lib/api/category';
 import { getPaymentMethod } from '@/lib/api/paymentMethod';
+import Loader from './Loader/index';
 class App extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -17,6 +18,7 @@ class App extends Component {
     await this.initCategorydummyData();
     await this.initAccountHistory();
     await this.initPaymentMethodDummyData();
+    new Loader();
     new Router(this.$target);
   }
 

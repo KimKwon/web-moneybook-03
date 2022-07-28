@@ -4,12 +4,9 @@ import { SELECTOR_MAP } from '@/constants/selector-map';
 import store from '@/store/index';
 
 class Loader {
-  constructor($target) {
-    this.$target = $target;
-    this.$loader = this.createLoaderTemplate();
-  }
+  static currentLoader = this.createLoaderTemplate();
 
-  createLoaderTemplate() {
+  static createLoaderTemplate() {
     const $loaderBox = document.createElement('div');
     const $loaderText = document.createElement('span');
     $loaderText.innerText = 'LOADING . . .';
@@ -19,13 +16,13 @@ class Loader {
     return $loaderBox;
   }
 
-  render() {
+  static showLoader($target) {
     const currentLoadingState = store.getState(SELECTOR_MAP.IS_LOADING);
     if (currentLoadingState) {
-      this.$target.innerHTML = '';
-      this.$target.appendChild(this.$loader);
+      $target.innerHTML = '';
+      $target.appendChild(this.currentLoader);
     } else {
-      this.$loader.remove();
+      this.currentLoader.remove();
     }
   }
 }
