@@ -2,6 +2,7 @@ import AccountHitoryTable from '@/components/AccountHistoryTable/index';
 import BarChartContainer from '@/components/BarChartContainer/index';
 import DonutChartContainer from '@/components/DonutChartContainer/index';
 import Header from '@/components/Header/index';
+import Loader from '@/components/Loader/index';
 import { SELECTOR_MAP } from '@/constants/selector-map';
 import { getAccountHistory } from '@/lib/api/accountHistory';
 
@@ -28,6 +29,14 @@ class Statistic {
     this.$main.appendChild(this.$barChartContainer);
     this.$main.appendChild(this.$acountHistoryTableContainer);
     store.subscribe(SELECTOR_MAP.CURRENT_DATE, this.setCurrentDate.bind(this));
+    store.subscribe(SELECTOR_MAP.IS_LOADING, () => {
+      Loader.showLoader(this.$main);
+      if (store.getState(SELECTOR_MAP.IS_LOADING) === false) {
+        this.$main.appendChild(this.$donutChartContainer);
+        this.$main.appendChild(this.$barChartContainer);
+        this.$main.appendChild(this.$acountHistoryTableContainer);
+      }
+    });
     this.setCurrentDate();
   }
 

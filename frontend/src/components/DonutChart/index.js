@@ -20,9 +20,6 @@ class DonutChart extends Component {
       [0],
     );
 
-    console.log(Object.entries(groupedByCategory));
-    console.log('this.categories :>> ', this.categories);
-
     return Object.entries(groupedByCategory)
       .map(([categoryId, { amount }], index) => {
         const partialRatio = amount / totalAmount;
@@ -30,10 +27,9 @@ class DonutChart extends Component {
         const emptySpace = this.diameter - fillSpace;
         const offset = (accumulativeAmount[index] / totalAmount) * this.diameter;
         const result = this.categories.find(({ id }) => id === +categoryId);
-        console.log(result);
         return /*html*/ `
         <circle cx="100" cy="100" r="${this.radius}" fill="transparent" stroke="${
-          result.color || '#000'
+          result?.color || '#000'
         }" stroke-width="40" stroke-dashoffset="${-offset}" stroke-dasharray="${fillSpace} ${emptySpace}"></circle>
       `;
       })

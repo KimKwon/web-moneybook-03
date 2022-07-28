@@ -46,7 +46,7 @@ export default class MonthController extends Component {
     setTimeout(() => {
       store.dispatch('changeLoadingState', false, SELECTOR_MAP.IS_LOADING);
       store.dispatch('setAccountHistory', nextAccountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
-    }, 1500);
+    }, 500);
   }
 
   refetchDate() {

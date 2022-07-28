@@ -12,8 +12,15 @@ class DonutChartContainer extends Component {
   }
 
   init() {
+    this.fetchStoredHistory();
+    store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, () => {
+      this.fetchStoredHistory();
+      this.render();
+    });
+  }
+
+  fetchStoredHistory() {
     this.accountHistory = store.getState(SELECTOR_MAP.ACCOUNT_HISTORY);
-    store.subscribe(SELECTOR_MAP.ACCOUNT_HISTORY, this.render.bind(this));
   }
 
   getGroupedData() {
@@ -60,7 +67,7 @@ class DonutChartContainer extends Component {
     });
   }
 
-  async render() {
+  render() {
     const { totalAmount, groupedByCategory } = this.getGroupedData();
     this.$target.innerHTML = this.template();
     const $donutChartDetail = this.$target.querySelector('.donut-chart-detail');
