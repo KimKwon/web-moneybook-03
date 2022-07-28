@@ -8,6 +8,7 @@ import Component from '@/lib/component';
 import debounce from '@/utils/debounce';
 import { getAccountHistory } from '@/lib/api/accountHistory';
 import { getStartAndEndDate } from '@/utils/date';
+import { CHANGE_LOADING_STATE, SET_ACCOUNT_HISTORY, UPDATE_MONTH } from '@/store/action';
 
 export default class MonthController extends Component {
   constructor($target) {
@@ -33,13 +34,13 @@ export default class MonthController extends Component {
     const $prev = e.target.closest('button');
     if (!$prev) return;
     const nextMonth = $prev.className === 'month-controller__prev' ? month - 1 : month + 1;
-    store.dispatch('updateMonth', nextMonth, SELECTOR_MAP.CURRENT_DATE);
+    store.dispatch(UPDATE_MONTH, nextMonth, SELECTOR_MAP.CURRENT_DATE);
     this.debouncedRequest();
   }
 
   async requestRefetchHistory() {
     const { year, month } = store.getState(SELECTOR_MAP.CURRENT_DATE);
-    store.dispatch('changeLoadingState', true, SELECTOR_MAP.IS_LOADING);
+    store.dispatch(CHANGE_LOADING_STATE, true, SELECTOR_MAP.IS_LOADING);
     const nextAccountHistory = await getAccountHistory({
       ...getStartAndEndDate(new Date(year, month - 1)),
     });
@@ -48,8 +49,8 @@ export default class MonthController extends Component {
      * 로딩 상태 확인을 위해 임시로 setTimeout 부여.
      */
     setTimeout(() => {
-      store.dispatch('changeLoadingState', false, SELECTOR_MAP.IS_LOADING);
-      store.dispatch('setAccountHistory', nextAccountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
+      store.dispatch(CHANGE_LOADING_STATE, false, SELECTOR_MAP.IS_LOADING);
+      store.dispatch(SET_ACCOUNT_HISTORY, nextAccountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
     }, 500);
   }
 
