@@ -3,6 +3,7 @@ import Component from '@/lib/component';
 import BarChart from '../BarChart/index';
 import { getStatistic } from '@/lib/api/statistic';
 import { monthToString } from '@/utils/date';
+import { getCategoryColor } from '@/utils/category';
 
 class BarChartContainer extends Component {
   constructor($target, initialState) {
@@ -80,7 +81,8 @@ class BarChartContainer extends Component {
       },
       { data: [], labels: [] },
     );
-
+    const { categoryId } = this.state;
+    const color = getCategoryColor(categoryId);
     const barChartState = {
       data: chartData.data,
       labels: chartData.labels,
@@ -88,6 +90,7 @@ class BarChartContainer extends Component {
       height: 500,
       row: 8,
       split: 2,
+      color,
     };
     new BarChart($barChart, barChartState);
   }

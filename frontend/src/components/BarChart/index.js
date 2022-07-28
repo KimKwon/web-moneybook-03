@@ -53,7 +53,7 @@ class BarChart extends Component {
   }
 
   lineTemplate(options) {
-    const { data, rowInterval, columnInterval, height, rate, className } = options;
+    const { data, rowInterval, columnInterval, height, rate, className, color } = options;
     const len = data.length;
     const template = data
       .map((value, index) => {
@@ -62,7 +62,7 @@ class BarChart extends Component {
         const x2 = columnInterval * (index + 2);
         const y1 = height - value * rate;
         const y2 = height - data[index + 1] * rate;
-        return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" class="${className}" stroke-width="2"/>`;
+        return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" class="${className}" stroke="${color}" stroke-width="2"/>`;
       })
       .join('');
     return template;
@@ -139,6 +139,7 @@ class BarChart extends Component {
         height,
         rate,
         className: 'primary-light',
+        color,
       })}
       ${this.circleTemplate({
         data,
@@ -161,7 +162,7 @@ class BarChart extends Component {
   }
 
   calculateChartData() {
-    const { data, labels, width, height, row, split = 1 } = this.state;
+    const { data, labels, width, height, row, split = 1, color } = this.state;
     const maxValue = Math.max(...data);
     const column = data.length + 1;
     const rowInterval = height / row;
@@ -169,6 +170,7 @@ class BarChart extends Component {
     const svgHeight = height + rowInterval;
     const rate = (rowInterval * (row - 1)) / maxValue;
     this.chartInfo = {
+      color,
       data,
       labels,
       rowInterval,
