@@ -1,0 +1,96 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: -40px;
+  &-header {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0px;
+    gap: 1px;
+    width: 100%;
+    height: 50px;
+    background: #fcfcfc;
+    border: 1px solid #ccd3d3;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    div {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  &-body {
+    /* Calender */
+
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    // display: flex;
+    // flex-direction: column;
+    // align-items: flex-start;
+    padding: 0px;
+
+    width: 100%;
+    margin-top: 20px;
+    /* Off-white */
+
+    background: #fcfcfc;
+    /* Line */
+
+    border: 1px solid #ccd3d3;
+    /* Elevation1 */
+
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    > div {
+      position: relative;
+      height: 130px;
+      border-right: 1px solid $color-gray;
+      border-top: 1px solid $color-gray;
+
+      &:nth-child(7n) {
+        border-right: none;
+      }
+
+      &:nth-child(n + 1):nth-child(-n + 7) {
+        border-top: none;
+      }
+    }
+  }
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+    color: $color-gray-dark;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    font-size: 0.9rem;
+  }
+}
+.calendar-amount-info {
+  font-size: 0.9rem;
+  padding: 7px;
+  > div {
+    margin-bottom: 3px;
+  }
+  .calendar-income {
+    color: $color-primary;
+  }
+  .calendar-expenditure {
+    color: $color-red;
+  }
+  .calendar-total {
+    color: $color-black;
+  }
+}
+.calendar-date {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: $color-gray-dark;
+}
