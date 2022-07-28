@@ -39,7 +39,7 @@ class BarChart extends Component {
     const template = data
       .map((value, index) => {
         const x = columnInterval * (index + 1);
-        let y = -rowInterval + height - value * rate;
+        let y = height - value * rate;
         if (y < 0) y = 0;
         return `<circle cx="${x}" cy="${y}" r="5" class="${
           index !== focusIndex ? defaultCircle : focusCircle
@@ -60,8 +60,8 @@ class BarChart extends Component {
         if (len - 1 === index) return;
         const x1 = columnInterval * (index + 1);
         const x2 = columnInterval * (index + 2);
-        const y1 = -rowInterval + height - value * rate;
-        const y2 = -rowInterval + height - data[index + 1] * rate;
+        const y1 = height - value * rate;
+        const y2 = height - data[index + 1] * rate;
         return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" class="${className}" stroke-width="2"/>`;
       })
       .join('');
@@ -167,7 +167,7 @@ class BarChart extends Component {
     const rowInterval = height / row;
     const columnInterval = width / column;
     const svgHeight = height + rowInterval;
-    const rate = (rowInterval * (row - 2)) / maxValue;
+    const rate = (rowInterval * (row - 1)) / maxValue;
     this.chartInfo = {
       data,
       labels,

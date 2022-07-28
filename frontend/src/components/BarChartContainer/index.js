@@ -2,6 +2,7 @@ import './index.scss';
 import Component from '@/lib/component';
 import BarChart from '../BarChart/index';
 import { getStatistic } from '@/lib/api/statistic';
+import { monthToString } from '@/utils/date';
 
 class BarChartContainer extends Component {
   constructor($target, initialState) {
@@ -42,6 +43,29 @@ class BarChartContainer extends Component {
       period,
       categoryId,
     });
+    const filledChartData = this.fillEmptyMonth(this.chartData, month, year, 12);
+    this.chartData = filledChartData;
+  }
+
+  fillEmptyMonth(targetData, month, year, period) {
+    const baseDates = [];
+    for (let i = 0; i < period; i++) {
+      if (month - i < 1) {
+        year--;
+        month = 12 + i;
+      }
+      baseDates.push(`${year}-${monthToString(month - i)}`);
+    }
+    baseDates.sort(function (a, b) {
+      return new Date(a) - new Date(b);
+    });
+
+    const filledData = baseDates.map((baseDate) => {
+      const data = targetData.find((item) => item.baseDate === baseDate);
+      return data ? data : { baseDate, sum: 0 };
+    });
+
+    return filledData;
   }
 
   async render() {
@@ -63,7 +87,7 @@ class BarChartContainer extends Component {
       width: 800,
       height: 500,
       row: 8,
-      split: 5,
+      split: 2,
     };
     new BarChart($barChart, barChartState);
   }
