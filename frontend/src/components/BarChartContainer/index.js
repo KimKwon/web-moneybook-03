@@ -44,7 +44,7 @@ class BarChartContainer extends Component {
       month,
       year,
       period,
-      categoryId,
+      categoryId: +categoryId,
     });
 
     const filledChartData = this.fillEmptyMonth(this.chartData, month, year, period);

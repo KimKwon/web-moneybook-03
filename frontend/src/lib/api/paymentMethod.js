@@ -18,13 +18,13 @@ export const getPaymentMethod = async () => {
   }
 };
 
-export const createPaymentMethod = async (paymentMethod) => {
+export const createPaymentMethod = async ({ name }) => {
   const option = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name: paymentMethod, is_delete: 0 }),
+    body: JSON.stringify({ name, isDelete: 0 }),
   };
   try {
     const response = await fetch(`${baseUrl}/payment-method`, option);

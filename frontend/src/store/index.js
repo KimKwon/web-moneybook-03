@@ -3,11 +3,6 @@ import reducer from './reducer';
 
 const { ACCOUNT_HISTORY, CATEGORY, PAYMENT_METHODS, CURRENT_DATE, IS_LOADING } = SELECTOR_MAP;
 
-/**
- * @param  { } initialState
- * @param  { } reducer
- */
-
 const createStore = (initialState, reducer) => {
   const listeners = {
     [ACCOUNT_HISTORY]: [],
