@@ -9,6 +9,7 @@ import { getStartAndEndDate } from '@/utils/date';
 import { getCategories } from '@/lib/api/category';
 import { getPaymentMethod } from '@/lib/api/paymentMethod';
 import Loader from './Loader/index';
+import { SET_ACCOUNT_HISTORY, SET_CATEGORY, SET_PATMENT_METHOD } from '@/store/action';
 class App extends Component {
   constructor($target, initialState) {
     super($target, initialState);
@@ -26,17 +27,17 @@ class App extends Component {
     const accountHistory = await getAccountHistory({
       ...getStartAndEndDate(new Date()),
     });
-    store.dispatch('setAccountHistory', accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
+    store.dispatch(SET_ACCOUNT_HISTORY, accountHistory, SELECTOR_MAP.ACCOUNT_HISTORY);
   }
   async initPaymentMethodDummyData() {
     const paymentMethod = await getPaymentMethod();
-    store.dispatch('setPaymentMethod', paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
+    store.dispatch(SET_PATMENT_METHOD, paymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
   }
   async initCategorydummyData() {
     const income = await getCategories('income');
     const expenditure = await getCategories('expenditure');
 
-    store.dispatch('setCategory', { expenditure, income }, SELECTOR_MAP.CATEGORY);
+    store.dispatch(SET_CATEGORY, { expenditure, income }, SELECTOR_MAP.CATEGORY);
   }
   render() {}
 }

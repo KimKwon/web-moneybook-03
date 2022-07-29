@@ -9,6 +9,12 @@ import { SELECTOR_MAP } from '@/constants/selector-map';
 import { createAccountHistory, patchAccountHistory } from '@/lib/api/accountHistory';
 import DropDown from '../Dropdown/index';
 import { createPaymentMethod, deletePaymentMethod } from '@/lib/api/paymentMethod';
+import {
+  ADD_ACCOUNT_HISTORY,
+  ADD_PAYMENT_METHOD,
+  REMOVE_PAYMENT_METHOD,
+  UPDATE_ACCOUNT_HISTORY,
+} from '@/store/action';
 
 const INCOME = 'income';
 const EXPENDITURE = 'expenditure';
@@ -94,7 +100,7 @@ class AccountForm extends Component {
     }
 
     store.dispatch(
-      isEditMode ? 'updateAccountHistory' : 'addAccountHistory',
+      isEditMode ? UPDATE_ACCOUNT_HISTORY : ADD_ACCOUNT_HISTORY,
       {
         ...nextFormData,
         id,
@@ -217,11 +223,11 @@ class AccountForm extends Component {
       async (name) => {
         // add
         const newPaymentMethod = await createPaymentMethod({ name });
-        store.dispatch('addPaymentMethod', newPaymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
+        store.dispatch(ADD_PAYMENT_METHOD, newPaymentMethod, SELECTOR_MAP.PAYMENT_METHODS);
       },
       (id) => {
         // delete
-        store.dispatch('removePaymentMethod', { id }, SELECTOR_MAP.PAYMENT_METHODS);
+        store.dispatch(REMOVE_PAYMENT_METHOD, { id }, SELECTOR_MAP.PAYMENT_METHODS);
         deletePaymentMethod(id);
         this.setState({
           methodName: '',
