@@ -16,9 +16,10 @@
     margin: 2rem 0rem;
     button {
       margin-left: 0.1rem;
+      color: $color-gray-dark;
     }
     button:hover {
-      color: $color-primary;
+      color: $color-black;
     }
   }
 }

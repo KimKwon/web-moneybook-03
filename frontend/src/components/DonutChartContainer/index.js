@@ -60,7 +60,10 @@ class DonutChartContainer extends Component {
   handelCategoryClickEvent(e) {
     const $categoryItem = e.target.closest('.donut-chart-detail__item');
     const $category = $categoryItem?.querySelector('.category');
-    if (!$category) return;
+    const categoryAmount = $categoryItem.dataset?.amount;
+
+    if (!$category || Number(categoryAmount) === 0) return;
+
     this.onCategoryClick({
       categoryId: $category.dataset['id'],
       categoryName: $category.innerText,

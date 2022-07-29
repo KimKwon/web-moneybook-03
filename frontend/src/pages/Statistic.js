@@ -7,7 +7,7 @@ import { SELECTOR_MAP } from '@/constants/selector-map';
 import { getAccountHistory } from '@/lib/api/accountHistory';
 
 import store from '@/store/index';
-import { getStartAndEndDate, groupByDate } from '@/utils/date';
+import { getStartAndEndDate, groupByDate, ccString, monthToString } from '@/utils/date';
 
 class Statistic {
   constructor($target) {
@@ -47,18 +47,24 @@ class Statistic {
   }
 
   barChartRender() {
-    const { categoryId, categoryName, currentDate } = this.state;
+    const { categoryId, categoryName } = this.state;
+    const currentDate = store.getState(SELECTOR_MAP.CURRENT_DATE);
     const { month, year } = currentDate;
     if (!categoryId) return;
     const initialState = { month, year, categoryId, categoryName, period: 6 };
-    this.$barChart = new BarChartContainer(this.$barChartContainer, initialState);
+    this.$barChart = new BarChartContainer(
+      this.$barChartContainer,
+      initialState,
+      this.accountHistoryTableRender.bind(this),
+    );
   }
 
-  async accountHistoryTableRender() {
+  async accountHistoryTableRender(date) {
+    const { year, month } = date;
     const { categoryId } = this.state;
     if (!categoryId) return;
     const accountHistoryData = await getAccountHistory({
-      ...getStartAndEndDate(new Date()),
+      ...getStartAndEndDate(`${year}-${monthToString(month)}`),
       categoryId: categoryId,
       type: 'expenditure',
     });
@@ -102,7 +108,7 @@ class Statistic {
       } else {
         this.barChartRender();
       }
-      this.accountHistoryTableRender();
+      this.accountHistoryTableRender(this.state.currentDate);
     }
   }
 

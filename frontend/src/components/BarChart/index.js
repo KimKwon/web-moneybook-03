@@ -1,3 +1,4 @@
+import './index.scss';
 import Component from '@/lib/component';
 
 class BarChart extends Component {
@@ -32,19 +33,14 @@ class BarChart extends Component {
   }
 
   circleTemplate(options) {
-    const { data, columnInterval, rowInterval, height, rate, circleClass, textClass, focusIndex } =
-      options;
-    const [defaultCircle, focusCircle] = circleClass;
-    const [defaultText, focusText] = textClass;
+    const { data, columnInterval, height, rate, focusIndex, color, textColor } = options;
     const template = data
       .map((value, index) => {
         const x = columnInterval * (index + 1);
-        let y = -rowInterval + height - value * rate;
+        let y = height - value * rate;
         if (y < 0) y = 0;
-        return `<circle cx="${x}" cy="${y}" r="5" class="${
-          index !== focusIndex ? defaultCircle : focusCircle
-        }" stroke-width="5" data-idx="${index}"/>
-          <text class="${index !== focusIndex ? defaultText : focusText}"  x="${x - 20}" y="${
+        return `<circle cx="${x}" cy="${y}" r="5" stroke="${color}" fill="${color}" stroke-width="3" data-idx="${index}"/>
+          <text fill="${index !== focusIndex ? textColor : color}"  x="${x - 20}" y="${
           y - 25
         }" > ${Number(value).toLocaleString()}</text>`;
       })
@@ -53,64 +49,34 @@ class BarChart extends Component {
   }
 
   lineTemplate(options) {
-    const { data, rowInterval, columnInterval, height, rate, className } = options;
+    const { data, rowInterval, columnInterval, height, rate, className, color } = options;
     const len = data.length;
     const template = data
       .map((value, index) => {
         if (len - 1 === index) return;
         const x1 = columnInterval * (index + 1);
         const x2 = columnInterval * (index + 2);
-        const y1 = -rowInterval + height - value * rate;
-        const y2 = -rowInterval + height - data[index + 1] * rate;
-        return ` <line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" class="${className}" stroke-width="2"/>`;
+        const y1 = height - value * rate;
+        const y2 = height - data[index + 1] * rate;
+        return `<path  d="M ${x1} ${y1} L ${x2} ${y2}" stroke="${color}"
+        stroke-width="3" fill="none" />`;
       })
       .join('');
     return template;
   }
+
   labelTemplate(options) {
     const { labels, columnInterval, height, className } = options;
     const template = labels
       .map((label, index) => {
         return ` <text class="${className}" x="${columnInterval * (index + 1) - 10}" y="${
-          height + 20
+          height + 26
         }">${label}</text>`;
       })
       .join('');
     return template;
   }
-  styleTemplate() {
-    return /* html */ `
-      <style>
-        .gray-light{
-          fill : #dddddd;
-          stroke: #dddddd
-        }
-        .gray{
-          fill : #8D9393;
-          stroke: #8D9393
-        }
-        .gray-dark{
-          fill : #626666;
-          stroke: #626666;
-        }
-        .primary{
-          fill :#2ac1bc;
-          stroke :#2ac1bc;
-        }
-        .primary-light{
-          fill :#A0E1E0;
-          stroke :#A0E1E0;
-        }
-        .primary-dark{
-          fill :#219A95;
-          stroke :#219A95;
-        }
-        circle:hover{
-          fill :#219A95;
-          stroke :#219A95;
-        }
-      </style>`;
-  }
+
   template() {
     const {
       data,
@@ -124,12 +90,13 @@ class BarChart extends Component {
       svgHeight,
       rate,
       split,
+      color,
+      focusIndex,
     } = this.chartInfo;
     /* html */ return `
     <?xml version="1.0" standalone="no"?>
     <svg width="${width}" height="${svgHeight}" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="100%" height="100%" stroke="none" fill="transparent" stroke-width="1"/>
-      ${this.styleTemplate()}
       ${this.rowTemplate({ row, rowInterval, width, className: 'gray-light' })}
       ${this.columnTemplate({ column, columnInterval, height, className: 'gray-light', split })}
       ${this.lineTemplate({
@@ -138,7 +105,7 @@ class BarChart extends Component {
         columnInterval,
         height,
         rate,
-        className: 'primary-light',
+        color,
       })}
       ${this.circleTemplate({
         data,
@@ -146,9 +113,9 @@ class BarChart extends Component {
         columnInterval,
         height,
         rate,
-        circleClass: ['primary', 'primary-dark'],
-        textClass: ['gray', 'primary-dark'],
-        focusIndex: data.length - 1,
+        focusIndex: focusIndex,
+        color,
+        textColor: '#888888',
       })}
       ${this.labelTemplate({ labels, columnInterval, height, className: 'gray' })}
       </svg>`;
@@ -161,14 +128,15 @@ class BarChart extends Component {
   }
 
   calculateChartData() {
-    const { data, labels, width, height, row, split = 1 } = this.state;
+    const { data, labels, width, height, row, split = 1, color, focusIndex } = this.state;
     const maxValue = Math.max(...data);
     const column = data.length + 1;
     const rowInterval = height / row;
     const columnInterval = width / column;
     const svgHeight = height + rowInterval;
-    const rate = (rowInterval * (row - 2)) / maxValue;
+    const rate = (rowInterval * (row - 1)) / maxValue;
     this.chartInfo = {
+      color,
       data,
       labels,
       rowInterval,
@@ -180,6 +148,7 @@ class BarChart extends Component {
       svgHeight,
       rate,
       split,
+      focusIndex: focusIndex ? focusIndex : data.length - 1,
     };
   }
 }

@@ -2,10 +2,12 @@ import './index.scss';
 import Component from '@/lib/component';
 import BarChart from '../BarChart/index';
 import { getStatistic } from '@/lib/api/statistic';
-
+import { monthToString } from '@/utils/date';
+import { getCategoryColor } from '@/utils/category';
 class BarChartContainer extends Component {
-  constructor($target, initialState) {
+  constructor($target, initialState, onLabelClickEvent) {
     super($target, initialState);
+    this.onLabelClickEvent = onLabelClickEvent;
   }
 
   template() {
@@ -26,9 +28,10 @@ class BarChartContainer extends Component {
   }
 
   didMount() {
-    this.$target.addEventListener('click', this.handleClickEvent.bind(this));
+    this.$target.addEventListener('click', this.handlePeriodClickEvent.bind(this));
+    this.attachEvent();
   }
-  async handleClickEvent(e) {
+  async handlePeriodClickEvent(e) {
     const $chartButton = e.target.closest('button');
     if (!$chartButton) return;
     const period = $chartButton.dataset['period'];
@@ -43,12 +46,49 @@ class BarChartContainer extends Component {
       period,
       categoryId,
     });
+
+    const filledChartData = this.fillEmptyMonth(this.chartData, month, year, period);
+    this.chartData = filledChartData;
+  }
+
+  fillEmptyMonth(targetData, month, year, period) {
+    const baseDates = [];
+    for (let i = 0; i < period; i++) {
+      if (month - i < 1) {
+        year--;
+        month = 12 + i;
+      }
+      baseDates.push(`${year}-${monthToString(month - i)}`);
+    }
+    baseDates.sort(function (a, b) {
+      return new Date(a) - new Date(b);
+    });
+
+    const filledData = baseDates.map((baseDate) => {
+      const data = targetData.find((item) => item.baseDate === baseDate);
+      return data || { baseDate, sum: 0 };
+    });
+
+    return filledData;
+  }
+
+  attachEvent() {
+    this.$target.addEventListener('click', this.handleCircleClickEvent.bind(this));
+  }
+  handleCircleClickEvent(e) {
+    const $circle = e.target.closest('circle');
+    if (!$circle) return;
+    const idx = parseInt($circle.dataset['idx']);
+    const [year, month] = this.chartData[idx].baseDate.split('-');
+    this.onLabelClickEvent({ year, month });
+    this.$barCheart.setState({ focusIndex: idx });
   }
 
   async render() {
     await this.getChartData();
     this.$target.innerHTML = this.template();
     const $barChart = this.$target.querySelector('.bar-chart');
+
     const chartData = this.chartData.reduce(
       (acc, { baseDate, sum }) => {
         acc.data.push(sum);
@@ -57,16 +97,20 @@ class BarChartContainer extends Component {
       },
       { data: [], labels: [] },
     );
-
+    const { categoryId } = this.state;
+    const color = getCategoryColor(categoryId);
+    const { period } = this.state;
     const barChartState = {
       data: chartData.data,
       labels: chartData.labels,
-      width: 800,
+      width: 1000,
       height: 500,
       row: 8,
-      split: 5,
+      split: 24 / period,
+      color,
     };
-    new BarChart($barChart, barChartState);
+
+    this.$barCheart = new BarChart($barChart, barChartState);
   }
 }
 

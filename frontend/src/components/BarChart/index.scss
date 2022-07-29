@@ -1,0 +1,31 @@
+.bar-chart {
+  display: flex;
+  justify-content: center;
+}
+
+path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 3s linear forwards;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.gray-light {
+  fill: #dddddd;
+  stroke: #dddddd;
+}
+.gray {
+  fill: #8d9393;
+  stroke: #8d9393;
+}
+.gray-dark {
+  fill: #626666;
+  stroke: #626666;
+}
+circle:hover {
+  opacity: 0.8;
+  stroke-width: 5;
+}

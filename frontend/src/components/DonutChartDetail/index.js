@@ -31,7 +31,9 @@ class DonutChartDetail extends Component {
         ${this.categories
           .map(
             ({ id }) => /*html*/ `
-          <li class="donut-chart-detail__item">
+          <li class="donut-chart-detail__item" data-amount="${
+            groupedByCategory[id]?.amount.toLocaleString() || 0
+          }">
             <div class="donut-chart-detail__category-box"></div>
             <div class="donut-chart-detail__percentage">
               <span>${this.calcPercentage(totalAmount, groupedByCategory[id]?.amount)}%</span>
