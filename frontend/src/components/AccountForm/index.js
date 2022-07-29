@@ -86,12 +86,15 @@ class AccountForm extends Component {
 
   async handleFormSubmit(e) {
     e.preventDefault();
+
+    const { isEditMode } = this.state;
+    const { id, methodName, categoryName, ...nextFormData } = this.getNextAccountInput();
+    const { date, content, amount } = nextFormData;
+
     if (!date || !content || !amount || !methodName || !categoryName) {
       this.toggleActiveStateOfSubmitButton(false);
       return false;
     }
-    const { isEditMode } = this.state;
-    const { id, methodName, categoryName, ...nextFormData } = this.getNextAccountInput();
 
     if (!isEditMode) {
       createAccountHistory(nextFormData);
