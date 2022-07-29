@@ -73,7 +73,9 @@ class DonutChartContainer extends Component {
     const $donutChartDetail = this.$target.querySelector('.donut-chart-detail');
     const $donutChart = this.$target.querySelector('.donut-chart');
     new DonutChartDetail($donutChartDetail, { totalAmount, groupedByCategory });
-    new DonutChart($donutChart, { totalAmount, groupedByCategory });
+    setTimeout(() => {
+      new DonutChart($donutChart, { totalAmount, groupedByCategory });
+    }, 250);
   }
 }
 

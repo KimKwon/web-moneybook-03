@@ -15,7 +15,26 @@
   }
 
   .donut-chart {
+    width: 280px;
     display: flex;
     align-items: center;
+
+    & > svg {
+      animation: cute-donut ease-in 0.5s;
+    }
+  }
+}
+
+@keyframes cute-donut {
+  0% {
+    transform: scale(0.4) rotate(0);
+  }
+
+  75% {
+    transform: scale(1.1) rotate(270deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
   }
 }

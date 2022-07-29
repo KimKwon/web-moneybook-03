@@ -21,3 +21,52 @@ header {
   font-family: 'Noto Sans KR';
   box-sizing: border-box;
 }
+
+.not-found-page {
+  width: 100%;
+  height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 15px;
+
+    padding: 50px;
+    border-radius: 10px;
+    background-color: $color-primary3;
+
+    color: white;
+    & > p {
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    & > h1 {
+      font-size: 80px;
+      font-weight: 500;
+      font-family: 'Do Hyeon', sans-serif;
+    }
+  }
+  & > a {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+
+    background-image: url(../assets/icon/woowa-logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+  }
+}

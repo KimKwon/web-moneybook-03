@@ -3,6 +3,8 @@
     display: none;
   }
 
+  animation: drop ease-in-out 0.5s;
+  display: flex;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -40,5 +42,17 @@
     width: calc(100% - 48px);
     height: 1px;
     background-color: $color-line;
+  }
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%, 0);
   }
 }
